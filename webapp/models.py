@@ -4,6 +4,7 @@ from flask_login import UserMixin
 db = SQLAlchemy()
 
 class Transaction():
+    
     pass
 
 class User(db.Model, UserMixin):

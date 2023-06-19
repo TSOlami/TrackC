@@ -23,7 +23,7 @@ def login():
 
 @auth.route('/logout')
 def logout():
-    return "Logout"
+    return render_template('landing.html')
 
 @auth.route('/sign-up', methods=['GET', 'POST']) 
 def sign_up():
@@ -63,6 +63,7 @@ def sign_up():
             #response = make_response(login())
             #response.method = 'POST'
             #return response
+  
 
     return render_template("sign_up.html")
 

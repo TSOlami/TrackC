@@ -23,4 +23,5 @@ class User(Base, UserMixin):
     username = Column(String(250), unique=True, nullable=False)
     email = Column(String(150), unique=True, nullable=False)
     password = Column(String(200), nullable=False)
+    access = Column(Integer, nullable=False, default=1)
     transactions = relationship('Transaction', backref='user', lazy=True)

@@ -1,17 +1,17 @@
 from flask import Blueprint, render_template, request
+from flask_login import login_required, current_user
 from sqlalchemy.orm import sessionmaker
 import requests
 from .models import *
-from flask_login import login_required, current_user
-
 views = Blueprint('views', __name__)
 
 @views.route ('/')
 def landing():
     return render_template("landing.html")
+
 @views.route ('/home')
 def home():
-    return render_template("home.html")
+    return render_template("home.html", user=current_user)
 
 @views.route('/transactions', methods=['POST','GET'])
 def transactions():
@@ -36,4 +36,3 @@ def transactions():
                 return "Transaction Added!"
         return "Unable to add Transaction"
     return render_template('transactions.html')
-    #return render_template("home.html", user=current_user)

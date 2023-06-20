@@ -1,21 +1,27 @@
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.sql import func
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+import sqlalchemy.orm
 
 engine = create_engine("postgresql://juuthoos:GaAe2ZbZU77KorqGd7NgIJKfm5Ya9EpH@dumbo.db.elephantsql.com/juuthoos")
-Base = declarative_base()
+Base = sqlalchemy.orm.declarative_base()
 
 
 class Transaction(Base):
-    """Transaction Model"""
+    """ The Transaction Model """
     __tablename__ = 'transactions'
     id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
     date = Column(DateTime(timezone=True), default=func.now())
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     amount = Column(Float, nullable=False)
+    coin_name = Column(String(30), nullable=False)
+    price_purchased_at = Column(Numeric, nullable=False)
+    no_of_coins = Column(Numeric, nullable=False)
 
+    
 class User(Base, UserMixin):
     """The User Model"""
     __tablename__ = 'users'

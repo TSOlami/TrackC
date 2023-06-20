@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect,url_for, make_response
+from flask import Blueprint, render_template, request, flash, make_response, redirect, url_for
 from .models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import sessionmaker
@@ -26,8 +26,9 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
-    logout_user()
-    return redirect(url_for('auth.login'))
+
+    return redirect(url_for('views.landing'))
+
 
 @auth.route('/sign-up', methods=['GET', 'POST']) 
 def sign_up():
@@ -58,6 +59,7 @@ def sign_up():
             if user.email == email:
                 flash('This email already exists, try again with another email!', category='error')
                 exc = True
+                break
 
         if exc == False:
             new_user = User(username=username, email=email, password=generate_password_hash(password1, method='sha256'))
@@ -65,7 +67,6 @@ def sign_up():
             session.commit()
             flash('Account created successfully, Welcome {}!'.format(user.username), category='success')
             return redirect(url_for('views.home'))
-
     return render_template("sign_up.html", user=current_user)
 
 @auth.route('/guest')

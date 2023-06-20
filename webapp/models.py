@@ -30,3 +30,4 @@ class User(Base, UserMixin):
     password = Column(String(200), nullable=False)
     access = Column(Integer, nullable=False, default=1)
     transactions = relationship('Transaction', backref='user', lazy=True)
+Base.metadata.create_all(engine)

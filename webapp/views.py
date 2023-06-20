@@ -9,12 +9,12 @@ views = Blueprint('views', __name__)
 def landing():
     return render_template("landing.html")
 
-@views.route ('/home')
-def home():
+@views.route ('/home/')
+def home(id):
     return render_template("home.html", user=current_user)
 
-@views.route('/transactions', methods=['POST','GET'])
-def transactions():
+@views.route('/{id}/transactions', methods=['POST','GET'])
+def transactions(id):
     if request.method == 'POST':
         amount = request.form.get('amount')
         coin_name = request.form.get('coin_name')
@@ -31,8 +31,10 @@ def transactions():
                 Base.metadata.create_all(engine)
                 Session = sessionmaker(bind=engine)
                 session = Session()
+                user_id = id
                 new_trans = Transaction(amount=amount, coin_name=coin_name, price_purchased_at=price_purchased_at, no_of_coins=no_of_coins)
                 session.add(new_trans)
-                return "Transaction Added!"
+                session.commit()
+                return session.query(Transaction).all()[0].coin_name
         return "Unable to add Transaction"
     return render_template('transactions.html')

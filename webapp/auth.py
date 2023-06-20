@@ -63,8 +63,8 @@ def sign_up():
             new_user = User(username=username, email=email, password=generate_password_hash(password1, method='sha256'))
             session.add(new_user)
             session.commit()
-            flash('Account created successfully, Welcome {}!'.format(user.username), category='success')
-            return redirect(url_for('views.home'))
+            #flash('Account created successfully, Welcome {}!'.format(user.username), category='success')
+            #return redirect(url_for('views.home'), id=
     return render_template("sign_up.html", user=current_user)
 
 @auth.route('/guest')

@@ -18,7 +18,13 @@
     />
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-       #form {
+       #form{
+           display: none;
+       }
+       .no-line-break {
+           white-space: nowrap;
+       }
+       #form2{
            display: none;
        }
     </style>
@@ -52,7 +58,43 @@
         <button id="sub" type="submit" class="btn btn-primary">Add</button>
      </form>
      </div>
-   <button  id='transaction'> Add Transaction </button>
+
+      <div>
+   <form id="form2" method="PUT">
+        <h3 align="center">Update Transaction</h3>
+        <div class="form-group">
+          <label for="coin_name">Name of Coin</label>
+          <input
+                type="text"
+                class="form-control"
+                id="coin_name"
+                name="coin_name"
+                placeholder="Enter name of coin"
+          />
+        </div>
+        <div class="form-group">
+          <label for="amount">Amount to be added</label>
+          <input
+                type="text"
+                class="form-control"
+                id="amount"
+                name="amount"
+                placeholder="Enter Amount(in USD)"
+          />
+        </div>
+        <br/>
+        <button id="sub2" type="submit" class="btn btn-primary">Update</button>
+     </form>
+     </div>
+
+   <button  id='transaction'> Add Transaction </button>  <button  id='transaction2'> Update Transaction </button>
+     <h5> {% for name in coin_name_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ name }} </span> {% endfor %} </h5>
+     <h5> {% for amount in amount_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ amount }} </span>{% endfor %} </h5>
+     <h5> {% for symbol in symbol_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ symbol }} </span> {% endfor %} </h5>
+     <h5> {% for price_purchased_at in price_purchased_at_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ price_purchased_at }} </span>{% endfor %} </h5>
+     <h5> {% for no_of_coins in no_of_coins_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ no_of_coins }} </span>{% endfor %} </h5>
+     <h5> {% for time_transacted in time_transacted_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ time_transacted }} </span>{% endfor %} </h5>
+
    <script>
          $('#transaction').click(function() {
              $('#form').show();
@@ -61,6 +103,15 @@
          $('#sub').click(function() {
              $('#form').css("display", "none");
               $('#transaction').show();
+         });
+
+         $('#transaction2').click(function() {
+             $('#form2').show();
+             $('#transaction2').css("display", "none");
+         });
+         $('#sub2').click(function() {
+             $('#form2').css("display", "none");
+              $('#transaction2').show();
          });
      </script>
 </body>

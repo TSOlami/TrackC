@@ -17,30 +17,36 @@ def home():
 
 @views.route('/<user_id>/transactions', methods=['GET'])
 def transactions(user_id):
-    return render_template('transactions.html')
+    coin_name_list = []
+    amount_list = []
+    symbol_list = []
+    price_purchased_at_list = []
+    no_of_coins_list = []
+    time_transacted_list = []
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    for trans in session.query(Transaction).all():
+        if trans.user_id == user_id:
+           coin_name_list.append(trans.coin_name)
+           amount_list.append(trans.amount)
+           symbol_list.append(trans.symbol)
+           price_purchased_at_list.append(trans.price_purchased_at)
+           no_of_coins_list.append(trans.no_of_coins)
+           time_transacted_list.append(trans.time_transacted)
+    if coin_name_list is None:
+        session.cloe()
+        return "None"
+    else:
+        return render_template('transactions.html', coin_name_list=coin_name_list, amount_list=amount_list, symbol_list=symbol_list, price_purchased_at_list=price_purchased_at_list, no_of_coins_list=no_of_coins_list, time_transacted_list=time_transacted_list)
 
 @views.route('/<user_id>/transactions', methods=['POST'])
 def new_transactions(user_id):
     if request.method == 'POST':
-        """
-        coin_name = request.json["coin_name"]
-        amount = request.json["amount"]
-        trans_type = request.json["trans_type"]
-        time_transacted = datetime.fromtimestamp(request.json["time_transacted"])
-        price_purchased_at = float(request.json["price_purchased_at"])
-        time_created = datetime.fromtimestamp(request.json["time_created"])
-        no_of_coins = float(request.json["no_of_coins"])
-        Base.metadata.create_all(engine)
-        Session = sessionmaker(bind=engine)
-        session = Session()
-        new_trans = Transaction(coin_name=coin_name, amount=amount, trans_type=trans_type, time_transacted=time_transacted, price_purchased_at=price_purchased_at, time_created=time_created, no_of_coins=no_of_coins)
-        session.add(new_trans)
-        return jsonify(request.json)
-        """
         coin_name = request.form.get('coin_name')
         coin_name = coin_name.lower()
         amount = request.form.get('amount')
-        amount = amount = request.form.get('amount')
+        amount = request.form.get('amount')
         url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
         api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
         headers = {'Accepts' : 'application/json', 'X-CMC_PRO_API_KEY' : api_key}
@@ -49,14 +55,25 @@ def new_transactions(user_id):
         for i in range(0, 5000):
             if data['data'][i]['name'].lower() == coin_name:
                 price_purchased_at = data['data'][i]['quote']['USD']['price']
-                no_of_coins = int(amount) / price_purchased_at
+                no_of_coins = float(amount) / price_purchased_at
                 symbol = data['data'][i]['symbol']
                 Base.metadata.create_all(engine)
                 Session = sessionmaker(bind=engine)
                 session = Session()
                 user_id = user_id
+                for trans in session.query(Transaction).all():
+                    if trans.coin_name.lower() == coin_name and trans.user_id == user_id:
+                         trans.amount = float(amount) + float(trans.amount)
+                         trans.no_of_coins = float(trans.no_of_coins) + (float(amount) / price_purchased_at)
+                         session.commit()
+                         session.close()
+                         return "Transaction Updated"                         
                 new_trans = Transaction(user_id=user_id, amount=amount, coin_name=coin_name.capitalize(), symbol=symbol, price_purchased_at=price_purchased_at, no_of_coins=no_of_coins)
                 session.add(new_trans)
                 session.commit()
-                return session.query(Transaction).all()[0].coin_name
+                session.close()
+                return "Transaction Added!"
         return "Unable to add Transaction"
+#@views.route('/transactions/<transaction_id>', methods=['PUT'])
+#def update_transactions(transaction_id):
+    

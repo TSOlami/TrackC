@@ -26,14 +26,14 @@ def create_app():
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
-
+    
     @login_manager.user_loader 
     def load_user(user_id):
         if user_id == 'None':
             # handle the case where user_id is None
             # This means the user is a guest
             return None
-        user = session.query(User).get(int(user_id))
+        user = session.query(User).get(user_id)
         return user  
-    return app
 
+    return app

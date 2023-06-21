@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request
+import datetime
+from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy.orm import sessionmaker
 import requests
@@ -10,15 +11,36 @@ def landing():
     return render_template("landing.html")
 
 @views.route ('/home/')
-def home(id):
-    return render_template("home.html", user=current_user)
+def home():
+    user_id = request.args.get('user_id')
+    return render_template("home.html", user_id=user_id)
 
-@views.route('/{id}/transactions', methods=['POST','GET'])
-def transactions(id):
+@views.route('/<user_id>/transactions', methods=['GET'])
+def transactions(user_id):
+    return render_template('transactions.html')
+
+@views.route('/<user_id>/transactions', methods=['POST'])
+def new_transactions(user_id):
     if request.method == 'POST':
-        amount = request.form.get('amount')
+        """
+        coin_name = request.json["coin_name"]
+        amount = request.json["amount"]
+        trans_type = request.json["trans_type"]
+        time_transacted = datetime.fromtimestamp(request.json["time_transacted"])
+        price_purchased_at = float(request.json["price_purchased_at"])
+        time_created = datetime.fromtimestamp(request.json["time_created"])
+        no_of_coins = float(request.json["no_of_coins"])
+        Base.metadata.create_all(engine)
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        new_trans = Transaction(coin_name=coin_name, amount=amount, trans_type=trans_type, time_transacted=time_transacted, price_purchased_at=price_purchased_at, time_created=time_created, no_of_coins=no_of_coins)
+        session.add(new_trans)
+        return jsonify(request.json)
+        """
         coin_name = request.form.get('coin_name')
         coin_name = coin_name.lower()
+        amount = request.form.get('amount')
+        amount = amount = request.form.get('amount')
         url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
         api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
         headers = {'Accepts' : 'application/json', 'X-CMC_PRO_API_KEY' : api_key}
@@ -28,13 +50,13 @@ def transactions(id):
             if data['data'][i]['name'].lower() == coin_name:
                 price_purchased_at = data['data'][i]['quote']['USD']['price']
                 no_of_coins = int(amount) / price_purchased_at
+                symbol = data['data'][i]['symbol']
                 Base.metadata.create_all(engine)
                 Session = sessionmaker(bind=engine)
                 session = Session()
-                user_id = id
-                new_trans = Transaction(amount=amount, coin_name=coin_name, price_purchased_at=price_purchased_at, no_of_coins=no_of_coins)
+                user_id = user_id
+                new_trans = Transaction(user_id=user_id, amount=amount, coin_name=coin_name.capitalize(), symbol=symbol, price_purchased_at=price_purchased_at, no_of_coins=no_of_coins)
                 session.add(new_trans)
                 session.commit()
                 return session.query(Transaction).all()[0].coin_name
         return "Unable to add Transaction"
-    return render_template('transactions.html')

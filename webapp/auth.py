@@ -18,7 +18,8 @@ def login():
             if user.email == email and check_password_hash(user.password, password) and (user.access is None or user.access == 1):
                 flash('Login successful. Welcome back {}!'.format(user.username), category='success')
                 login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                user_id = user.id
+                return redirect(url_for('views.home', user_id=user_id))
         flash('Incorrect email address or password.', category='error')
         
     return render_template("login.html", user=current_user)
@@ -64,7 +65,11 @@ def sign_up():
             session.add(new_user)
             session.commit()
             #flash('Account created successfully, Welcome {}!'.format(user.username), category='success')
-            #return redirect(url_for('views.home'), id=
+            #user_id =  session.query(User).id.order_by(User.date_created.desc())
+            for user in session.query(User).all():
+                if user.username == username:
+                   user_id = user.id
+            return redirect(url_for('views.home', user_id=user_id))
     return render_template("sign_up.html", user=current_user)
 
 @auth.route('/guest')

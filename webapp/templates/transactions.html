@@ -27,6 +27,9 @@
        #form2{
            display: none;
        }
+       #form3{
+           display: none;
+       }
     </style>
         <title>Transactions</title>
 </head>
@@ -87,7 +90,35 @@
      </form>
      </div>
 
-   <button  id='transaction'> Add Transaction </button>  <button  id='transaction2'> Update Transaction </button>
+       <div>
+   <form id="form3" method="PUT">
+        <h3 align="center">Sell a coin</h3>
+        <div class="form-group">
+          <label for="coin_name">Name of Coin</label>
+          <input
+                type="text"
+                class="form-control"
+                id="coin_name"
+                name="coin_name"
+                placeholder="Enter name of coin"
+          />
+        </div>
+        <div class="form-group">
+          <label for="amount">Amount to sell</label>
+          <input
+                type="text"
+                class="form-control"
+                id="amount"
+                name="amount"
+                placeholder="Enter Amount(in USD)"
+          />
+        </div>
+        <br/>
+        <button id="sub3" type="submit" class="btn btn-primary">Sell</button>
+     </form>
+     </div>
+
+   <button  id='transaction'> Add Transaction </button>  <button  id='transaction2'> Update Transaction </button>  <button  id='transaction3'> Sell a coin </button>
      <h5> {% for name in coin_name_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ name }} </span> {% endfor %} </h5>
      <h5> {% for amount in amount_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ amount }} </span>{% endfor %} </h5>
      <h5> {% for symbol in symbol_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ symbol }} </span> {% endfor %} </h5>
@@ -112,6 +143,15 @@
          $('#sub2').click(function() {
              $('#form2').css("display", "none");
               $('#transaction2').show();
+         });
+
+         $('#transaction3').click(function() {
+             $('#form3').show();
+             $('#transaction3').css("display", "none");
+         });
+         $('#sub3').click(function() {
+             $('#form3').css("display", "none");
+              $('#transaction3').show();
          });
      </script>
 </body>

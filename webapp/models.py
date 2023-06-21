@@ -21,7 +21,7 @@ class Transaction(Base):
     amount = Column(Float, nullable=False)
     no_of_coins = Column(Numeric, nullable=False)
     time_transacted = Column(DateTime(timezone=True), default=func.current_timestamp())
-    date = Column(DateTime(timezone=True), default=func.now())
+    time_updated = Column(DateTime(timezone=True), default=func.now())
 
 class User(Base, UserMixin):
     """The User Model"""

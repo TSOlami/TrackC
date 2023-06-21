@@ -35,7 +35,7 @@
 </head>
 <body>
    <div>
-   <form id="form" method="POST">
+   <form id="form" action="/{{ user_id }}/transactions/add_transaction" method="POST">
         <h3 align="center">Add Transaction</h3>
         <div class="form-group">
           <label for="coin_name">Name of Coin</label>
@@ -63,7 +63,7 @@
      </div>
 
       <div>
-   <form id="form2" method="PUT">
+   <form id="form2" action="/{{ user_id }}/transactions/update_transaction" method="POST">
         <h3 align="center">Update Transaction</h3>
         <div class="form-group">
           <label for="coin_name">Name of Coin</label>
@@ -125,7 +125,7 @@
      <h5> {% for price_purchased_at in price_purchased_at_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ price_purchased_at }} </span>{% endfor %} </h5>
      <h5> {% for no_of_coins in no_of_coins_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ no_of_coins }} </span>{% endfor %} </h5>
      <h5> {% for time_transacted in time_transacted_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ time_transacted }} </span>{% endfor %} </h5>
-
+     <h5> {% for time_updated in time_updated_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ time_updated }} </span>{% endfor %} </h5>
    <script>
          $('#transaction').click(function() {
              $('#form').show();

@@ -18,7 +18,7 @@ class Transaction(Base):
     coin_name = Column(String(30), nullable=False)
     symbol =  Column(String(30), nullable=False)
     price_purchased_at = Column(Numeric, nullable=False)
-    amount = Column(Float, nullable=False)
+    amount = Column(Numeric, nullable=False)
     no_of_coins = Column(Numeric, nullable=False)
     time_transacted = Column(DateTime(timezone=True), default=func.now())
     time_updated = Column(DateTime(timezone=True), default=func.now())

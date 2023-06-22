@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link 
+	rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+	crossorigin="anonymous">
+	<title>News</title>
+</head>
+<body>
+<div class="jumbotron" style="color:black">
+	<h1 style="color: blueviolet;">
+    News Headlines
+	</h1>
+</div>
+<div class="container">
+	{% for new, des, img in context %}
+	<img src="{{i}}" alt="">
+	<h3>News: </h3> {{new}}
+	<h4>Description: </h4> {{des}}
+
+
+	{% endfor %}
+</div>
+</body>
+</html>

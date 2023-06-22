@@ -34,14 +34,21 @@ def transactions(user_id):
            amount_list.append(trans.amount)
            symbol_list.append(trans.symbol)
            price_purchased_at_list.append(trans.price_purchased_at)
-           no_of_coins_list.append(trans.no_of_coins)
-           time_transacted_list.append(trans.time_transacted)
-           time_updated_list.append(trans.time_updated)
-    if coin_name_list is None:
-        session.cloe()
-        return "None"
-    else:
-        return render_template('transactions.html', user_id=user_id, coin_name_list=coin_name_list, amount_list=amount_list, symbol_list=symbol_list, price_purchased_at_list=price_purchased_at_list, no_of_coins_list=no_of_coins_list, time_transacted_list=time_transacted_list, time_updated_list=time_updated_list)
+           url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+           api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
+           headers = {'Accepts' : 'application/json', 'X-CMC_PRO_API_KEY' : api_key}
+           params = { 'start' : '1', 'limit' : '5000', 'convert' : 'USD'}
+           data = requests.get(url, params=params, headers=headers).json()
+           for i in range(0, 5000):
+               if data['data'][i]['name'].lower() == trans.coin_name.lower():
+                   no_of_coins = float(trans.amount) / data['data'][i]['quote']['USD']['price']
+                   no_of_coins_list.append(no_of_coins)
+                   time_transacted_list.append(trans.time_transacted)
+                   time_updated_list.append(trans.time_updated)
+    portfolio_worth = sum(amount_list)
+    session.query(User).get(user_id).portfolio_worth = portfolio_worth
+    return render_template('transactions.html', user_id=user_id, coin_name_list=coin_name_list, amount_list=amount_list, symbol_list=symbol_list, price_purchased_at_list=price_purchased_at_list, no_of_coins_list=no_of_coins_list, time_transacted_list=time_transacted_list, time_updated_list=time_updated_list, portfolio_worth=portfolio_worth)
+    return render_template('transactions.html', user_id=user_id)
 
 @views.route('/<user_id>/transactions/add_transaction', methods=['POST'])
 def new_transactions(user_id):
@@ -68,15 +75,20 @@ def new_transactions(user_id):
                          trans.amount = float(amount) + float(trans.amount)
                          trans.no_of_coins = float(trans.no_of_coins) + (float(amount) / price_purchased_at)
                          trans.time_updated = datetime.now()
+                         portfolio_worth = float(session.query(User).get(user_id).portfolio_worth) + float(amount)
+                         session.query(User).get(user_id).portfolio_worth = portfolio_worth
                          session.commit()
                          session.close()
                          return redirect(url_for("views.transactions", user_id=user_id))
+                portfolio_worth = float(session.query(User).get(user_id).portfolio_worth) + float(amount)
                 new_trans = Transaction(user_id=user_id, amount=amount, coin_name=coin_name.capitalize(), symbol=symbol, price_purchased_at=price_purchased_at, no_of_coins=no_of_coins)
+                session.query(User).get(user_id).portfolio_worth = portfolio_worth
                 session.add(new_trans)
                 session.commit()
                 session.close()
                 return redirect(url_for("views.transactions", user_id=user_id))
         return "Unable to add Transaction"
+
 @views.route('/<user_id>/transactions/update_transaction', methods=['POST'])
 def update_transactions(user_id):
     coin_name = request.form.get('coin_name')
@@ -95,10 +107,15 @@ def update_transactions(user_id):
             for i in range(0, 5000):
                 if data['data'][i]['name'].lower() == coin_name:
                     price_purchased_at = data['data'][i]['quote']['USD']['price']
-            trans.amount = float(amount) + float(trans.amount)
-            trans.no_of_coins = float(trans.no_of_coins) + (float(amount) / price_purchased_at)
-            trans.time_updated = datetime.now()
-            session.commit()
-            session.close()
-            return redirect(url_for("views.transactions", user_id=user_id))
+                    trans.amount = float(amount) + float(trans.amount)
+                    trans.no_of_coins = float(trans.no_of_coins) + (float(amount) / price_purchased_at)
+                    trans.time_updated = datetime.now()
+                    portfolio_worth = float(session.query(User).get(user_id).portfolio_worth) + float(amount)
+                    session.query(User).get(user_id).portfolio_worth = portfolio_worth
+                    session.commit()
+                    session.close()
+                    return redirect(url_for("views.transactions", user_id=user_id))
     return "Coin is not pressent in your portfolio"
+
+#@views.route('/<user_id>/transactions/remove_transaction', methods=['POST'])
+#def remove_transaction(user_id):

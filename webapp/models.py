@@ -20,7 +20,7 @@ class Transaction(Base):
     price_purchased_at = Column(Numeric, nullable=False)
     amount = Column(Float, nullable=False)
     no_of_coins = Column(Numeric, nullable=False)
-    time_transacted = Column(DateTime(timezone=True), default=func.current_timestamp())
+    time_transacted = Column(DateTime(timezone=True), default=func.now())
     time_updated = Column(DateTime(timezone=True), default=func.now())
 
 class User(Base, UserMixin):
@@ -33,7 +33,8 @@ class User(Base, UserMixin):
     password = Column(String(200), nullable=False)
     access = Column(Integer, nullable=False, default=1)
     transactions = relationship('Transaction', backref='user', lazy=True)
-    net_worth =  Column(Float, default=0)
+    portfolio_worth =  Column(Integer, default=0)
+    transaction_type = Column(Integer, default=0)
     date_created = Column(DateTime(timezone=True), default=func.now())
 
 Base.metadata.create_all(engine)

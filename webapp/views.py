@@ -120,6 +120,3 @@ def update_transactions(user_id):
                     session.close()
                     return redirect(url_for("views.transactions", user_id=user_id))
     return "Coin is not pressent in your portfolio"
-
-#@views.route('/<user_id>/transactions/remove_transaction', methods=['POST'])
-#def remove_transaction(user_id):

@@ -95,7 +95,7 @@
           <br>
           <br>
           <br>
-          <h1>Transaction List</h1>
+          <h1>Recent transactions</h1>
 
           <table class="table">
             <thead class="thead-dark">
@@ -112,17 +112,17 @@
 
             <tbody>
               {% for i in range(length) %}
-                    <tr>
-                       <td>{{ trans_list[0][i] }}</td>
-                       <td>{{ trans_list[1][i] }}</td>
-                       <td>{{ trans_list[3][i] }}</td>
-                       <td>{{ trans_list[3][i] }}</td>
-                       <td>{{ trans_list[4][i] }}</td>
-                       <td>{{ trans_list[5][i] }}</td>
-                       <td>{{ trans_list[6][i] }}</td>
-                   </tr>
+                <tr>
+                  <td>{{ trans_list[i].coin_name }}</td>
+                  <td>{{ trans_list[i].symbol }}</td>
+                  <td>{{ trans_list[i].price_purchased_at }}</td>
+                  <td>{{ trans_list[i].amount }}</td>
+                  <td>{{ trans_list[i].no_of_coins }}</td>
+                  <td>{{ trans_list[i].time_transacted }}</td>
+                  <td>{{ trans_list[i].time_updated }}</td>
+                </tr>
               {% endfor %}
-          </tbody>
+            </tbody>
           </table>
         </div>
      

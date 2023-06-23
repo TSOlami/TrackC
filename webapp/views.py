@@ -7,7 +7,9 @@ import requests
 from requests.exceptions import RequestException, ConnectionError, Timeout, TooManyRedirects
 from .models import *
 from datetime import datetime
-from newsapi import NewsApiClient
+#from newsapi import NewsApiClient
+from newsapi.newsapi_client import NewsApiClient
+
 
 views = Blueprint('views', __name__)
 

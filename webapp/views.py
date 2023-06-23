@@ -12,6 +12,10 @@ from datetime import datetime
 views = Blueprint('views', __name__)
 
 
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
+
 @views.route ('/')
 def landing():
     return render_template("landing.html")
@@ -69,6 +73,47 @@ def news():
 def get_top_10():
     pass
 
+@views.route('/<user_id>/transactions', methods=['GET'])
+def transactions(user_id):
+    """Endpoint to fetch data from the database"""
+    coin_name_list = []
+    amount_list = []
+    symbol_list = []
+    price_purchased_at_list = []
+    no_of_coins_list = []
+    time_transacted_list = []
+    time_updated_list = []
+    new_amount_list = []
+    # Create a new transaction
+    for trans in session.query(Transaction).all():
+        if trans.user_id == user_id:
+           coin_name_list.append(trans.coin_name)
+           amount_list.append(trans.amount)
+           symbol_list.append(trans.symbol)
+           price_purchased_at_list.append(trans.price_purchased_at)
+           url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+           api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
+           headers = {'Accepts' : 'application/json', 'X-CMC_PRO_API_KEY' : api_key}
+           params = { 'start' : '1', 'limit' : '5000', 'convert' : 'USD'}
+           data = requests.get(url, params=params, headers=headers).json()
+           for i in range(0, 5000):
+               if data['data'][i]['name'].lower() == trans.coin_name.lower():
+                   no_of_coins = float(trans.amount) / data['data'][i]['quote']['USD']['price']
+                   no_of_coins_list.append(no_of_coins)
+                   new_amount = float(trans.no_of_coins) * float(data['data'][i]['quote']['USD']['price'])
+                   new_amount_list.append(new_amount)
+                   time_transacted_list.append(trans.time_transacted)
+                   time_updated_list.append(trans.time_updated)
+    portfolio_worth = sum(new_amount_list)
+    session.query(User).get(user_id).portfolio_worth = portfolio_worth
+    trans_list = [coin_name_list, symbol_list, price_purchased_at_list, amount_list, no_of_coins_list, time_transacted_list, time_updated_list]
+    return render_template('transactions.html',
+                           user_id=user_id,
+                           trans_list=trans_list,
+                           length=len(coin_name_list),
+                           portfolio_worth=portfolio_worth
+                           )
+
 
 @views.route('/<user_id>/transactions/add_transaction', methods=['POST'])
 def new_transactions(user_id):
@@ -94,10 +139,6 @@ def new_transactions(user_id):
             symbol = data['data'][i]['symbol']
 
             # Create a database session
-            Base.metadata.create_all(engine)
-            Session = sessionmaker(bind=engine)
-            session = Session()
-
             user_id = user_id
 
             # Check if the transaction already exists for the user and coin
@@ -110,7 +151,6 @@ def new_transactions(user_id):
                     portfolio_worth = float(session.query(User).get(user_id).portfolio_worth) + float(amount)
                     session.query(User).get(user_id).portfolio_worth = portfolio_worth
                     session.commit()
-                    session.close()
                     return redirect(url_for("views.transactions", user_id=user_id))
 
             # Create a new transaction
@@ -130,51 +170,7 @@ def new_transactions(user_id):
 
     # If no matching cryptocurrency found
     return "Unable to add Transaction"
-
-
-@views.route('/<user_id>/transactions', methods=['GET'])
-def transactions(user_id):
-    """Endpoint to fetch data from the database"""
-    coin_name_list = []
-    amount_list = []
-    symbol_list = []
-    price_purchased_at_list = []
-    no_of_coins_list = []
-    time_transacted_list = []
-    time_updated_list = []
-    new_amount_list = []
-    # Create a new transaction
-    Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    for trans in session.query(Transaction).all():
-        if trans.user_id == user_id:
-           coin_name_list.append(trans.coin_name)
-           amount_list.append(trans.amount)
-           symbol_list.append(trans.symbol)
-           price_purchased_at_list.append(trans.price_purchased_at)
-           url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
-           api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
-           headers = {'Accepts' : 'application/json', 'X-CMC_PRO_API_KEY' : api_key}
-           params = { 'start' : '1', 'limit' : '5000', 'convert' : 'USD'}
-           data = requests.get(url, params=params, headers=headers).json()
-           for i in range(0, 5000):
-               if data['data'][i]['name'].lower() == trans.coin_name.lower():
-                   no_of_coins = float(trans.amount) / data['data'][i]['quote']['USD']['price']
-                   no_of_coins_list.append(no_of_coins)
-                   new_amount = float(trans.no_of_coins) * float(data['data'][i]['quote']['USD']['price'])
-                   new_amount_list.append(new_amount)
-                   time_transacted_list.append(trans.time_transacted)
-                   time_updated_list.append(trans.time_updated)
-    portfolio_worth = sum(new_amount_list)
-    session.query(User).get(user_id).portfolio_worth = portfolio_worth
-    trans_list = [coin_name_list, symbol_list, price_purchased_at_list, amount_list, no_of_coins_list, time_transacted_list, time_updated_list]
-    return render_template('transactions.html', 
-                           trans_list=trans_list,
-                           length=len(coin_name_list),
-                           portfolio_worth=portfolio_worth
-                           )
-
+ 
 
 @views.route('/<user_id>/transactions/remove_transaction', methods=['POST'])
 def remove_transaction(user_id):
@@ -182,9 +178,6 @@ def remove_transaction(user_id):
     coin_name = request.form.get('coin_name')
     coin_name = coin_name.lower()
     amount = request.form.get('amount')
-    Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine)
-    session = Session()
     for trans in session.query(Transaction).all():
         if trans.coin_name.lower() == coin_name and trans.user_id == user_id:
             url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
@@ -202,7 +195,6 @@ def remove_transaction(user_id):
                     portfolio_worth = float(session.query(User).get(user_id).portfolio_worth) - new_amount
                     session.query(User).get(user_id).portfolio_worth = portfolio_worth
                     session.commit()
-                    session.close()
                     return redirect(url_for("views.transactions", user_id=user_id))
     return "Coin is not pressent in your portfolio"
 

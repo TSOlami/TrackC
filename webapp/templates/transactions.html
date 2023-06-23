@@ -63,8 +63,8 @@
      </div>
 
       <div>
-   <form id="form2" action="/{{ user_id }}/transactions/update_transaction" method="POST">
-        <h3 align="center">Update Transaction</h3>
+   <form id="form2" action="/{{ user_id }}/transactions/remove_transaction" method="POST">
+        <h3 align="center">Remove Transaction</h3>
         <div class="form-group">
           <label for="coin_name">Name of Coin</label>
           <input
@@ -76,7 +76,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="amount">Amount to be added</label>
+          <label for="amount">Amount to be removed</label>
           <input
                 type="text"
                 class="form-control"
@@ -86,46 +86,46 @@
           />
         </div>
         <br/>
-        <button id="sub2" type="submit" class="btn btn-primary">Update</button>
+        <button id="sub2" type="submit" class="btn btn-primary">Remove</button>
      </form>
      </div>
 
-       <div>
-   <form id="form3" action="/{{ user_id }}/transactions/remove_transaction" method="POST">
-        <h3 align="center">Sell a coin</h3>
-        <div class="form-group">
-          <label for="coin_name">Name of Coin</label>
-          <input
-                type="text"
-                class="form-control"
-                id="coin_name"
-                name="coin_name"
-                placeholder="Enter name of coin"
-          />
-        </div>
-        <div class="form-group">
-          <label for="amount">Amount to sell</label>
-          <input
-                type="text"
-                class="form-control"
-                id="amount"
-                name="amount"
-                placeholder="Enter Amount(in USD)"
-          />
-        </div>
-        <br/>
-        <button id="sub3" type="submit" class="btn btn-primary">Sell</button>
-     </form>
-     </div>
+   <button  id='transaction'> Add Transaction </button>  <button  id='transaction2'> Remove Transaction </button>
+          <br>
+          <br>
+          <br>
+          <br>
+          <h1>Transaction List</h1>
 
-   <button  id='transaction'> Add Transaction </button>  <button  id='transaction2'> Update Transaction </button>  <button  id='transaction3'> Sell a coin </button>
-     <h5> {% for name in coin_name_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ name }} </span> {% endfor %} </h5>
-     <h5> {% for amount in amount_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ amount }} </span>{% endfor %} </h5>
-     <h5> {% for symbol in symbol_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ symbol }} </span> {% endfor %} </h5>
-     <h5> {% for price_purchased_at in price_purchased_at_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ price_purchased_at }} </span>{% endfor %} </h5>
-     <h5> {% for no_of_coins in no_of_coins_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ no_of_coins }} </span>{% endfor %} </h5>
-     <h5> {% for time_transacted in time_transacted_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ time_transacted }} </span>{% endfor %} </h5>
-     <h5> {% for time_updated in time_updated_list %} <span class="no-line-break" style='border:2px solid blue;'> {{ time_updated }} </span>{% endfor %} </h5>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Price Purchased at</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Number of Coins</th>
+                <th scope="col">Time Transacted</th>
+                <th scope="col">Time Updated</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for i in range(length) %}
+                    <tr>
+                       <td>{{ trans_list[0][i] }}</td>
+                       <td>{{ trans_list[1][i] }}</td>
+                       <td>{{ trans_list[3][i] }}</td>
+                       <td>{{ trans_list[3][i] }}</td>
+                       <td>{{ trans_list[4][i] }}</td>
+                       <td>{{ trans_list[5][i] }}</td>
+                       <td>{{ trans_list[6][i] }}</td>
+                   </tr>
+              {% endfor %}
+          </tbody>
+          </table>
+        </div>
+     
     <h3> {{ portfolio_worth }} </h3>
    <script>
          $('#transaction').click(function() {

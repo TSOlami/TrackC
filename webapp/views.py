@@ -27,7 +27,7 @@ def landing():
 @login_required
 def home():
     # Endpoint to get top 10 crytpo-currencies from CMC
-    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+    news_url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
     parameters = {'start':'1', 
                   'limit':'10', 
                   'convert':'USD'}
@@ -38,7 +38,7 @@ def home():
     session = requests.Session()
     session.headers.update(headers)
 
-    response = session.get(url, params=parameters)
+    response = session.get(news_url, params=parameters)
     data = json.loads(response.text)
     results = data['data']
     # Loop through the results
@@ -52,41 +52,28 @@ def home():
 @views.route ('/news')
 def news():
     # Endpoint to make NewsApi calls
-    newsapi = NewsApiClient(api_key="1877e2279f07408189ec7af252270bf8")
-    topheadlines = newsapi.get_top_headlines(sources="al-jazeera-english")
+    news_url = "https://api.coingecko.com/api/v3/news"
+    formatted_data = get_formatted_news_data(news_url)
+    return render_template('news.html', news=formatted_data)
 
-    articles = topheadlines['articles']
-    latest_news = []
+def get_formatted_news_data(news_url):
+    response = requests.get(news_url)
+    data = response.json()
+    formatted_data = format_data(data)
+    return formatted_data
 
-    for news in articles:
-        title = news['title']
-        image_url = news['urlToImage']
-        description = news['description']
-        news_url = news['url']
-
-        latest_news.append({
-            'title': title,
-            'image_url': image_url,
-            'description': description,
-            'news_url': news_url
-        })
-    return render_template("news.html", news=latest_news)
-
-    
-    # desc = []
-    # news = []
-    # img = []
-
-    # for i in range (len(articles)):
-    #     allarticles = articles[i]
-
-    #     news.append(allarticles['title'])
-    #     desc.append(allarticles['description'])
-    #     img.append(allarticles['urlToImage'])
-    # # Archive the list 
-    # mylist = zip(news, desc, img)
-    # print(mylist)
-    # return render_template("news.html", context=mylist)
+def format_data(data):
+    formatted_data = []
+    for item in data['data']:
+        formatted_item = {
+            'Title': item['title'],
+            'Description': item['description'],
+            'URL': item['url'],
+            'News Site': item['news_site'],
+            'Thumbnail': item['thumb_2x']
+        }
+        formatted_data.append(formatted_item)
+    return formatted_data
 
 
 @views.route('/<user_id>/transactions', methods=['GET'])
@@ -115,11 +102,11 @@ def transactions(user_id):
                 price_purchased_at_list.append(trans.price_purchased_at)
 
                 # Make API request to get coin data
-                url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+                news_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
                 api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
                 headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
                 params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
-                data = requests.get(url, params=params, headers=headers).json()
+                data = requests.get(news_url, params=params, headers=headers).json()
 
                 # Process coin data
                 for i in range(0, 5000):
@@ -174,11 +161,11 @@ def new_transactions(user_id):
     amount = request.form.get('amount')
 
     # Setup CoinMarketCap API 
-    url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+    news_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
     api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
     headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
     params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
-    data = requests.get(url, params=params, headers=headers).json()
+    data = requests.get(news_url, params=params, headers=headers).json()
 
     # Find the cryptocurrency matching the provided name
     for i in range(0, 5000):
@@ -229,11 +216,11 @@ def remove_transaction(user_id):
     amount = request.form.get('amount')
     for trans in session.query(Transaction).all():
         if trans.coin_name.lower() == coin_name and trans.user_id == user_id:
-            url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+            news_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
             api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
             headers = {'Accepts' : 'application/json', 'X-CMC_PRO_API_KEY' : api_key}
             params = { 'start' : '1', 'limit' : '5000', 'convert' : 'USD'}
-            data = requests.get(url, params=params, headers=headers).json()
+            data = requests.get(news_url, params=params, headers=headers).json()
             for i in range(0, 5000):
                 if data['data'][i]['name'].lower() == coin_name:
                     price_purchased_at = data['data'][i]['quote']['USD']['price']
@@ -246,7 +233,7 @@ def remove_transaction(user_id):
                     session.commit()
                     session.close()
                     return redirect(url_for("views.transactions", user_id=user_id))
-    return "Coin is not pressent in your portfolio"
+    return "Coin is not present in your portfolio"
 
 
 

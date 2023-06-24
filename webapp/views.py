@@ -54,22 +54,39 @@ def news():
     # Endpoint to make NewsApi calls
     newsapi = NewsApiClient(api_key="1877e2279f07408189ec7af252270bf8")
     topheadlines = newsapi.get_top_headlines(sources="al-jazeera-english")
+
     articles = topheadlines['articles']
+    latest_news = []
 
-    desc = []
-    news = []
-    img = []
+    for news in articles:
+        title = news['title']
+        image_url = news['urlToImage']
+        description = news['description']
+        news_url = news['url']
 
-    for i in range (len(articles)):
-        allarticles = articles[i]
+        latest_news.append({
+            'title': title,
+            'image_url': image_url,
+            'description': description,
+            'news_url': news_url
+        })
+    return render_template("news.html", news=latest_news)
 
-        news.append(allarticles['title'])
-        desc.append(allarticles['description'])
-        img.append(allarticles['urlToImage'])
-    # Archive the list 
-    mylist = zip(news, desc, img)
-    print(mylist)
-    return render_template("news.html", context=mylist)
+    
+    # desc = []
+    # news = []
+    # img = []
+
+    # for i in range (len(articles)):
+    #     allarticles = articles[i]
+
+    #     news.append(allarticles['title'])
+    #     desc.append(allarticles['description'])
+    #     img.append(allarticles['urlToImage'])
+    # # Archive the list 
+    # mylist = zip(news, desc, img)
+    # print(mylist)
+    # return render_template("news.html", context=mylist)
 
 
 @views.route('/<user_id>/transactions', methods=['GET'])

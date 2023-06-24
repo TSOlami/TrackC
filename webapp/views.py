@@ -44,6 +44,9 @@ def home():
     # Loop through the results
     for result in results:
         result['quote']['USD']['price'] = '$ ' + "{:.2f}".format(result['quote']['USD']['price'])
+        result['quote']['USD']['volume_24h'] = '$ ' + "{:.2f}".format(result['quote']['USD']['volume_24h'])
+        result['quote']['USD']['percent_change_24h'] = "{:.2f}".format(result['quote']['USD']['percent_change_24h']) + '%'
+
     #Render results on the homepage
     user_id = request.args.get('user_id')
     return render_template("home.html", user_id=user_id, results=results)

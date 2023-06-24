@@ -57,6 +57,9 @@
                 <th scope="col">Symbol</th>
                 <th scope="col">Slug</th>
                 <th scope="col">Price</th>
+                <th scope="col">Volume</th>
+                <th scope="col">24hr</th>
+                
               </tr>
             </thead>
           
@@ -67,6 +70,8 @@
                   <td>{{ obj['symbol'] }}</td>
                   <td>{{ obj['slug'] }}</td>
                   <td>{{ obj['quote']['USD']['price'] }}</td>
+                  <td>{{ obj['quote']['USD']['volume_24h'] }}</td>
+                  <td>{{ obj['quote']['USD']['percent_change_24h'] }}</td>
               </tr>
               {% endfor %}
           </tbody>

@@ -105,11 +105,11 @@ def transactions(user_id):
                 price_purchased_at_list.append(trans.price_purchased_at)
 
                 # Make API request to get coin data
-                news_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+                url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
                 api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
                 headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
                 params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
-                data = requests.get(news_url, params=params, headers=headers).json()
+                data = requests.get(url, params=params, headers=headers).json()
 
                 # Process coin data
                 for i in range(0, 5000):
@@ -164,11 +164,11 @@ def new_transactions(user_id):
     amount = request.form.get('amount')
 
     # Setup CoinMarketCap API 
-    news_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+    url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
     api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
     headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
     params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
-    data = requests.get(news_url, params=params, headers=headers).json()
+    data = requests.get(url, params=params, headers=headers).json()
 
     # Find the cryptocurrency matching the provided name
     for i in range(0, 5000):
@@ -219,11 +219,11 @@ def remove_transaction(user_id):
     amount = request.form.get('amount')
     for trans in session.query(Transaction).all():
         if trans.coin_name.lower() == coin_name and trans.user_id == user_id:
-            news_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+            url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
             api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
             headers = {'Accepts' : 'application/json', 'X-CMC_PRO_API_KEY' : api_key}
             params = { 'start' : '1', 'limit' : '5000', 'convert' : 'USD'}
-            data = requests.get(news_url, params=params, headers=headers).json()
+            data = requests.get(url, params=params, headers=headers).json()
             for i in range(0, 5000):
                 if data['data'][i]['name'].lower() == coin_name:
                     price_purchased_at = data['data'][i]['quote']['USD']['price']
@@ -237,6 +237,3 @@ def remove_transaction(user_id):
                     session.close()
                     return redirect(url_for("views.transactions", user_id=user_id))
     return "Coin is not present in your portfolio"
-
-
-

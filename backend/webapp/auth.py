@@ -22,11 +22,13 @@ def login():
             # Login Successful
             response = {
                 'message': f'Login successful. Welcome back {user.username}!',
-                'user_id': user.id
+                'user_id': user.id,
+                'status_code': 200
             }
             return jsonify(response), 200
     response = {
-        'message': 'Incorrect email address or password. Try again!'
+        'message': 'Incorrect email address or password. Try again!',
+        'status_code': 401
     }
     return jsonify(response), 401
 

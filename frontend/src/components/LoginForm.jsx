@@ -1,22 +1,60 @@
-import { Box, Heading, Input, Button } from '@chakra-ui/react';
+import { useState } from 'react';
+import { FormControl, FormLabel, Input, Button, Text } from '@chakra-ui/react';
 
-const LoginForm = ({ handleLogin }) => {
+const LoginForm = ({ handleLogin, loginError }) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleLogin(e, formData);
+  };
+
   return (
-    <Box p={4}>
-      <Heading as="h2" size="lg" mb={4}>
-        Login
-      </Heading>
-      <form onSubmit={handleLogin}>
-        <Input type="text" placeholder="Username" mb={2} />
-        <Input type="password" placeholder="Password" mb={2} />
-        <Button type="submit">Login</Button>
-      </form>
-      <Box mt={4}>
-        <p>Use the following credentials for demo:</p>
-        <p>Username: demo</p>
-        <p>Password: demo123</p>
-      </Box>
-    </Box>
+    <form onSubmit={handleSubmit}>
+      <FormControl id="email">
+        <FormLabel>Email</FormLabel>
+        <Input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          autoComplete="email"
+        />
+      </FormControl>
+
+      <FormControl id="password">
+        <FormLabel>Password</FormLabel>
+        <Input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          autoComplete="current-password"
+        />
+      </FormControl>
+
+      {loginError && <Text color="red">{loginError}</Text>}
+
+      <Button type="submit">Login</Button>
+
+      <Text mt={4} color="gray.600">
+        Demo Account Credentials:
+        <br />
+        Email: demo@gmail.com
+        <br />
+        Password: demo1234
+      </Text>
+    </form>
   );
 };
 

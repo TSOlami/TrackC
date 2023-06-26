@@ -1,17 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
 
 const LoginPage = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [loginError, setLoginError] = useState(null);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+    const username = urlParams.get('username');
+
+    if (message) {
+      setLoginError(message);
+    } else if (username) {
+      setLoginError(`Welcome back ${username}!`);
+    }
+  }, []);
 
   const handleLogin = async (event, formData) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('http://localhost:5000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -22,8 +34,7 @@ const LoginPage = () => {
       if (response.ok) {
         const data = await response.json();
         const { message, user_id } = data;
-        // Redirect to homepage with success message and user ID
-        history.push(`/home?user_id=${user_id}&message=${message}`);
+        navigate(`/home?user_id=${user_id}&message=${message}`);
       } else {
         const data = await response.json();
         const { message } = data;

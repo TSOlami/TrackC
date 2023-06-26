@@ -2,6 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from flask_cors import CORS
 
 
 engine = create_engine("postgresql://juuthoos:GaAe2ZbZU77KorqGd7NgIJKfm5Ya9EpH@dumbo.db.elephantsql.com/juuthoos")
@@ -11,6 +12,7 @@ session = Session()
 def create_app():
     # configure app
     app = Flask(__name__)
+    CORS(app, origins='http://localhost:5173')
     app.config['SECRET_KEY'] = 'TrackC String'
     # Database config
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://juuthoos:GaAe2ZbZU77KorqGd7NgIJKfm5Ya9EpH@dumbo.db.elephantsql.com/juuthoos'

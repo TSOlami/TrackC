@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Profile from '../components/Profile';
 import TopCryptoTable from '../components/TopCryptoTable';
 import TransactionTable from '../components/TransactionTable';
@@ -6,7 +7,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const HomePage = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const userProfile = {
     name: 'John Doe',
@@ -31,30 +32,53 @@ const HomePage = () => {
 
   return (
     <div className="flex">
+      <Header />
+
       {isSidebarOpen && (
-        <aside className="bg-gray-200 h-screen w-1/5">
+        <aside className="bg-gray-200 w-1/5">
           {/* Sidebar content */}
           <nav className="py-4">
             <ul className="space-y-2">
               <li>
-                <button
-                  className="block px-4 py-2"
-                  onClick={handleToggleSidebar}
-                >
-                  Close Sidebar
-                </button>
+                <Link to="/home" className="block px-4 py-2">
+                  Home/Dashboard
+                </Link>
               </li>
-              {/* Add more sidebar items */}
+              <li>
+                <Link to="/profile" className="block px-4 py-2">
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="block px-4 py-2">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/support" className="block px-4 py-2">
+                  Support/Feedback
+                </Link>
+              </li>
+              <li>
+                <Link to="/logout" className="block px-4 py-2">
+                  Logout
+                </Link>
+              </li>
             </ul>
           </nav>
         </aside>
       )}
 
       <div className="flex flex-col flex-grow">
-        <Header />
-        
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-4">Home Page</h1>
+
+          <button
+            className="block px-4 py-2 mb-4"
+            onClick={handleToggleSidebar}
+          >
+            {isSidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
+          </button>
 
           <Profile
             name={userProfile.name}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, make_response, redirect, url_for
+from flask import Blueprint, render_template, request, flash, make_response, redirect, url_for, jsonify
 from .models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import sessionmaker
@@ -6,23 +6,30 @@ from flask_login import login_user,login_required, logout_user, current_user
 
 auth = Blueprint('auth', __name__)
 
-@auth.route('/login', methods=['GET', 'POST']) 
+@auth.route('/login', methods=['POST']) 
 def login():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-        Base.metadata.create_all(engine)
-        Session = sessionmaker(bind=engine)
-        session = Session()
-        for user in session.query(User).all():
-            if user.email == email and check_password_hash(user.password, password) and (user.access is None or user.access == 1):
-                flash('Login successful. Welcome back {}!'.format(user.username), category='success')
-                login_user(user, remember=True)
-                user_id = user.id
-                return redirect(url_for('views.home', user_id=user_id))
-        flash('Incorrect email address or password.', category='error')
-        
-    return render_template("login.html", user=current_user)
+    email = request.json.get('email')
+    password = request.json.get('password')
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    for user in session.query(User).all():
+        if (
+            user.email == email
+            and check_password_hash(user.password, password)
+            and (user.access is None or user.access == 1)
+        ):
+            # Login Successful
+            response = {
+                'message': f'Login successful. Welcome back {user.username}!',
+                'user_id': user.id
+            }
+            return jsonify(response), 200
+    response = {
+        'message': 'Incorrect email address or password. Try again!'
+    }
+    return jsonify(response), 401
+
 
 @auth.route('/logout')
 @login_required

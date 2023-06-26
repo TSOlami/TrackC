@@ -14,7 +14,7 @@ const HomePage = () => {
       <Flex bg="teal.500" py={4} px={6} color="white" alignItems="center">
         <Box>
           <Link as={NavLink} to="/" fontSize="lg" fontWeight="semibold">
-            My App
+            TrackC
           </Link>
         </Box>
         <Spacer />

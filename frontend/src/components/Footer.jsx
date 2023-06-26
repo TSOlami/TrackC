@@ -2,7 +2,7 @@ const Footer = () => {
   return (
     <footer>
       {/* Add footer content */}
-      <p>Footer content</p>
+      <p>This is a Footer</p>
     </footer>
   );
 };

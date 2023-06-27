@@ -97,10 +97,6 @@ const HomePage = () => {
               <TopCryptoTable cryptoData={cryptoData} />
             </div>
       
-            <div className="mt-4">
-              <h2 className="text-xl font-bold mb-2">Enter Transaction Details</h2>
-              <Transaction user_id={user_id} />
-            </div>
             
           </div>
         </div>

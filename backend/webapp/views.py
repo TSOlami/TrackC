@@ -51,7 +51,8 @@ def home(user_id):
 
     # Retrieve user-specific data based on the user_id parameter
     # ... Add your code here to fetch user-specific data ...
-
+    user_id = request.args.get('user_id')
+    print ("user_id")
     return jsonify({'user_id': user_id, 'results': results})
 
 
@@ -147,6 +148,8 @@ def transactions(user_id):
 
         # Sort transactions by time_updated in descending order (most recent on top)
         trans_list = sorted(trans_list, key=lambda x: x['time_updated'], reverse=True)
+
+        user_id = request.args.get('user_id')
 
         # Render the template with the fetched data
         return jsonify({        

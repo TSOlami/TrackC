@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import Profile from '../components/Profile';
 import TopCryptoTable from '../components/TopCryptoTable';
 import TransactionTable from '../components/TransactionTable';
-import Header from '../components/Header';
 import Footer from '../components/Footer';
+import LogoutButton from '../components/LogoutButton';
 
 const HomePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -31,11 +31,9 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex">
-      <Header />
-
+    <div className="grid grid-cols-1 sm:grid-cols-2 h-screen">
       {isSidebarOpen && (
-        <aside className="bg-gray-200 w-1/5">
+        <aside className="bg-gray-200">
           {/* Sidebar content */}
           <nav className="py-4">
             <ul className="space-y-2">
@@ -60,44 +58,40 @@ const HomePage = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/logout" className="block px-4 py-2">
-                  Logout
-                </Link>
+                <LogoutButton /> {/* Render the LogoutButton component */}
               </li>
             </ul>
           </nav>
         </aside>
       )}
 
-      <div className="flex flex-col flex-grow">
-        <div className="p-4">
-          <h1 className="text-2xl font-bold mb-4">Home Page</h1>
+      <div className="flex flex-col justify-center items-center p-4">
+        <h1 className="text-2xl font-bold mb-4">Home Page</h1>
 
-          <button
-            className="block px-4 py-2 mb-4"
-            onClick={handleToggleSidebar}
-          >
-            {isSidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
-          </button>
+        <button
+          className="block px-4 py-2 mb-4"
+          onClick={handleToggleSidebar}
+        >
+          {isSidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
+        </button>
 
-          <Profile
-            name={userProfile.name}
-            portfolioWorth={userProfile.portfolioWorth}
-          />
+        <Profile
+          name={userProfile.name}
+          portfolioWorth={userProfile.portfolioWorth}
+        />
 
-          <div className="mt-4">
-            <h2 className="text-xl font-bold mb-2">Top 10 Cryptocurrencies</h2>
-            <TopCryptoTable cryptoData={topCryptoData} />
-          </div>
-
-          <div className="mt-4">
-            <h2 className="text-xl font-bold mb-2">Recent Transactions</h2>
-            <TransactionTable transactions={recentTransactions} />
-          </div>
+        <div className="mt-4">
+          <h2 className="text-xl font-bold mb-2">Top 10 Cryptocurrencies</h2>
+          <TopCryptoTable cryptoData={topCryptoData} />
         </div>
 
-        <Footer />
+        <div className="mt-4">
+          <h2 className="text-xl font-bold mb-2">Recent Transactions</h2>
+          <TransactionTable transactions={recentTransactions} />
+        </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

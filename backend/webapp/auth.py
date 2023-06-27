@@ -33,10 +33,11 @@ def login():
     return jsonify(response), 401
 
 
-@auth.route('/logout')
+@auth.route('/logout', methods=['POST'])
 @login_required
 def logout():
-    return redirect(url_for('views.landing'))
+    
+    return {'message': 'Logout successful'}, 200
 
 @auth.route('/sign-up', methods=['GET', 'POST']) 
 def sign_up():

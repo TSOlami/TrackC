@@ -8,12 +8,13 @@ import Footer from '../components/Footer';
 import LogoutButton from '../components/LogoutButton';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
+import Transaction from "../components/Transaction";
 
 
 const HomePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [recentTransactions, setRecentTransactions] = useState(null);
+  const [transactionData, setTransactionData] = useState(null);
   const [cryptoData, setCryptoData] = useState([]);
   const { user_id } = useParams();
 
@@ -22,11 +23,17 @@ const HomePage = () => {
     portfolioWorth: 10000,
   };
 
-  const topCryptoData = [
-    { id: 1, currency: 'Bitcoin', price: 50000 },
-    { id: 2, currency: 'Ethereum', price: 3000 },
-    // Add more crypto data
-  ];
+  // Fetch transaction data from the '/<user_id>/transactions' endpoint
+  const fetchTransactionData = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/${user_id}/transactions`);
+      const data = await response.json();
+      setTransactionData(data);
+      console.log(data)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -40,14 +47,16 @@ const HomePage = () => {
         const data = await response.json();
         setUserData(data);
         setCryptoData(data.results);
-        setRecentTransactions(data.trans_list);
         console.log(data);
       } catch (error) {
         console.error('Error:', error);
       }
     };
 
+    
+
     fetchUserData();
+    fetchTransactionData();
   }, [user_id]);
 
   return (
@@ -67,14 +76,16 @@ const HomePage = () => {
               {isSidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
             </button>
 
-            <Profile
-              username={userProfile.name}
-              portfolioWorth={userProfile.portfolioWorth}
+            {userData && (
+              <Profile
+                username={userData.name}
+                portfolioWorth={userData.portfolioWorth}
             />
+            )}
             
             <div className="mt-4">
               <h2 className="text-xl font-bold mb-2">Recent Transactions</h2>
-              {recentTransactions && recentTransactions.length > 0 ? (
+              {transactionData && transactionData.length > 0 ? (
                 <TransactionTable transactions={recentTransactions} />
               ) : (
                 <p>No recent transactions</p>
@@ -86,6 +97,10 @@ const HomePage = () => {
               <TopCryptoTable cryptoData={cryptoData} />
             </div>
       
+            <div className="mt-4">
+              <h2 className="text-xl font-bold mb-2">Enter Transaction Details</h2>
+              <Transaction user_id={user_id} />
+            </div>
             
           </div>
         </div>

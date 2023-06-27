@@ -1,9 +1,11 @@
+import { Box } from '@chakra-ui/react';
+
 const Footer = () => {
   return (
-    <footer>
-      {/* Add footer content */}
-      <p>This is a Footer</p>
-    </footer>
+    <Box bg="gray.200" p={4} textAlign="center">
+      {/* Place your random but relevant content for the footer here */}
+      Footer content
+    </Box>
   );
 };
 

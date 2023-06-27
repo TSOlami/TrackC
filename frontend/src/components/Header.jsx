@@ -1,9 +1,18 @@
+import { Box, Flex, Heading, Spacer } from '@chakra-ui/react';
+import LogoutButton from './LogoutButton';
+
 const Header = () => {
   return (
-    <header>
-      {/* Add header content */}
-      <h1>This is a Header</h1>
-    </header>
+    <Box bg="blue.500" p={4} color="white">
+      <Flex>
+        <Heading as="h1" size="lg">
+          TrackC
+        </Heading>
+        <Spacer />
+        {/* Logout button */}
+        <LogoutButton />
+      </Flex>
+    </Box>
   );
 };
 

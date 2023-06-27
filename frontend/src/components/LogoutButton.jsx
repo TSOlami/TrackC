@@ -1,13 +1,12 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useState } from 'react';
 const LogoutButton = () => {
   const navigate = useNavigate();
   const [logoutError, setLogoutError] = useState(null);
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('/api/logout', {
+      const response = await fetch('http://localhost:5000/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

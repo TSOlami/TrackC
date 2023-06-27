@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, make_response, redirect, url_for, jsonify
+from flask import Blueprint, request, flash, make_response, redirect, url_for, jsonify
 from .models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import sessionmaker
@@ -36,51 +36,51 @@ def login():
 @auth.route('/logout', methods=['POST'])
 @login_required
 def logout():
-    
+    logout_user()
     return {'message': 'Logout successful'}, 200
+
 
 @auth.route('/sign-up', methods=['GET', 'POST']) 
 def sign_up():
     if request.method == 'POST':
-        email = request.form.get('email')
-        username = request.form.get('username')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
+        data = request.json
 
+        email = data.get('email')
+        username = data.get('username')
+        password1 = data.get('password1')
+        password2 = data.get('password2')
+
+        # Validate the input data
         if len(email) < 4:
-            flash('Email must be greater than 3 characters.', category='error')
+            return jsonify(message='Email must be greater than 3 characters.'), 400
         elif len(username) < 2:
-            flash('Username must be greater than 1 character.', category='error')
+            return jsonify(message='Username must be greater than 1 character.'), 400
         elif password1 != password2:
-            flash('Passwords don\'t match.', category='error')
+            return jsonify(message="Passwords don't match."), 400
         elif len(password1) < 7:
-            flash('Password must be at least 7 characters.', category='error')
-        
+            return jsonify(message='Password must be at least 7 characters.'), 400
+
+        # Check if the username or email already exists
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
-        exc = False
         for user in session.query(User).all():
             if user.username == username:
-                flash('This username is already taken, try again with another username!', category='error')
-                exc = True
+                return jsonify(message='This username is already taken, try again with another username!'), 400
         for user in session.query(User).all():
             if user.email == email:
-                flash('This email already exists, try again with another email!', category='error')
-                exc = True
-                break
+                return jsonify(message='This email already exists, try again with another email!'), 400
 
-        if exc == False:
-            new_user = User(username=username, email=email, password=generate_password_hash(password1, method='sha256'))
-            session.add(new_user)
-            session.commit()
-            #flash('Account created successfully, Welcome {}!'.format(user.username), category='success')
-            #user_id =  session.query(User).id.order_by(User.date_created.desc())
-            for user in session.query(User).all():
-                if user.username == username:
-                   user_id = user.id
-            return redirect(url_for('views.home', user_id=user_id))
-    return render_template("sign_up.html", user=current_user)
+        # Create a new user and save it to the database
+        new_user = User(username=username, email=email, password=generate_password_hash(password1, method='sha256'))
+        session.add(new_user)
+        session.commit()
+        user_id = new_user.id
+        username = new_user.username
+
+        return jsonify(message='Account created successfully. Welcome back {username}!', user_id=user_id), 200
+
+    return jsonify({'message': 'Invalid request'}), 400
 
 @auth.route('/guest')
 def guest():

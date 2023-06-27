@@ -12,7 +12,7 @@ session = Session()
 def create_app():
     # configure app
     app = Flask(__name__)
-    CORS(app, origins='http://localhost:5173')
+    CORS(app)
     app.config['SECRET_KEY'] = 'TrackC String'
     # Database config
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://juuthoos:GaAe2ZbZU77KorqGd7NgIJKfm5Ya9EpH@dumbo.db.elephantsql.com/juuthoos'

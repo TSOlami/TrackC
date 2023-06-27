@@ -1,6 +1,6 @@
 import datetime
 import json
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy.orm import sessionmaker
 import requests
@@ -23,33 +23,36 @@ def landing():
     return render_template("landing.html")
 
 
-@views.route ('/home/')
-@login_required
-def home():
-    # Endpoint to get top 10 crytpo-currencies from CMC
-    news_url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
-    parameters = {'start':'1', 
-                  'limit':'10', 
-                  'convert':'USD'}
-    headers = {'Accepts': 'application/json', 
-               'X-CMC_PRO_API_KEY': 
-               '05bf26b5-a99a-4eb7-92f4-e2c8bc263693'}
+@views.route('/home/<user_id>')
+def home(user_id):
+    # Endpoint to get top 10 cryptocurrencies from CMC
+    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+    parameters = {
+        'start': '1',
+        'limit': '10',
+        'convert': 'USD'
+    }
+    headers = {
+        'Accepts': 'application/json',
+        'X-CMC_PRO_API_KEY': '05bf26b5-a99a-4eb7-92f4-e2c8bc263693'
+    }
     # Create a db session
     session = requests.Session()
     session.headers.update(headers)
-
-    response = session.get(news_url, params=parameters)
+    
+    response = session.get(url, params=parameters)
     data = json.loads(response.text)
     results = data['data']
-    # Loop through the results
+
     for result in results:
         result['quote']['USD']['price'] = '$ ' + "{:.2f}".format(result['quote']['USD']['price'])
         result['quote']['USD']['volume_24h'] = '$ ' + "{:.2f}".format(result['quote']['USD']['volume_24h'])
         result['quote']['USD']['percent_change_24h'] = "{:.2f}".format(result['quote']['USD']['percent_change_24h']) + '%'
 
-    #Render results on the homepage
-    user_id = request.args.get('user_id')
-    return render_template("home.html", user_id=user_id, results=results)
+    # Retrieve user-specific data based on the user_id parameter
+    # ... Add your code here to fetch user-specific data ...
+
+    return jsonify({'user_id': user_id, 'results': results})
 
 
 @views.route ('/news')

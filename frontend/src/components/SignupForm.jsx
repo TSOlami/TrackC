@@ -43,7 +43,7 @@ const SignupForm = () => {
 		  // Redirect to the homepage after a short delay
       const { user_id, message } = responseData;
 		  setTimeout(() => {
-        navigate(`/home/${user_id}?message=${message}`);
+        navigate(`/home?user_id=${user_id}&message=${message}`);
 		  }, 2000);
 		} else {
 		  // Signup failed, handle the error

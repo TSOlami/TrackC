@@ -13,7 +13,7 @@ import Sidebar from '../components/Sidebar';
 const HomePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userData, setUserData] = useState(null);
-  const { user_id: userId } = useParams();
+  const { user_id } = useParams();
 
   const userProfile = {
     name: 'John Doe',
@@ -49,7 +49,7 @@ const HomePage = () => {
     };
 
     fetchUserData();
-  }, [userId]);
+  }, [user_id]);
 
   return (
     <>

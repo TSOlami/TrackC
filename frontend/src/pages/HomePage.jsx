@@ -13,6 +13,8 @@ import Sidebar from '../components/Sidebar';
 const HomePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [recentTransactions, setRecentTransactions] = useState(null);
+  const [cryptoData, setCryptoData] = useState([]);
   const { user_id } = useParams();
 
   const userProfile = {
@@ -26,12 +28,6 @@ const HomePage = () => {
     // Add more crypto data
   ];
 
-  const recentTransactions = [
-    { id: 1, date: '2023-06-15', type: 'Buy', amount: 0.5 },
-    { id: 2, date: '2023-06-14', type: 'Sell', amount: 1.2 },
-    // Add more transactions
-  ];
-
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -40,9 +36,12 @@ const HomePage = () => {
     // Fetch user data using the userId from the backend
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/home/${userId}`);
+        const response = await fetch(`http://localhost:5000/home/${user_id}`);
         const data = await response.json();
         setUserData(data);
+        setCryptoData(data.results);
+        setRecentTransactions(data.trans_list);
+        console.log(data);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -54,32 +53,40 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      <div className="grid grid-cols-1 sm:grid-cols-2 h-screen">
-        {isSidebarOpen && <Sidebar />}
+      <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 h-screen">
+          {isSidebarOpen && <Sidebar />}
 
-        <div className="flex flex-col justify-center items-center p-4">
-          <h1 className="text-2xl font-bold mb-4">Home Page</h1>
+          <div className="flex flex-col justify-center items-center p-4">
+            <h1 className="text-2xl font-bold mb-4">Home Page</h1>
 
-          <button
-            className="block px-4 py-2 mb-4"
-            onClick={handleToggleSidebar}
-          >
-            {isSidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
-          </button>
+            <button
+              className="block px-4 py-2 mb-4"
+              onClick={handleToggleSidebar}
+            >
+              {isSidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
+            </button>
 
-          <Profile
-            name={userProfile.name}
-            portfolioWorth={userProfile.portfolioWorth}
-          />
+            <Profile
+              username={userProfile.name}
+              portfolioWorth={userProfile.portfolioWorth}
+            />
+            
+            <div className="mt-4">
+              <h2 className="text-xl font-bold mb-2">Recent Transactions</h2>
+              {recentTransactions && recentTransactions.length > 0 ? (
+                <TransactionTable transactions={recentTransactions} />
+              ) : (
+                <p>No recent transactions</p>
+              )}
+            </div>
 
-          <div className="mt-4">
-            <h2 className="text-xl font-bold mb-2">Top 10 Cryptocurrencies</h2>
-            <TopCryptoTable cryptoData={topCryptoData} />
-          </div>
-
-          <div className="mt-4">
-            <h2 className="text-xl font-bold mb-2">Recent Transactions</h2>
-            <TransactionTable transactions={recentTransactions} />
+            <div className="mt-4">
+              <h2 className="text-xl font-bold mb-2">Top 10 Cryptocurrencies</h2>
+              <TopCryptoTable cryptoData={cryptoData} />
+            </div>
+      
+            
           </div>
         </div>
       </div>

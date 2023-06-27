@@ -145,13 +145,16 @@ def transactions(user_id):
             }
             trans_list.append(trans_dict)
 
-        # Render the template with the fetched data
-        return render_template('transactions.html',
-                               user_id=user_id,
-                               trans_list=trans_list,
-                               portfolio_worth=portfolio_worth,
-                               length=length)  # Pass the length variable to the template
+        # Sort transactions by time_updated in descending order (most recent on top)
+        trans_list = sorted(trans_list, key=lambda x: x['time_updated'], reverse=True)
 
+        # Render the template with the fetched data
+        return jsonify({        
+            'user_id': user_id,
+            'transactions': trans_list,
+            'portfolio_worth': portfolio_worth
+            })
+    
     except (RequestException, ConnectionError, Timeout, TooManyRedirects) as e:
         # Handle the specific exception and return an appropriate response
         return f"An error occurred: {str(e)}", 500

@@ -1,41 +1,38 @@
 from flask import Flask
-from flask_login import LoginManager
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from flask_session import Session
 from flask_cors import CORS
+from .config import ApplicationConfig
 
-
-engine = create_engine("postgresql://juuthoos:GaAe2ZbZU77KorqGd7NgIJKfm5Ya9EpH@dumbo.db.elephantsql.com/juuthoos")
-Session = sessionmaker(bind=engine)
-session = Session()
 
 def create_app():
     # configure app
     app = Flask(__name__)
-    CORS(app)
-    app.config['SECRET_KEY'] = 'TrackC String'
-    # Database config
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://juuthoos:GaAe2ZbZU77KorqGd7NgIJKfm5Ya9EpH@dumbo.db.elephantsql.com/juuthoos'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    CORS(app, supports_credentials=True)
+
+    @app.after_request
+    def add_cors_headers(response):
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        return response
+
+    app.config.from_object(ApplicationConfig)
+    
     from .views import views
     from .auth import auth
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    from .models import Base, User, Transaction
-
-    login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'
-    login_manager.init_app(app)
+    from .models import db
     
-    @login_manager.user_loader 
-    def load_user(user_id):
-        if user_id == 'None':
-            # handle the case where user_id is None
-            # This means the user is a guest
-            return None
-        user = session.query(User).get(user_id)
-        return user  
+    # Initialize the SQLAlchemy extension
+    db.init_app(app)
+    server_session = Session(app)
+    
+    # Create the database tables
+    with app.app_context():
+        db.create_all()
 
     return app

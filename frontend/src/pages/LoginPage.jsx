@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
+import httpClient from '../httpClient';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -23,18 +24,12 @@ const LoginPage = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await httpClient.post('http://localhost:5000/login', formData);
 
-      if (response.ok) {
-        const data = await response.json();
-        const { message, user_id } = data;
-        navigate(`/home?user_id=${user_id}&message=${message}`);
+    if (response.status === 200) {
+      const data = response.data;
+      const { message, user_id } = data;
+      navigate(`/home?user_id=${user_id}&message=${message}`);
       } else {
         const data = await response.json();
         const { message } = data;

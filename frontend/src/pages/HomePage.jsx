@@ -9,7 +9,7 @@ import LogoutButton from '../components/LogoutButton';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import Transaction from "../components/Transaction";
-
+import { UserData } from '../type';
 
 const HomePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -64,17 +64,11 @@ const HomePage = () => {
       <Header />
       <div>
         <div className="grid grid-cols-1 sm:grid-cols-2 h-screen">
-          {isSidebarOpen && <Sidebar />}
-
           <div className="flex flex-col justify-center items-center p-4">
             <h1 className="text-2xl font-bold mb-4">Home Page</h1>
-
-            <button
-              className="block px-4 py-2 mb-4"
-              onClick={handleToggleSidebar}
-            >
-              {isSidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
-            </button>
+            <br />
+            <br />
+            <br />
 
             {userData && (
               <Profile
@@ -82,7 +76,10 @@ const HomePage = () => {
                 portfolioWorth={userData.portfolioWorth}
             />
             )}
-            
+            <br />
+            <br />
+            <br />
+
             <div className="mt-4">
               <h2 className="text-xl font-bold mb-2">Recent Transactions</h2>
               {transactionData && transactionData.length > 0 ? (
@@ -91,6 +88,10 @@ const HomePage = () => {
                 <p>No recent transactions</p>
               )}
             </div>
+
+            <br />
+            <br />
+            <br />
 
             <div className="mt-4">
               <h2 className="text-xl font-bold mb-2">Top 10 Cryptocurrencies</h2>

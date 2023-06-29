@@ -9,20 +9,24 @@ from .models import *
 from datetime import datetime
 #from newsapi import NewsApiClient
 from newsapi.newsapi_client import NewsApiClient
+from flask_cors import CORS, cross_origin
 
 
 views = Blueprint('views', __name__)
+CORS(views)
 
 
-Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+
+@cross_origin()
 @views.route ('/')
 def landing():
     return render_template("landing.html")
 
 
+@cross_origin()
 @views.route('/home/<user_id>')
 def home(user_id):
     # Endpoint to get top 10 cryptocurrencies from CMC
@@ -36,7 +40,7 @@ def home(user_id):
         'Accepts': 'application/json',
         'X-CMC_PRO_API_KEY': '05bf26b5-a99a-4eb7-92f4-e2c8bc263693'
     }
-    # Create a db session
+    # Create a session
     session = requests.Session()
     session.headers.update(headers)
     
@@ -56,6 +60,7 @@ def home(user_id):
     return jsonify({'user_id': user_id, 'results': results})
 
 
+@cross_origin()
 @views.route ('/news')
 def news():
     # Endpoint to make NewsApi calls
@@ -83,6 +88,7 @@ def format_data(data):
     return formatted_data
 
 
+@cross_origin()
 @views.route('/<user_id>/transactions', methods=['GET'])
 def transactions(user_id):
     """Endpoint to fetch data from the database"""
@@ -95,7 +101,7 @@ def transactions(user_id):
     time_updated_list = []
 
     # Create a new transaction
-    Base.metadata.create_all(engine)
+    
     Session = sessionmaker(bind=engine)
     session = Session()
 
@@ -163,6 +169,7 @@ def transactions(user_id):
         return f"An error occurred: {str(e)}", 500
 
 
+@cross_origin()
 @views.route('/<user_id>/transactions/add_transaction', methods=['POST'])
 def new_transactions(user_id):
     """Endpoint to add a new transaction"""
@@ -220,6 +227,7 @@ def new_transactions(user_id):
     return "Unable to add Transaction"
  
 
+@cross_origin()
 @views.route('/<user_id>/transactions/remove_transaction', methods=['POST'])
 def remove_transaction(user_id):
     """Endpoint to update a transaction"""

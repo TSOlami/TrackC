@@ -38,7 +38,7 @@ def home(user_id):
     }
     headers = {
         'Accepts': 'application/json',
-        'X-CMC_PRO_API_KEY': '05bf26b5-a99a-4eb7-92f4-e2c8bc263693'
+        'X-CMC_PRO_API_KEY': '032b9c4e-d442-4fdf-8359-ca6736c4216c'
     }
     # Create a session
     session = requests.Session()
@@ -116,7 +116,7 @@ def transactions(user_id):
 
                 # Make API request to get coin data
                 url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
-                api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
+                api_key = "032b9c4e-d442-4fdf-8359-ca6736c4216c"
                 headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
                 params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
                 data = requests.get(url, params=params, headers=headers).json()

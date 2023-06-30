@@ -1,12 +1,10 @@
-from flask_sqlalchemy import SQLAlchemy
+from . import db
 from flask_login import UserMixin
 from sqlalchemy import *
-import sqlalchemy.orm
-from sqlalchemy.orm import relationship
 import uuid
-from datetime import datetime
 
-db = SQLAlchemy()
+
+
 
 class Transaction(db.Model):
     """ The Transaction Model """

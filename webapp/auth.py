@@ -6,23 +6,26 @@ from flask_login import login_user,login_required, logout_user, current_user
 auth = Blueprint('auth', __name__)
 
 
-@auth.route('/login', methods=['POST']) 
+@auth.route('/login', methods=['GET', 'POST']) 
 def login():
     """Endpoint to handle User login"""
-    email = request.form.get('email')
-    password = request.form.get('password')
-    
-    user = User.query.filter_by(email=email).first() 
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        
+        user = User.query.filter_by(email=email).first() 
 
-    if user is not None and check_password_hash(user.password, password) and (user.access is None or user.access == 1):
-        # Login Successful
-        flash('Login successful. Welcome back {}!'.format(user.username), category='success')
-        login_user(user, remember=True)
-        user_id = user.id
-        return redirect(url_for('views.home', user_id=user_id))
-    else:
-        # Incorrect email or password
-        flash('Incorrect email address or password.', category='error')
+        if user is not None and check_password_hash(user.password, password) and (user.access is None or user.access == 1):
+            # Login Successful
+            flash('Login successful. Welcome back {}!'.format(user.username), category='success')
+            login_user(user, remember=True)
+            user_id = user.id
+            return redirect(url_for('views.home', user_id=user_id))
+        else:
+            # Incorrect email or password
+            flash('Incorrect email address or password.', category='error')
+
+    return render_template("login.html", user=current_user)
 
 
 @auth.route('/sign-up', methods=['GET', 'POST']) 
@@ -56,6 +59,7 @@ def sign_up():
         new_user = User(username=username, email=email, password=generate_password_hash(password1, method='sha256'))
         db.session.add(new_user)
         db.session.commit()
+        login_user(new_user, remember=True)
         flash('Account created successfully, Welcome {}!'.format(user.username), category='success')
         user_id = new_user.id
         username = new_user.username
@@ -69,26 +73,8 @@ def sign_up():
     return render_template("sign_up.html", user=current_user)
 
 
-@auth.route('/logout', methods=['POST'])
+@auth.route('/logout')
+@login_required
 def logout():
-    
-    return {'message': 'Logout successful'}, 200
-
-
-@auth.route('/@me')
-def get_current_user(): 
-    user_id = session.get("user_id")
-
-    if not user_id:
-        return jsonify({'error': 'Unauthorized'}), 401
-    
-    user = User.query.filter_by(id=user_id).first()
-    
-    response = {
-            'message': f'Login successful. Welcome back {user.username}!',
-            'user_id': user.id,
-            'username': user.username,
-            'email': user.email,
-            'status_code': 200
-        }
-    return jsonify(response), 200
+    logout_user()
+    return redirect(url_for('auth.login'))

@@ -1,21 +1,16 @@
 import datetime
 import json
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, flash, render_template, request, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy.orm import sessionmaker
 import requests
 from requests.exceptions import RequestException, ConnectionError, Timeout, TooManyRedirects
 from .models import *
-from datetime import datetime
+import datetime
 #from newsapi import NewsApiClient
 from newsapi.newsapi_client import NewsApiClient
 
-
 views = Blueprint('views', __name__)
-
-
-Session = sessionmaker(bind=engine)
-session = Session()
 
 
 @views.route ('/')
@@ -24,6 +19,7 @@ def landing():
 
 
 @views.route('/home/<user_id>')
+@login_required
 def home(user_id):
     # Endpoint to get top 10 cryptocurrencies from CMC
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
@@ -51,9 +47,10 @@ def home(user_id):
 
     #Render results on the homepage
     user_id = request.args.get('user_id')
-    return render_template("home.html", user_id=user_id, results=results)
+    return render_template("home.html", user_id=user_id, results=results, user=current_user)
 
 @views.route ('/news')
+@login_required
 def news():
     # Endpoint to make NewsApi calls
     news_url = "https://api.coingecko.com/api/v3/news"
@@ -83,6 +80,8 @@ def format_data(data):
 @views.route('/<user_id>/transactions', methods=['GET'])
 def transactions(user_id):
     """Endpoint to fetch data from the database"""
+    user_id = request.args.get('user_id')
+
     coin_name_list = []
     amount_list = []
     symbol_list = []
@@ -91,131 +90,144 @@ def transactions(user_id):
     time_transacted_list = []
     time_updated_list = []
 
-    # Create a new transaction
-    
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    # Fetch data from the database
+    transactions = Transaction.query.filter_by(user_id=user_id).all()
 
     try:
-        # Fetch data from the database
-        for trans in session.query(Transaction).all():
-            if trans.user_id == user_id:
-                coin_name_list.append(trans.coin_name)
-                amount_list.append(trans.amount)
-                symbol_list.append(trans.symbol)
-                price_purchased_at_list.append(trans.price_purchased_at)
+        for trans in transactions:
+            
+            coin_name_list.append(trans.coin_name)
+            amount_list.append(trans.amount)
+            symbol_list.append(trans.symbol)
+            price_purchased_at_list.append(trans.price_purchased_at)
 
-                # Make API request to get coin data
-                url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
-                api_key = "032b9c4e-d442-4fdf-8359-ca6736c4216c"
-                headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
-                params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
-                data = requests.get(url, params=params, headers=headers).json()
+            # Make API request to get coin data
+            url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+            api_key = "032b9c4e-d442-4fdf-8359-ca6736c4216c"
+            headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
+            params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
+            data = requests.get(url, params=params, headers=headers).json()
 
-                # Process coin data
-                for i in range(0, 5000):
-                    if data['data'][i]['name'].lower() == trans.coin_name.lower():
-                        no_of_coins = float(trans.amount) / data['data'][i]['quote']['USD']['price']
-                        no_of_coins_list.append(no_of_coins)
-                        time_transacted_list.append(trans.time_transacted)
-                        time_updated_list.append(trans.time_updated)
+            # Process coin data
+            for i in range(0, 5000):
+                if data['data'][i]['name'].lower() == trans.coin_name.lower():
+                    no_of_coins = float(trans.amount) / data['data'][i]['quote']['USD']['price']
+                    no_of_coins_list.append(no_of_coins)
+                    time_transacted_list.append(trans.time_transacted)
+                    time_updated_list.append(trans.time_updated)
 
         # Calculate portfolio worth
         portfolio_worth = sum(amount_list)
-
-        # Close the session
-        session.close()
+        
+        # Sort transactions by time_updated in descending order (most recent on top)
+        sorted_transactions = sorted(
+            zip(coin_name_list, amount_list, symbol_list, price_purchased_at_list, no_of_coins_list,
+                time_transacted_list, time_updated_list),
+            key=lambda x: x[-1], reverse=True
+        )
 
         # Assign the length of coin_name_list
         length = len(coin_name_list)
 
         # Create a list of dictionaries containing transaction data
         trans_list = []
-        for i in range(length):
+        for coin_name, amount, symbol, price_purchased_at, no_of_coins, time_transacted, time_updated in sorted_transactions:
             trans_dict = {
-                'coin_name': coin_name_list[i],
-                'amount': amount_list[i],
-                'symbol': symbol_list[i],
-                'price_purchased_at': price_purchased_at_list[i],
-                'no_of_coins': no_of_coins_list[i],
-                'time_transacted': time_transacted_list[i],
-                'time_updated': time_updated_list[i]
+                'coin_name': coin_name,
+                'amount': amount,
+                'symbol': symbol,
+                'price_purchased_at': price_purchased_at,
+                'no_of_coins': no_of_coins,
+                'time_transacted': time_transacted,
+                'time_updated': time_updated
             }
             trans_list.append(trans_dict)
 
-        # Sort transactions by time_updated in descending order (most recent on top)
-        trans_list = sorted(trans_list, key=lambda x: x['time_updated'], reverse=True)
-
-        user_id = request.args.get('user_id')
+        # Close the session
+        db.session.close()
+        
+        
 
         # Render the template with the fetched data
-        return jsonify({        
-            'user_id': user_id,
-            'transactions': trans_list,
-            'portfolio_worth': portfolio_worth
-            })
+        return render_template('transactions.html',
+                           user_id=user_id,
+                           trans_list=trans_list,
+                           length=len(coin_name_list),
+                           portfolio_worth=portfolio_worth
+                           )
     
     except (RequestException, ConnectionError, Timeout, TooManyRedirects) as e:
-        # Handle the specific exception and return an appropriate response
-        return f"An error occurred: {str(e)}", 500
+        # Handle the specific exception and flash an appropriate response
+        flash('An error occurred!', category='error')
+        
 
 
 @views.route('/<user_id>/transactions/add_transaction', methods=['POST'])
 def new_transactions(user_id):
     """Endpoint to add a new transaction"""
+    try:
+        # Retrieve form data from the frontend
+        coin_name = request.form.get('coin_name')
+        coin_name = coin_name.lower()
+        amount = request.form.get('amount')
 
-    # Retrieve form data from the frontend
-    coin_name = request.form.get('coin_name')
-    coin_name = coin_name.lower()
-    amount = request.form.get('amount')
+        # Setup CoinMarketCap API 
+        url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+        api_key = "032b9c4e-d442-4fdf-8359-ca6736c4216c"
+        headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
+        params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
+        data = requests.get(url, params=params, headers=headers).json()
 
-    # Setup CoinMarketCap API 
-    url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
-    api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
-    headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
-    params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
-    data = requests.get(url, params=params, headers=headers).json()
+        # Find the cryptocurrency matching the provided name
+        for i in range(0, 5000):
+            if data['data'][i]['name'].lower() == coin_name:
+                price_purchased_at = data['data'][i]['quote']['USD']['price']
+                no_of_coins = float(amount) / price_purchased_at
+                symbol = data['data'][i]['symbol']
 
-    # Find the cryptocurrency matching the provided name
-    for i in range(0, 5000):
-        if data['data'][i]['name'].lower() == coin_name:
-            price_purchased_at = data['data'][i]['quote']['USD']['price']
-            no_of_coins = float(amount) / price_purchased_at
-            symbol = data['data'][i]['symbol']
+                # Create a database session
+                session = db.session()
 
-            # Create a database session
-            user_id = user_id
-
-            # Check if the transaction already exists for the user and coin
-            for trans in session.query(Transaction).all():
-                if trans.coin_name.lower() == coin_name and trans.user_id == user_id:
+                # Check if the transaction already exists for the user and coin
+                existing_trans = Transaction.query.filter_by(coin_name=coin_name, user_id=user_id).first()
+                if existing_trans:
                     # Update the existing transaction
-                    trans.amount = float(amount) + float(trans.amount)
-                    trans.no_of_coins = float(trans.no_of_coins) + (float(amount) / price_purchased_at)
-                    trans.time_updated = datetime.now()
-                    portfolio_worth = float(session.query(User).get(user_id).portfolio_worth) + float(amount)
-                    session.query(User).get(user_id).portfolio_worth = portfolio_worth
+                    existing_trans.amount = float(amount) + float(existing_trans.amount)
+                    existing_trans.no_of_coins = float(existing_trans.no_of_coins) + (float(amount) / price_purchased_at)
+                    existing_trans.time_updated = datetime.datetime.now()
+                    user = User.query.get(user_id)
+                    user.portfolio_worth = float(user.portfolio_worth) + float(amount)
                     session.commit()
-                    return redirect(url_for("views.transactions", user_id=user_id))
+                else:
+                    # Create a new transaction
+                    user = User.query.get(user_id)
+                    portfolio_worth = float(user.portfolio_worth) + float(amount)
+                    new_trans = Transaction(
+                        user_id=user_id,
+                        amount=amount,
+                        coin_name=coin_name.capitalize(),
+                        symbol=symbol,
+                        price_purchased_at=price_purchased_at,
+                        no_of_coins=no_of_coins
+                    )
+                    session.add(new_trans)
+                    user.portfolio_worth = portfolio_worth
+                    session.commit()
 
-            # Create a new transaction
-            portfolio_worth = float(session.query(User).get(user_id).portfolio_worth) + float(amount)
-            new_trans = Transaction(user_id=user_id, 
-                                    amount=amount, 
-                                    coin_name=coin_name.capitalize(),
-                                    symbol=symbol, 
-                                    price_purchased_at=price_purchased_at, 
-                                    no_of_coins=no_of_coins)
-            
-            session.query(User).get(user_id).portfolio_worth = portfolio_worth
-            session.add(new_trans)
-            session.commit()
-            session.close()
-            return redirect(url_for("views.transactions", user_id=user_id))
+                # Close the session
+                session.close()
 
-    # If no matching cryptocurrency found
-    return "Unable to add Transaction"
- 
+                return redirect(url_for("views.transactions", user_id=user_id))
+
+        # If no matching cryptocurrency found
+        flash("Unable to add transaction.", category="error")
+        return redirect(url_for("views.transactions", user_id=user_id))
+
+    except (RequestException, ConnectionError, Timeout, TooManyRedirects) as e:
+        # Handle the specific exception and flash an appropriate response
+        flash("An error occurred while adding the transaction.", category="error")
+        return redirect(url_for("views.transactions", user_id=user_id))
+    
 
 @views.route('/<user_id>/transactions/remove_transaction', methods=['POST'])
 def remove_transaction(user_id):
@@ -223,23 +235,36 @@ def remove_transaction(user_id):
     coin_name = request.form.get('coin_name')
     coin_name = coin_name.lower()
     amount = request.form.get('amount')
-    for trans in session.query(Transaction).all():
-        if trans.coin_name.lower() == coin_name and trans.user_id == user_id:
-            url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
-            api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
-            headers = {'Accepts' : 'application/json', 'X-CMC_PRO_API_KEY' : api_key}
-            params = { 'start' : '1', 'limit' : '5000', 'convert' : 'USD'}
-            data = requests.get(url, params=params, headers=headers).json()
-            for i in range(0, 5000):
-                if data['data'][i]['name'].lower() == coin_name:
-                    price_purchased_at = data['data'][i]['quote']['USD']['price']
-                    new_amount = float(trans.amount) - float(amount)
-                    trans.amount = new_amount
-                    trans.no_of_coins = float(trans.no_of_coins) - (float(amount) / price_purchased_at)
-                    trans.time_updated = datetime.now()
-                    portfolio_worth = float(session.query(User).get(user_id).portfolio_worth) - new_amount
-                    session.query(User).get(user_id).portfolio_worth = portfolio_worth
-                    session.commit()
-                    session.close()
-                    return redirect(url_for("views.transactions", user_id=user_id))
-    return "Coin is not present in your portfolio"
+
+    try:
+        transactions = Transaction.query.filter_by(user_id=user_id).all()
+
+        for trans in transactions:
+            if trans.coin_name.lower() == coin_name:
+                url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+                api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
+                headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
+                params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
+                data = requests.get(url, params=params, headers=headers).json()
+
+                for i in range(0, 5000):
+                    if data['data'][i]['name'].lower() == coin_name:
+                        price_purchased_at = data['data'][i]['quote']['USD']['price']
+                        new_amount = float(trans.amount) - float(amount)
+                        trans.amount = new_amount
+                        trans.no_of_coins = float(trans.no_of_coins) - (float(amount) / price_purchased_at)
+                        trans.time_updated = datetime.now()
+                        portfolio_worth = float(User.query.get(user_id).portfolio_worth) - new_amount
+                        User.query.get(user_id).portfolio_worth = portfolio_worth
+                        db.session.commit()
+                        db.session.close()
+                        return redirect(url_for("views.transactions", user_id=user_id))
+
+        # If no matching cryptocurrency found
+        flash("Coin is not present in your portfolio", category="error")
+        return redirect(url_for("views.transactions", user_id=user_id))
+
+    except (RequestException, ConnectionError, Timeout, TooManyRedirects) as e:
+        # Handle the specific exception and flash an appropriate response
+        flash("An error occurred!", category="error")
+        return redirect(url_for("views.transactions", user_id=user_id))

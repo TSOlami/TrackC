@@ -31,5 +31,4 @@ class User(db.Model, UserMixin):
     access = db.Column(db.Integer, nullable=False, default=1)
     transactions = db.relationship('Transaction', backref='user', lazy=True)
     portfolio_worth = db.Column(db.Integer, default=0)
-    transaction_type = db.Column(db.Integer, default=0)
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())

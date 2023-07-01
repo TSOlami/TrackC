@@ -12,6 +12,8 @@ from newsapi.newsapi_client import NewsApiClient
 
 views = Blueprint('views', __name__)
 
+LIVE_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price"
+
 
 @views.route ('/')
 def landing():
@@ -78,6 +80,7 @@ def format_data(data):
 
 
 @views.route('/<user_id>/transactions', methods=['GET'])
+@login_required
 def transactions(user_id):
     """Endpoint to fetch data from the database"""
     user_id = request.args.get('user_id')
@@ -89,6 +92,8 @@ def transactions(user_id):
     no_of_coins_list = []
     time_transacted_list = []
     time_updated_list = []
+    current_value_list = []
+    equity_list = []
 
     # Fetch data from the database
     transactions = Transaction.query.filter_by(user_id=user_id).all()
@@ -101,37 +106,49 @@ def transactions(user_id):
             symbol_list.append(trans.symbol)
             price_purchased_at_list.append(trans.price_purchased_at)
 
-            # Make API request to get coin data
-            url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
-            api_key = "032b9c4e-d442-4fdf-8359-ca6736c4216c"
-            headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
-            params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
-            data = requests.get(url, params=params, headers=headers).json()
+            # Make API request to get live price for the coin
+            params = {
+                'ids': trans.coin_name,
+                'vs_currencies': 'USD',
+            }
+            response = requests.get(LIVE_PRICE_URL, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                live_price = data.get(trans.coin_name, {}).get('usd')
+                if live_price is not None:
+                    current_value = live_price * float(trans.amount)
+                    equity = current_value - (float(trans.amount) * float(trans.price_purchased_at))
+                    current_value_list.append(current_value)
+                    equity_list.append(equity)
 
-            # Process coin data
-            for i in range(0, 5000):
-                if data['data'][i]['name'].lower() == trans.coin_name.lower():
-                    no_of_coins = float(trans.amount) / data['data'][i]['quote']['USD']['price']
-                    no_of_coins_list.append(no_of_coins)
-                    time_transacted_list.append(trans.time_transacted)
-                    time_updated_list.append(trans.time_updated)
+            no_of_coins = float(trans.amount) / float(trans.price_purchased_at)
+            no_of_coins_list.append(no_of_coins)
+            time_transacted_list.append(trans.time_transacted)
+            time_updated_list.append(trans.time_updated)
 
         # Calculate portfolio worth
-        portfolio_worth = sum(amount_list)
+        portfolio_worth = sum(current_value_list)
+
+        
+
+        # Calculate portfolio equity 
+        portfolio_equity = sum(equity_list)
         
         # Sort transactions by time_updated in descending order (most recent on top)
         sorted_transactions = sorted(
             zip(coin_name_list, amount_list, symbol_list, price_purchased_at_list, no_of_coins_list,
-                time_transacted_list, time_updated_list),
-            key=lambda x: x[-1], reverse=True
+                time_transacted_list, time_updated_list, current_value_list, equity_list),
+            key=lambda x: x[-2], reverse=True
         )
-
         # Assign the length of coin_name_list
         length = len(coin_name_list)
 
         # Create a list of dictionaries containing transaction data
         trans_list = []
-        for coin_name, amount, symbol, price_purchased_at, no_of_coins, time_transacted, time_updated in sorted_transactions:
+        for (
+            coin_name, amount, symbol, price_purchased_at, no_of_coins, time_transacted,
+            time_updated, current_value, equity
+        ) in sorted_transactions:
             trans_dict = {
                 'coin_name': coin_name,
                 'amount': amount,
@@ -139,22 +156,23 @@ def transactions(user_id):
                 'price_purchased_at': price_purchased_at,
                 'no_of_coins': no_of_coins,
                 'time_transacted': time_transacted,
-                'time_updated': time_updated
+                'time_updated': time_updated,
+                'current_value': current_value,
+                'equity': equity
             }
             trans_list.append(trans_dict)
-
         # Close the session
         db.session.close()
         
-        
-
-        # Render the template with the fetched data
-        return render_template('transactions.html',
-                           user_id=user_id,
-                           trans_list=trans_list,
-                           length=len(coin_name_list),
-                           portfolio_worth=portfolio_worth
-                           )
+        # Render the template with the fetched data for the user
+        user_id = request.args.get('user_id')
+        return render_template(
+            'transactions.html',
+            user_id=user_id,
+            trans_list=trans_list,
+            length=len(coin_name_list),
+            portfolio_worth=portfolio_worth
+        )
     
     except (RequestException, ConnectionError, Timeout, TooManyRedirects) as e:
         # Handle the specific exception and flash an appropriate response
@@ -163,6 +181,7 @@ def transactions(user_id):
 
 
 @views.route('/<user_id>/transactions/add_transaction', methods=['POST'])
+@login_required
 def new_transactions(user_id):
     """Endpoint to add a new transaction"""
     try:
@@ -230,6 +249,7 @@ def new_transactions(user_id):
     
 
 @views.route('/<user_id>/transactions/remove_transaction', methods=['POST'])
+@login_required
 def remove_transaction(user_id):
     """Endpoint to update a transaction"""
     coin_name = request.form.get('coin_name')

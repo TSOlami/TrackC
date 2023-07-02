@@ -23,32 +23,33 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-			<span class="navbar-toggler-icon"></span>
+		  <span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbar">
-			<div class="navbar-nav">
+		  <div class="navbar-nav">
 			<a class="text-white" id="home" href="/">Home</a>
 			<a class="text-white" id="logout" href="/logout">Logout</a>
-			</div>
+		  </div>
 		</div>
-	</nav>
-	<div class="container mt-4">
-		<div class="row">
-			<div class="col-md-6 offset-md-3">
-			{% with messages = get_flashed_messages(with_categories=true) %}
-				{% if messages %}
-				{% for category, message in messages %}
-					<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-					{{ message }}
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					</div>
-				{% endfor %}
-				{% endif %}
-			{% endwith %}
-			</div>
-		</div>
+	  </nav>
+
+	<div class="container mx-auto my-8">
+		{% block content %}{% endblock %}
 	</div>
+
+	{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			<div class="fixed top-0 inset-x-0 py-2 px-4 sm:px-6 z-50">
+				{% for category, message in messages %}
+				<div class="bg-{{ 'red' if category == 'error' else 'green' }}-500 text-white rounded-md shadow-md py-2 px-4 mb-4">
+					{{ message }}
+					<button type="button" class="ml-4 rounded-md p-2" data-dismiss="alert">
+						<span class="fa fa-times"></span>
+					</button>
+				</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	{% endwith %}
 </body>
 </html>

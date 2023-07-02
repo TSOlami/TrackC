@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link 
+	rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+	crossorigin="anonymous">
+	<title>News</title>
+</head>
+<body>
+<div class="jumbotron" style="color:black">
+	<h1 style="color: blueviolet;">
+    Daily Crypto News
+	</h1>
+</div>
+<div class="container">
+	{% for item in news %}
+		<h2>{{ item['Title'] }}</h2>
+		{% if item.Thumbnail %}
+			<img src="{{ item['Thumbnail'] }}" alt="Thumbnail" width="500" height="300">
+		{% endif %}
+		<p><strong>Description:</strong> {{ item['Description'] }}</p>
+		<p><a href="{{ item['URL'] }}"><strong>Read more </strong></a></p>
+		<p><strong>News Site:</strong> {{ item['News Site'] }}</p>
+		<hr>
+	{% endfor %}
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      crossorigin="anonymous"
+    />
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+       #form{
+           display: none;
+       }
+       .no-line-break {
+           white-space: nowrap;
+       }
+       #form2{
+           display: none;
+       }
+       #form3{
+           display: none;
+       }
+    </style>
+        <title>Transactions</title>
+</head>
+<body>
+   <div>
+   <form id="form" action="/{{ user_id }}/transactions/add_transaction" method="POST">
+        <h3 align="center">Add Transaction</h3>
+        <div class="form-group">
+          <label for="coin_name">Name of Coin</label>
+          <input
+                type="text"
+                class="form-control"
+                id="coin_name"
+                name="coin_name"
+                placeholder="Enter name of coin"
+          />
+        </div>
+        <div class="form-group">
+          <label for="amount">Amount</label>
+          <input
+                type="text"
+                class="form-control"
+                id="amount"
+                name="amount"
+                placeholder="Enter Amount(in USD)"
+          />
+        </div>
+        <br/>
+        <button id="sub" type="submit" class="btn btn-primary">Add</button>
+     </form>
+     </div>
+
+      <div>
+   <form id="form2" action="/{{ user_id }}/transactions/remove_transaction" method="POST">
+        <h3 align="center">Remove Transaction</h3>
+        <div class="form-group">
+          <label for="coin_name">Name of Coin</label>
+          <input
+                type="text"
+                class="form-control"
+                id="coin_name"
+                name="coin_name"
+                placeholder="Enter name of coin"
+          />
+        </div>
+        <div class="form-group">
+          <label for="amount">Amount to be removed</label>
+          <input
+                type="text"
+                class="form-control"
+                id="amount"
+                name="amount"
+                placeholder="Enter Amount(in USD)"
+          />
+        </div>
+        <br/>
+        <button id="sub2" type="submit" class="btn btn-primary">Remove</button>
+     </form>
+     </div>
+
+   <button  id='transaction'> Add Transaction </button>  <button  id='transaction2'> Remove Transaction </button>
+          <br>
+          <br>
+          <br>
+          <br>
+          <h1>Recent transactions</h1>
+
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Price Purchased at</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Number of Coins</th>
+                <th scope="col">Time Transacted</th>
+                <th scope="col">Time Updated</th>
+                <th scope="col">Current value</th>
+                <th scope="col">Equity</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for i in range(length) %}
+                <tr>
+                  <td>{{ trans_list[i].coin_name }}</td>
+                  <td>{{ trans_list[i].symbol }}</td>
+                  <td>{{ trans_list[i].price_purchased_at }}</td>
+                  <td>{{ trans_list[i].amount }}</td>
+                  <td>{{ trans_list[i].no_of_coins }}</td>
+                  <td>{{ trans_list[i].time_transacted }}</td>
+                  <td>{{ trans_list[i].time_updated }}</td>
+                  <td>{{ trans_list[i].current_value }}</td>
+                  <td>{{ trans_list[i].equity }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+     
+    <h3> {{ portfolio_worth }} </h3>
+   <script>
+         $('#transaction').click(function() {
+             $('#form').show();
+             $('#transaction').css("display", "none");
+         });
+         $('#sub').click(function() {
+             $('#form').css("display", "none");
+              $('#transaction').show();
+         });
+
+         $('#transaction2').click(function() {
+             $('#form2').show();
+             $('#transaction2').css("display", "none");
+         });
+         $('#sub2').click(function() {
+             $('#form2').css("display", "none");
+              $('#transaction2').show();
+         });
+     </script>
+</body>
+<html/>

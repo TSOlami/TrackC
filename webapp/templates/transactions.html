@@ -105,7 +105,7 @@
           <td>{{ trans.no_of_coins }}</td>
           <td>{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
           <td>{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
-          <td>{{ "{:.2f}".format(trans.current_value) }}</td>
+          <td id={{ trans.coin_name.lower() }}>{{ "{:.2f}".format(trans.current_value) }}</td>
           <td {% if trans.equity|int >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
           {% if trans.equity|int >= 0 %}+{% else %}-{% endif %}
           {{ "{:.2f}".format(trans.equity) }}%
@@ -117,6 +117,41 @@
     </div>
 
     <script>
+      const trans_length = {{length}}
+      //for (let i=0; i<trans_length; i++){
+      async function fetchCryptoPrices() {
+        $(document).ready(function() {
+          //console.log()
+        {% for trans in trans_list %} 
+          var name = "{{trans.coin_name}}"
+          name = name.toLowerCase();
+          console.log(name) 
+          $.ajax({
+            url: 'https://api.coingecko.com/api/v3/simple/price',
+            method: 'GET',
+            cache: false,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            data: {
+              'ids': name,
+              'vs_currencies': 'USD',
+            },
+            success: function(response) {
+              // Request completed successfully
+              //console.log('new')
+              console.log(response)
+              let data = response[name]['usd'] 
+              $(`#${name}`).text(data); // Update the 'result' div with the response
+            },
+            error: function(xhr, status, error) {
+              // Handle errors
+            }
+            });
+          {% endfor %}
+          });
+        }
+        setInterval(fetchCryptoPrices, 10000);
       $('#transaction').click(function () {
         $('#form').show();
         $('#transaction').css("display", "none");

@@ -173,7 +173,7 @@ def transactions(user_id):
             user_id=user_id,
             username=user.username,
             trans_list=trans_list,
-            length=len(coin_name_list),
+            length=len(trans_list),
             portfolio_worth=portfolio_worth,
             portfolio_equity=portfolio_equity)
     
@@ -198,7 +198,7 @@ def new_transactions(user_id):
         url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
         api_key = "032b9c4e-d442-4fdf-8359-ca6736c4216c"
         headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
-        params = {'start': '1', 'limit': '2', 'convert': 'USD'}
+        params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
         data = requests.get(url, params=params, headers=headers).json()
         print (data)
 

@@ -1,152 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        #form,
-        #form2,
-        #form3 {
-            display: none;
-        }
+{% block title %}Transactions{% endblock %}
 
-        .no-line-break {
-            white-space: nowrap;
-        }
-    </style>
-    <title>Transactions</title>
-</head>
-
-<body class="bg-gray-200">
+{% block content %}
+  <body class="bg-gray-200">
     <div class="container mx-auto">
-        <div class="my-6">
-            <button id='transaction' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Add Transaction
-            </button>
-            <button id='transaction2' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Remove Transaction
-            </button>
+      <div class="my-6">
+        <section class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <h3 class="text-2xl font-bold mb-4">Profile</h3>
+          <p>Username: {{ username }}</p>
+          <p>Portfolio Worth: ${{ "{:.2f}".format(portfolio_worth) }}</p>
+          <p>Total Equity:
+            <span {% if portfolio_equity >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
+              {% if portfolio_equity >= 0 %}+{% else %}-{% endif %}
+              {{ "{:.2f}".format(portfolio_equity) }}%
+            </span>
+          </p>
+        </section>
+    </div> 
+    <div class="container mx-auto">
+      <div class="my-6">
+        <button id='transaction' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Add Transaction
+        </button>
+        <button id='transaction2' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Remove Transaction
+        </button>
+    </div>
+
+    <form id="form" action="/{{ user_id }}/transactions/add_transaction" method="POST"
+      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <h3 class="text-2xl font-bold text-center mb-6">Add Transaction</h3>
+        <div class="mb-4">
+          <label for="coin_name" class="block text-gray-700 text-sm font-bold mb-2">Name of Coin</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="coin_name" name="coin_name" placeholder="Enter name of coin">
         </div>
+        <div class="mb-6">
+          <label for="no_of_coins" class="block text-gray-700 text-sm font-bold mb-2">Number of coins bought</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="no_of_coins" name="no_of_coins" placeholder="Enter number of coins bought">
+        </div>
+        <div class="mb-6">
+          <label for="price_purchased_at" class="block text-gray-700 text-sm font-bold mb-2">Price Bought</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="price_purchased_at" name="price_purchased_at" placeholder="Enter the unit price(in USD)">
+        </div>
+        <div class="flex items-center justify-between">
+          <button id="sub" type="submit"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Add
+          </button>
+        </div>
+      </form>
 
-        <form id="form" action="/{{ user_id }}/transactions/add_transaction" method="POST"
-            class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h3 class="text-2xl font-bold text-center mb-6">Add Transaction</h3>
-            <div class="mb-4">
-                <label for="coin_name" class="block text-gray-700 text-sm font-bold mb-2">Name of Coin</label>
-                <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="coin_name" name="coin_name" placeholder="Enter name of coin">
-            </div>
-            <div class="mb-6">
-              <label for="no_of_coins" class="block text-gray-700 text-sm font-bold mb-2">Number of coins bought</label>
-              <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="no_of_coins" name="no_of_coins" placeholder="Enter number of coins bought">
-            </div>
-            <div class="mb-6">
-                <label for="price_purchased_at" class="block text-gray-700 text-sm font-bold mb-2">Price Bought</label>
-                <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="price_purchased_at" name="price_purchased_at" placeholder="Enter the unit price(in USD)">
-            </div>
-            <div class="flex items-center justify-between">
-                <button id="sub" type="submit"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Add
-                </button>
-            </div>
-        </form>
+      <form id="form2" action="/{{ user_id }}/transactions/remove_transaction" method="POST"
+        class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h3 class="text-2xl font-bold text-center mb-6">Remove Transaction</h3>
+        <div class="mb-4">
+          <label for="coin_name" class="block text-gray-700 text-sm font-bold mb-2">Name of Coin</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="coin_name" name="coin_name" placeholder="Enter name of coin">
+        </div>
+        <div class="mb-6">
+          <label for="no_of_coins" class="block text-gray-700 text-sm font-bold mb-2">Number of coins sold</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="no_of_coins" name="no_of_coins" placeholder="Enter the number of coins sold">
+        </div>
+        <div class="mb-6">
+          <label for="price_sold" class="block text-gray-700 text-sm font-bold mb-2">Price sold</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="price_sold" name="price_sold" placeholder="Enter the price you sold each unit">
+        </div>
+        <div class="flex items-center justify-between">
+        <button id="sub2" type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Remove
+        </button>
+      </div>
+    </form>
+    <h1 class="text-2xl font-bold mb-4">Recent transactions</h1>
 
-        <form id="form2" action="/{{ user_id }}/transactions/remove_transaction" method="POST"
-            class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h3 class="text-2xl font-bold text-center mb-6">Remove Transaction</h3>
-            <div class="mb-4">
-                <label for="coin_name" class="block text-gray-700 text-sm font-bold mb-2">Name of Coin</label>
-                <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="coin_name" name="coin_name" placeholder="Enter name of coin">
-            </div>
-            <div class="mb-6">
-                <label for="no_of_coins" class="block text-gray-700 text-sm font-bold mb-2">Number of coins sold</label>
-                <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="no_of_coins" name="no_of_coins" placeholder="Enter the number of coins sold">
-            </div>
-            <div class="mb-6">
-              <label for="price_sold" class="block text-gray-700 text-sm font-bold mb-2">Price sold</label>
-              <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="price_sold" name="price_sold" placeholder="Enter the price you sold each unit">
-            </div>
-            <div class="flex items-center justify-between">
-                <button id="sub2" type="submit"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Remove
-                </button>
-            </div>
-        </form>
-        <h1 class="text-2xl font-bold mb-4">Recent transactions</h1>
-
-        <table class="table-auto w-full">
-            <thead>
-                <tr class="bg-gray-800 text-white">
-                    <th class="py-2 px-4">Name</th>
-                    <th class="py-2 px-4">Symbol</th>
-                    <th class="py-2 px-4">Price Purchased at</th>
-                    <th class="py-2 px-4">Amount Spent</th>
-                    <th class="py-2 px-4">Number of Coins</th>
-                    <th class="py-2 px-4">Time Transacted</th>
-                    <th class="py-2 px-4">Time Updated</th>
-                    <th class="py-2 px-4">Current value</th>
-                    <th class="py-2 px-4">Equity</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for trans in trans_list %}
-                <tr>
-                    <td>{{ trans.coin_name }}</td>
-                    <td>{{ trans.symbol }}</td>
-                    <td>{{ trans.price_purchased_at }}</td>
-                    <td>{{ trans.amount_spent }}</td>
-                    <td>{{ trans.no_of_coins }}</td>
-                    <td>{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
-                    <td>{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
-                    <td>{{ "{:.2f}".format(trans.current_value) }}</td>
-                    <td {% if trans.equity|int >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
-                      {% if trans.equity|int >= 0 %}+{% else %}-{% endif %}
-                      {{ "{:.2f}".format(trans.equity) }}%
-                    </td>
-                  </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        
-        <h3 class="text-2xl font-bold mt-6">Portfolio Worth: ${{ portfolio_worth }}</h3>
-        <h3 class="text-2xl font-bold mt-6">Total Equity:
-          <span {% if portfolio_equity >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
-            {% if portfolio_equity >= 0 %}+{% else %}-{% endif %}
-            {{ "{:.2f}".format(portfolio_equity) }}%
-          </span>
-        </h3>      
+    <table class="table-auto w-full">
+      <thead>
+        <tr class="bg-gray-800 text-white">
+          <th class="py-2 px-4">Name</th>
+          <th class="py-2 px-4">Symbol</th>
+          <th class="py-2 px-4">Price Purchased at</th>
+          <th class="py-2 px-4">Amount Spent</th>
+          <th class="py-2 px-4">Number of Coins</th>
+          <th class="py-2 px-4">Time Transacted</th>
+          <th class="py-2 px-4">Time Updated</th>
+          <th class="py-2 px-4">Current value</th>
+          <th class="py-2 px-4">Equity</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for trans in trans_list %}
+        <tr>
+          <td>{{ trans.coin_name }}</td>
+          <td>{{ trans.symbol }}</td>
+          <td>{{ trans.price_purchased_at }}</td>
+          <td>{{ "{:.2f}".format(trans.amount_spent) }}</td>
+          <td>{{ trans.no_of_coins }}</td>
+          <td>{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+          <td>{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+          <td>{{ "{:.2f}".format(trans.current_value) }}</td>
+          <td {% if trans.equity|int >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
+          {% if trans.equity|int >= 0 %}+{% else %}-{% endif %}
+          {{ "{:.2f}".format(trans.equity) }}%
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>    
     </div>
 
     <script>
-        $('#transaction').click(function () {
-            $('#form').show();
-            $('#transaction').css("display", "none");
-        });
-        $('#sub').click(function () {
-            $('#form').css("display", "none");
-            $('#transaction').show();
-        });
+      $('#transaction').click(function () {
+        $('#form').show();
+        $('#transaction').css("display", "none");
+      });
+      $('#sub').click(function () {
+        $('#form').css("display", "none");
+        $('#transaction').show();
+      });
 
-        $('#transaction2').click(function () {
-            $('#form2').show();
-            $('#transaction2').css("display", "none");
-        });
-        $('#sub2').click(function () {
-            $('#form2').css("display", "none");
-            $('#transaction2').show();
-        });
+      $('#transaction2').click(function () {
+        $('#form2').show();
+        $('#transaction2').css("display", "none");
+      });
+      $('#sub2').click(function () {
+        $('#form2').css("display", "none");
+        $('#transaction2').show();
+      });
     </script>
-</body>
-
-</html>
+  </body>
+{% endblock %}

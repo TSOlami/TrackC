@@ -1,61 +1,54 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      crossorigin="anonymous"
-    />
 	<title>{% block title %}Home{% endblock %}</title>
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.7/dist/tailwind.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<style>
+		#form,
+		#form2,
+		#form3 {
+			display: none;
+		}
+
+		.no-line-break {
+			white-space: nowrap;
+		}
+	</style>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<button
-		  class="navbar-toggler"
-		  type="button"
-		  data-toggle="collapse"
-		  data-target="#navbar"
-		>
-		  <span class="navbar-toggler-icon"></span>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbar">
 			<div class="navbar-nav">
-			  <!--<a class="nav-item nav-link" id="home" href="/">Home</a>
-			  <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>-->
-			  <a class="nav-item nav-link" id="login" href="/login">Login</a>
-			  <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+			<a class="text-white" id="home" href="/">Home</a>
+			<a class="text-white" id="logout" href="/logout">Logout</a>
 			</div>
-		  </div>
+		</div>
 	</nav>
-	<div class="container">{% block content %} {% endblock %}</div>
-
-	{% with messages = get_flashed_messages(with_categories=true) %} {% if
-		messages %} {% for category, message in messages %} {% if category ==
-		'error' %}
-		<div class="alert alert-danger alter-dismissable fade show" role="alert">
-		  {{ message }}
-		  <button type="button" class="close" data-dismiss="alert">
-			<span aria-hidden="true">&times;</span>
-		  </button>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-md-6 offset-md-3">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+				{% if messages %}
+				{% for category, message in messages %}
+					<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+					{{ message }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					</div>
+				{% endfor %}
+				{% endif %}
+			{% endwith %}
+			</div>
 		</div>
-		{% else %}
-		<div class="alert alert-success alter-dismissable fade show" role="alert">
-		  {{ message }}
-		  <button type="button" class="close" data-dismiss="alert">
-			<span aria-hidden="true">&times;</span>
-		  </button>
-		</div>
-		{% endif %} {% endfor %} {% endif %} {% endwith %}
-
-		
+	</div>
+</body>
+</html>

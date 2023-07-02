@@ -90,6 +90,7 @@ def transactions(user_id):
     time_updated_list = []
 
     # Fetch data from the database
+    user = User.query.get(user_id)
     transactions = Transaction.query.filter_by(user_id=user_id).all()
     
     coin_prices = {}
@@ -170,6 +171,7 @@ def transactions(user_id):
         return render_template(
             'transactions.html',
             user_id=user_id,
+            username=user.username,
             trans_list=trans_list,
             length=len(coin_name_list),
             portfolio_worth=portfolio_worth,

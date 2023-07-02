@@ -1,29 +1,36 @@
 {% extends "base.html" %}
- {% block title %}Login{% endblock %} 
- {% block content %} 
- <form method="POST">
-	<h3 align="center">Login</h3>
-	<div class="form-group">
-	  <label for="email">Email Address</label>
-	  <input
-		type="email"
-		class="form-control"
-		id="email"
-		name="email"
-		placeholder="Enter your email"
-	  />
-	</div>
-	<div class="form-group">
-	  <label for="password">Password</label>
-	  <input
-		type="password"
-		class="form-control"
-		id="password"
-		name="password"
-		placeholder="Enter your password"
-	  />
-	</div>
-	<br />
-	<button type="submit" class="btn btn-primary">Login</button>
-  </form>
- {% endblock %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center h-screen bg-gray-100">
+  <div class="bg-white p-8 rounded-md shadow-md">
+    <h3 class="text-2xl mb-4 text-center">Login</h3>
+    <form method="POST">
+      <div class="mb-4">
+        <label for="email" class="block mb-1">Email Address</label>
+        <input
+          type="email"
+          class="w-full p-2 border border-gray-300 rounded-md"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="password" class="block mb-1">Password</label>
+        <input
+          type="password"
+          class="w-full p-2 border border-gray-300 rounded-md"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+        />
+      </div>
+      <div class="text-center">
+        <button type="submit" class="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">Login</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

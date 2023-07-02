@@ -15,7 +15,7 @@ class Transaction(db.Model):
     coin_name = db.Column(db.String(30), nullable=False)
     symbol =  db.Column(db.String(30), nullable=False)
     price_purchased_at = db.Column(db.Numeric, nullable=False)
-    amount = db.Column(db.Numeric, nullable=False)
+    amount_spent = db.Column(db.Numeric, nullable=False)
     no_of_coins = db.Column(db.Numeric, nullable=False)
     time_transacted = db.Column(db.DateTime(timezone=True), default=func.now())
     time_updated = db.Column(db.DateTime(timezone=True), default=func.now())

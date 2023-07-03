@@ -177,9 +177,11 @@ def transactions(user_id):
             portfolio_worth=portfolio_worth,
             portfolio_equity=portfolio_equity)
     
-    except (RequestException, ConnectionError, Timeout, TooManyRedirects) as e:
+    except Exception as e:
         # Handle the specific exception and flash an appropriate response
+        print(f"Error occurred: {str(e)}")
         flash('An error occurred!', category='error')
+        return redirect(url_for('views.transactions', user_id=user_id))
         
 
 

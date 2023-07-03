@@ -146,6 +146,7 @@ def transactions(user_id):
 
         # Create a list of dictionaries containing transaction data
         trans_list = []
+        
         for (
             coin_name, amount_spent, symbol, price_purchased_at, no_of_coins, time_transacted,
             time_updated, current_value, equity
@@ -166,7 +167,6 @@ def transactions(user_id):
             trans_list.append(trans_dict)
         # Close the session
         db.session.close()
-        
         # Render the template with the fetched data for the user
         return render_template(
             'transactions.html',

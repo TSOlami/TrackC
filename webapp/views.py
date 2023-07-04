@@ -2,7 +2,6 @@ import datetime
 import json
 from flask import Blueprint, flash, render_template, request, redirect, url_for, jsonify
 from flask_login import login_required, current_user
-from sqlalchemy.orm import sessionmaker
 import requests
 from requests.exceptions import RequestException, ConnectionError, Timeout, TooManyRedirects
 from .models import *

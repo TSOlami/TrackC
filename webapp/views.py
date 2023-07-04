@@ -171,7 +171,7 @@ def transactions(user_id):
         return render_template(
             'transactions.html',
             user_id=user_id,
-            username=user.username,
+            username=user.username.title(),
             trans_list=trans_list,
             length=len(trans_list),
             portfolio_worth=portfolio_worth,

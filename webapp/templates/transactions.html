@@ -3,17 +3,17 @@
 {% block title %}Transactions{% endblock %}
 
 {% block content %}
-  <body class="bg-gray-200">
+  <body class="bg-primary-200">
     <div class="container mx-auto">
       <div class="my-6">
         <section class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <h3 class="text-2xl font-bold mb-4">Profile</h3>
-          <p>Username: {{ username }}</p>
-          <p>Portfolio Worth: ${{ "{:.2f}".format(portfolio_worth) }}</p>
-          <p>Total Equity:
+          <h3 class="text-2xl font-bold text-primary-700 mb-4">Profile</h3>
+          <p class="text-primary-700 font-medium">Username: {{ username }}</p>
+          <p class="text-primary-700 font-medium">Portfolio Worth: ${{ "{:,.2f}".format(portfolio_worth) }}</p>
+          <p class="text-primary-700 font-medium">Total Equity:
             <span {% if portfolio_equity >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
               {% if portfolio_equity >= 0 %}+{% else %}-{% endif %}
-              {{ "{:.2f}".format(portfolio_equity) }}%
+              {{ "{:,.2f}".format(portfolio_equity) }}%
             </span>
           </p>
         </section>
@@ -32,18 +32,18 @@
       class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <h3 class="text-2xl font-bold text-center mb-6">Add Transaction</h3>
         <div class="mb-4">
-          <label for="coin_name" class="block text-gray-700 text-sm font-bold mb-2">Name of Coin</label>
-          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          <label for="coin_name" class="block text-primary-700 text-sm font-bold mb-2">Name of Coin</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
             id="coin_bought" name="coin_name" placeholder="Enter name of coin">
         </div>
         <div class="mb-6">
-          <label for="no_of_coins" class="block text-gray-700 text-sm font-bold mb-2">Number of coins bought</label>
-          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          <label for="no_of_coins" class="block text-primary-700 text-sm font-bold mb-2">Number of coins bought</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
             id="no_of_coins_bought" name="no_of_coins" placeholder="Enter number of coins bought">
         </div>
         <div class="mb-6">
-          <label for="price_purchased_at" class="block text-gray-700 text-sm font-bold mb-2">Price Bought</label>
-          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          <label for="price_purchased_at" class="block text-primary-700 text-sm font-bold mb-2">Price Bought</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
             id="price_purchased_at" name="price_purchased_at" placeholder="Enter the unit price(in USD)">
         </div>
         <div class="flex items-center justify-between">
@@ -58,18 +58,18 @@
         class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h3 class="text-2xl font-bold text-center mb-6">Remove Transaction</h3>
         <div class="mb-4">
-          <label for="coin_name" class="block text-gray-700 text-sm font-bold mb-2">Name of Coin</label>
-          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          <label for="coin_name" class="block text-primary-700 text-sm font-bold mb-2">Name of Coin</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
             id="coin_name_sold" name="coin_name" placeholder="Enter name of coin">
         </div>
         <div class="mb-6">
-          <label for="no_of_coins" class="block text-gray-700 text-sm font-bold mb-2">Number of coins sold</label>
-          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          <label for="no_of_coins" class="block text-primary-700 text-sm font-bold mb-2">Number of coins sold</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
             id="no_of_coins_sold" name="no_of_coins" placeholder="Enter the number of coins sold">
         </div>
         <div class="mb-6">
-          <label for="price_sold" class="block text-gray-700 text-sm font-bold mb-2">Price sold</label>
-          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          <label for="price_sold" class="block text-primary-700 text-sm font-bold mb-2">Price sold</label>
+          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
             id="price_sold" name="price_sold" placeholder="Enter the price you sold each unit">
         </div>
         <div class="flex items-center justify-between">
@@ -79,11 +79,10 @@
         </button>
       </div>
     </form>
-    <h1 class="text-2xl font-bold mb-4">Transactions List</h1>
-
-    <table class="table-auto w-full">
+    <h1 class="text-2xl font-bold text-center text-white mb-4">Transactions List</h1>
+    <table class="table-auto w-full bg-white">
       <thead>
-        <tr class="bg-gray-800 text-white">
+        <tr class="bg-primary-800 font-medium text-white">
           <th class="py-2 px-4">Name</th>
           <th class="py-2 px-4">Symbol</th>
           <th class="py-2 px-4">Price Purchased at</th>
@@ -100,15 +99,15 @@
         <tr class="trans_table" data-coins="{{ trans.no_of_coins }}">
           <td>{{ trans.coin_name }}</td>
           <td>{{ trans.symbol }}</td>
-          <td>{{ trans.price_purchased_at }}</td>
-          <td>{{ "{:.2f}".format(trans.amount_spent) }}</td>
+          <td>${{ trans.price_purchased_at }}</td>
+          <td>${{ "{:,.2f}".format(trans.amount_spent) }}</td>
           <td>{{ trans.no_of_coins }}</td>
           <td>{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
           <td>{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
-          <td class="current_value">{{ "{:.2f}".format(trans.current_value) }}</td>
+          <td class="current_value">${{ "{:,.2f}".format(trans.current_value) }}</td>
           <td {% if trans.equity|int >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
           {% if trans.equity|int >= 0 %}+{% else %}-{% endif %}
-          {{ "{:.2f}".format(trans.equity) }}%
+          {{ "{:,.2f}".format(trans.equity) }}%
           </td>
         </tr>
       {% endfor %}
@@ -171,4 +170,7 @@
       });
     </script>
   </body>
+  <br/>
+  <br/>
+  <br/>
 {% endblock %}

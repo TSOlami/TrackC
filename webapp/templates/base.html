@@ -27,22 +27,75 @@
 	</style>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-		  <span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbar">
-		  <div class="navbar-nav">
-			<a class="text-white" id="home" href="/">Home</a>
-			<a class="text-white" id="logout" href="/logout">Logout</a>
-		  </div>
+	<!-- Section: Design Block -->
+<section class="background-radial-gradient mb-40">
+	<style>
+	  .background-radial-gradient {
+		background-color: hsl(218, 41%, 15%);
+		background-image: radial-gradient(650px circle at 0% 0%,
+			hsl(218, 41%, 35%) 15%,
+			hsl(218, 41%, 30%) 35%,
+			hsl(218, 41%, 20%) 75%,
+			hsl(218, 41%, 19%) 80%,
+			transparent 100%),
+		  radial-gradient(1250px circle at 100% 100%,
+			hsl(218, 41%, 45%) 15%,
+			hsl(218, 41%, 30%) 35%,
+			hsl(218, 41%, 20%) 75%,
+			hsl(218, 41%, 19%) 80%,
+			transparent 100%);
+	  }
+	</style>
+  
+	<!-- Navbar -->
+	<nav class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start" data-te-navbar-ref>
+	  <!-- Container wrapper -->
+	  <div class="flex w-full flex-wrap items-center justify-between px-6">
+		<div class="flex items-center">
+		  <!-- Toggle button -->
+		  <button class="block border-0 bg-transparent py-2 pr-2.5 text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden" type="button" data-te-collapse-init data-te-target="#navbarSupportedContentY" aria-controls="navbarSupportedContentY" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="[&>svg]:w-7">
+			  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
+				<path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+			  </svg>
+			</span>
+		  </button>
+  
+		  <!-- Navbar Brand -->
+		  <a class="text-primary dark:text-primary-400" href="#!">
+			<span class="[&>svg]:ml-2 [&>svg]:mr-3 [&>svg]:h-6 [&>svg]:w-6 [&>svg]:lg:ml-0">
+			  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+			  </svg>
+			</span>
+		  </a>
 		</div>
-	  </nav>
-
-	<div class="container mx-auto my-8">
-		{% block content %}{% endblock %}
-	</div>
-
+  
+		<!-- Collapsible wrapper -->
+		<div class="!visible hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto" id="navbarSupportedContentY" data-te-collapse-item>
+		  <!-- Left links -->
+		  <ul class="mr-auto lg:flex lg:flex-row" data-te-navbar-nav-ref>
+			<li data-te-nav-item-ref>
+			  <a class="block py-2 pr-2 text-3xl text-primary-600 mb-4 font-bold transition duration-150 ease-in-out hover:text-primary-700 focus:text-neutral-600 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-black/80 dark:[&.active]:text-white/80" href="/" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light" disabled>TrackC</a>
+			</li>
+		  </ul>
+		  <!-- Left links -->
+		</div>
+		<!-- Collapsible wrapper -->
+  
+		<!-- Right elements -->
+		<div class="my-1 flex items-center lg:my-0 lg:ml-auto">
+		  <a href="/logout">
+			<button type="button" class="mr-2 inline-block rounded px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 dark:text-primary-400 dark:hover:bg-neutral-700 dark:hover:bg-opacity-60 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600" data-te-ripple-init data-te-ripple-color="light">
+				Logout
+			</button>
+		  </a>
+		</div>
+		<!-- Right elements -->
+	  </div>
+	  <!-- Container wrapper -->
+	</nav>
+	<!-- Navbar -->
 	{% with messages = get_flashed_messages(with_categories=true) %}
 		{% if messages %}
 			<div class="fixed top-0 inset-x-0 py-2 px-4 sm:px-6 z-50">
@@ -57,5 +110,24 @@
 			</div>
 		{% endif %}
 	{% endwith %}
+	<!-- Jumbotron -->
+	<div class="container mx-auto my-8">
+		{% block content %}{% endblock %}
+	</div>
+	<!-- Jumbotron -->
+</section>
+<!-- Section: Design Block -->
+<!--Footer container-->
+<footer
+class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutral-200">
+<!--Copyright section-->
+<div
+  class="bg-neutral-300 p-4 text-center text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
+  © 2023 Copyright:
+  <a class="dark:text-neutral-400" href="https://tailwind-elements.com/"
+	>TrackC</a
+  >
+</div>
+</footer>
 </body>
 </html>

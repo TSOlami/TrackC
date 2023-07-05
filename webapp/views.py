@@ -40,12 +40,78 @@ def home(user_id):
     results = data['data']
 
     for result in results:
-        result['quote']['USD']['price'] = '$ ' + "{:.2f}".format(result['quote']['USD']['price'])
-        result['quote']['USD']['volume_24h'] = '$ ' + "{:.2f}".format(result['quote']['USD']['volume_24h'])
-        result['quote']['USD']['percent_change_24h'] = "{:.2f}".format(result['quote']['USD']['percent_change_24h']) + '%'
+        result['quote']['USD']['price'] = '$ ' + "{:,.2f}".format(result['quote']['USD']['price'])
+        result['quote']['USD']['volume_24h'] = '$ ' + "{:,.2f}".format(result['quote']['USD']['volume_24h'])
+        result['quote']['USD']['percent_change_24h'] = "{:,.2f}".format(result['quote']['USD']['percent_change_24h']) + '%'
+    
+    coin_name_list = []
+    amount_spent_list = []
+    symbol_list = []
+    price_purchased_at_list = []
+    no_of_coins_list = []
+    time_transacted_list = []
+    time_updated_list = []
+
+    # Fetch data from the database
+    user = User.query.get(user_id)
+    transactions = Transaction.query.filter_by(user_id=user_id).all()
+
+    coin_prices = {}
+    for trans in transactions:
+        coin_prices[trans.coin_name.lower()] = trans.price_purchased_at
+
+    
+    # Make API request to get live price for the coin
+    url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+    api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
+    headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
+    params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
+    data = requests.get(url, params=params, headers=headers).json()
+
+    current_values = {}
+    equities = {}
+
+    try:
+        for trans in transactions:
+            coin_name = trans.coin_name.lower()
+            coin_name_list.append(trans.coin_name)
+            amount_spent_list.append(trans.amount_spent)
+            symbol_list.append(trans.symbol)
+            price_purchased_at_list.append(trans.price_purchased_at)
+            no_of_coins = trans.no_of_coins
+
+            for i in range(0, 5000):
+                if data['data'][i]['name'].lower() == trans.coin_name.lower(): 
+                    current_price = data['data'][i]['quote']['USD']['price']
+                    current_value = current_price * float(trans.no_of_coins)
+                    equity = (current_value - (float(trans.no_of_coins) * float(trans.price_purchased_at))) / 100
+                    current_values[coin_name] = current_value
+                    equities[coin_name] = equity
+                    break
+            no_of_coins_list.append(no_of_coins)
+            time_transacted_list.append(trans.time_transacted)
+            time_updated_list.append(trans.time_updated)
+
+            
+
+
+        # Calculate portfolio worth
+        portfolio_worth = sum(current_values.values())
+        portfolio_equity = sum(equities.values())
+        
+    except Exception as e:
+        # Handle the specific exception and flash an appropriate response
+        print(f"Error occurred: {str(e)}")
+        flash('An error occurred!', category='error')
 
     #Render results on the homepage
-    return render_template("home.html", user_id=user_id, results=results, user=current_user)
+    return render_template("home.html", 
+                           user_id=user_id, 
+                           username=user.username.title(),
+                           results=results,
+                           user=current_user,
+                           portfolio_worth=portfolio_worth,
+                           portfolio_equity=portfolio_equity)
 
 @views.route ('/news')
 @login_required
@@ -140,8 +206,6 @@ def transactions(user_id):
                 time_transacted_list, time_updated_list, current_values, equities),
             key=lambda x: x[-2], reverse=True
         )
-        # Assign the length of coin_name_list
-        length = len(coin_name_list)
 
         # Create a list of dictionaries containing transaction data
         trans_list = []
@@ -283,3 +347,8 @@ def remove_transaction(user_id):
         # Handle the specific exception and flash an appropriate response
         flash("An error occurred!", category="error")
         return redirect(url_for("views.transactions", user_id=user_id))
+    
+
+@views.route('/about')
+def about():
+    return redirect(url_for("views.about"))

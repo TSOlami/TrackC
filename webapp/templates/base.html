@@ -28,25 +28,7 @@
 </head>
 <body>
 	<!-- Section: Design Block -->
-<section class="background-radial-gradient mb-40">
-	<style>
-	  .background-radial-gradient {
-		background-color: hsl(218, 41%, 15%);
-		background-image: radial-gradient(650px circle at 0% 0%,
-			hsl(218, 41%, 35%) 15%,
-			hsl(218, 41%, 30%) 35%,
-			hsl(218, 41%, 20%) 75%,
-			hsl(218, 41%, 19%) 80%,
-			transparent 100%),
-		  radial-gradient(1250px circle at 100% 100%,
-			hsl(218, 41%, 45%) 15%,
-			hsl(218, 41%, 30%) 35%,
-			hsl(218, 41%, 20%) 75%,
-			hsl(218, 41%, 19%) 80%,
-			transparent 100%);
-	  }
-	</style>
-  
+<section>
 	<!-- Navbar -->
 	<nav class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start" data-te-navbar-ref>
 	  <!-- Container wrapper -->
@@ -74,18 +56,22 @@
 		<!-- Collapsible wrapper -->
 		<div class="!visible hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto" id="navbarSupportedContentY" data-te-collapse-item>
 		  <!-- Left links -->
-		  <ul class="mr-auto lg:flex lg:flex-row" data-te-navbar-nav-ref>
+		  <ul class="mr-auto lg:flex lg:flex-row flex flex-col justify-center items-center" data-te-navbar-nav-ref>
 			<li data-te-nav-item-ref>
-			  <a class="block py-2 pr-2 text-3xl text-primary-600 mb-4 font-bold transition duration-150 ease-in-out hover:text-primary-700 focus:text-neutral-600 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-black/80 dark:[&.active]:text-white/80" href="/" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light" disabled>TrackC</a>
-			  <a
-				class="text-neutral-500 transition duration-200 hover:text-neutral-700 hover:ease-in-out focus:text-neutral-700 disabled:text-black/30 motion-reduce:transition-none dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
-				href="#"
+			  <a class="block py-2 pr-2 text-3xl text-primary-600 mb-4 font-bold transition duration-150 ease-in-out hover:text-primary-700 focus:text-primary-600 disabled:text-black/30 dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-black/80 dark:[&.active]:text-white/80" href="/" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light" disabled>TrackC</a>
+			</li>
+			<li>
+				<a
+				class="py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400"
+				href="/{{user_id}}/transactions"
 				data-te-nav-link-ref
 				>My Transactions</a
          	  >
-			  <a
-			    class="text-neutral-500 transition duration-200 hover:text-neutral-700 hover:ease-in-out focus:text-neutral-700 disabled:text-black/30 motion-reduce:transition-none dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
-			    href="#"
+			</li>
+			<li>
+				<a
+			    class=" py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400"
+			    href="/news "
 			    data-te-nav-link-ref
 			    >News</a
 			  >
@@ -115,26 +101,35 @@
 	<!-- Navbar -->
 
 	{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      {% if category == 'error' %}
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-          <span class="block sm:inline">{{ message }}</span>
-          <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" data-dismiss="alert">
-            <span class="text-red-500">&times;</span>
-          </button>
-        </div>
-      {% else %}
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-          <span class="block sm:inline">{{ message }}</span>
-          <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" data-dismiss="alert">
-            <span class="text-green-500">&times;</span>
-          </button>
-        </div>
-      {% endif %}
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+	{% if messages %}
+		{% for category, message in messages %}
+		{% if category == 'error' %}
+			<div class="mb-3 hidden w-full items-center rounded-lg bg-warning-100 px-6 py-5 text-base text-warning-800 data-[te-alert-show]:inline-flex" role="alert" data-te-alert-init data-te-alert-show>
+			<strong class="mr-1">ERROR! </strong> {{ message }}
+			<button type="button" class="ml-auto box-content rounded-none border-none p-1 text-warning-900 opacity-50 hover:text-warning-900 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none" data-te-alert-dismiss aria-label="Close">
+				<span class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+					<path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+				</svg>
+				</span>
+			</button>
+			</div>
+		{% else %}
+			<div class="mb-3 hidden w-full items-center rounded-lg bg-success-100 px-6 py-5 text-base text-success-800 data-[te-alert-show]:inline-flex" role="alert" data-te-alert-init data-te-alert-show>
+			<strong class="mr-1">SUCCESS! </strong> {{ message }}
+			<button type="button" class="ml-auto box-content rounded-none border-none p-1 text-success-900 opacity-50 hover:text-success-900 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none" data-te-alert-dismiss aria-label="Close">
+				<span class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+					<path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+				</svg>
+				</span>
+			</button>
+			</div>
+		{% endif %}
+		{% endfor %}
+	{% endif %}
+	{% endwith %}
+
 
 <div class="container">
   {% block content %}
@@ -155,5 +150,7 @@ class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutr
   >
 </div>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/tw-elements"></script>
+<script type="module" src="../static/scripts/alert-dismiss.js"></script>
 </body>
 </html>

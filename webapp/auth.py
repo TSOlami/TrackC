@@ -2,6 +2,7 @@ from flask import Blueprint,  render_template, request, flash, make_response, re
 from .models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user,login_required, logout_user, current_user
+from sqlalchemy.exc import IntegrityError
 
 auth = Blueprint('auth', __name__)
 
@@ -48,27 +49,37 @@ def sign_up():
 
         # Check if the username or email already exists
         
-        user = User.query.filter_by(username=username).first()
-        if user is not None:
-            flash('This username is already taken, try again with another username!', category='error')
+        try:
+            user = User.query.filter_by(username=username).first()
+            if user:
+                raise IntegrityError('This username is already taken, try again with another username!')
 
-        user = User.query.filter_by(email=email).first()
-        if user is not None:
-            flash('This email is already taken, try again with another email!', category='error')
-        # Create a new user and save it to the database
-        new_user = User(username=username, email=email, password=generate_password_hash(password1, method='sha256'))
-        db.session.add(new_user)
-        db.session.commit()
-        login_user(new_user, remember=True)
-        flash('Account created successfully, Welcome {}!'.format(user.username), category='success')
-        user_id = new_user.id
-        username = new_user.username
-        email=new_user.email
+            user = User.query.filter_by(email=email).first()
+            if user:
+                raise IntegrityError('This email is already taken, try again with another email!')
 
-        # Close db
-        db.session.close()
+            # Create a new user and save it to the database
+            new_user = User(username=username, email=email, password=generate_password_hash(password1, method='sha256'))
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user, remember=True)
+            flash('Account created successfully, Welcome {}!'.format(user.username), category='success')
+            user_id = new_user.id
+            username = new_user.username
+            email = new_user.email
 
-        return redirect(url_for('views.home', user_id=user_id))
+            # Close db
+            db.session.close()
+
+            return redirect(url_for('views.home', user_id=user_id))
+        except IntegrityError as e:
+            db.session.rollback()
+            flash(str(e), category='error')
+        except Exception as e:
+            db.session.rollback()
+            flash('An unexpected error occurred. Please try again later.', category='error')
+            # Log the error for debugging purposes
+            print('Error:', str(e))
 
     return render_template("sign_up.html", user=current_user)
 

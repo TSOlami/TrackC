@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@1,800;1,900&display=swap" rel="stylesheet">
+	<link
+	rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
+	<script src="https://cdn.tailwindcss.com/3.3.0"></script>
+	<title>TrackC</title>
+</head>
+<body>
+<!-- Section: Design Block -->
+<section class="background-radial-gradient mb-40">
+	<style>
+	  .background-radial-gradient {
+		background-color: hsl(218, 41%, 15%);
+		background-image: radial-gradient(650px circle at 0% 0%,
+			hsl(218, 41%, 35%) 15%,
+			hsl(218, 41%, 30%) 35%,
+			hsl(218, 41%, 20%) 75%,
+			hsl(218, 41%, 19%) 80%,
+			transparent 100%),
+		  radial-gradient(1250px circle at 100% 100%,
+			hsl(218, 41%, 45%) 15%,
+			hsl(218, 41%, 30%) 35%,
+			hsl(218, 41%, 20%) 75%,
+			hsl(218, 41%, 19%) 80%,
+			transparent 100%);
+	  }
+	</style>
+	<!-- Navbar -->
+	<nav class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start" data-te-navbar-ref>
+		<!-- Container wrapper -->
+		<div class="flex w-full flex-wrap items-center justify-between px-6">
+		  <div class="flex items-center">
+			<!-- Toggle button -->
+			<button class="block border-0 bg-transparent py-2 pr-2.5 text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden" type="button" data-te-collapse-init data-te-target="#navbarSupportedContentY" aria-controls="navbarSupportedContentY" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="[&>svg]:w-7">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
+				  <path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+				</svg>
+			  </span>
+			</button>
+	
+			<!-- Navbar Brand -->
+			<a class="text-primary dark:text-primary-400" href="#!">
+			  <span class="[&>svg]:ml-2 [&>svg]:mr-3 [&>svg]:h-6 [&>svg]:w-6 [&>svg]:lg:ml-0">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+				  <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+				</svg>
+			  </span>
+			</a>
+		  </div>
+	
+		  <!-- Collapsible wrapper -->
+		  <div class="!visible hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto" id="navbarSupportedContentY" data-te-collapse-item>
+			<!-- Left links -->
+			<ul class="mr-auto lg:flex lg:flex-row" data-te-navbar-nav-ref>
+			  <li data-te-nav-item-ref>
+				<a class="block py-2 pr-2 text-3xl text-primary-600 mb-4 font-bold transition duration-150 ease-in-out hover:text-primary-700 focus:text-neutral-600 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-black/80 dark:[&.active]:text-white/80" href="/" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light" disabled>TrackC</a>
+			  </li>
+			</ul>
+			<!-- Left links -->
+		  </div>
+		  <!-- Collapsible wrapper -->
+	
+		  <!-- Right elements -->
+		  <div class="my-1 flex items-center lg:my-0 lg:ml-auto">
+			<a href="/login">
+			  <button type="button" class="mr-2 inline-block rounded px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 dark:text-primary-400 dark:hover:bg-neutral-700 dark:hover:bg-opacity-60 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600" data-te-ripple-init data-te-ripple-color="light">
+				  Login
+			  </button>
+			</a>
+			<a href="/sign-up">
+			  <button
+			  type="button"
+			  class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200">
+			  Sign up for free
+			  </button>
+			</a>
+			<a href="https://github.com/TSOlami/TrackC">
+			  <button
+			  type="button"
+			  data-te-ripple-init
+			  data-te-ripple-color="light"
+			  class="mr-3 inline-block rounded px-3 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg motion-reduce:transition-none"
+			  style="background-color: #333">
+			  <svg
+			  xmlns="http://www.w3.org/2000/svg"
+			  class="h-4 w-4"
+			  fill="currentColor"
+			  viewBox="0 0 24 24">
+			  <path
+				  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+			  </svg>
+			  </button>
+			</a>
+		  </div>
+		  <!-- Right elements -->
+		</div>
+		<!-- Container wrapper -->
+	  </nav>
+	  <!-- Navbar -->
+  
+	<!-- Jumbotron -->
+	<div class="px-6 py-12 text-center md:px-12 lg:text-left">
+	  <div class="w-100 mx-auto sm:max-w-2xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl">
+		<div class="grid items-center gap-12 lg:grid-cols-2">
+		  <div class="mt-12 lg:mt-0">
+			<h1 class="mt-0 mb-16 text-5xl font-bold tracking-tight md:text-6xl xl:text-7xl text-[hsl(218,81%,95%)]">
+			  Track all your Cryptocurrency <br /><span class="text-[hsl(218,81%,75%)]">in one place</span>
+			</h1>
+			<a class="mb-2 inline-block rounded bg-neutral-50 px-12 pt-4 pb-3.5 text-sm font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] md:mr-2 md:mb-0" data-te-ripple-init data-te-ripple-color="light" href="/sign-up" role="button">Get started</a>
+			<a class="inline-block rounded px-12 pt-4 pb-3.5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-200 focus:text-neutral-200 focus:outline-none focus:ring-0 active:text-neutral-300"
+            data-te-ripple-init data-te-ripple-color="light" href="#!" role="button">Learn more</a>
+		  </div>
+		  <div class="mb-12 lg:mb-0">
+			<img src="../static/images/bitcoin-3089728_640.jpg" class="w-full rounded-lg shadow-lg dark:shadow-black/20" alt="crypto" />
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<!-- Jumbotron -->
+  </section>
+  <!-- Section: Design Block -->
+  <!-- Container for demo purpose -->
+<div class="container my-24 mx-auto md:px-6">
+	<!-- Section: Design Block -->
+	<section class="mb-32">
+	  <div
+		class="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+		<div class="flex flex-wrap items-center">
+		  <div class="block w-full shrink-0 grow-0 basis-auto lg:flex lg:w-6/12 xl:w-4/12">
+			<img src="../static/images/bitcoin-2057405_640.jpg" alt="Trendy Pants and Shoes"
+			  class="w-full rounded-t-lg lg:rounded-tr-none lg:rounded-bl-lg" />
+		  </div>
+		  <div class="w-full shrink-0 grow-0 basis-auto lg:w-6/12 xl:w-8/12">
+			<div class="px-6 py-12 md:px-12">
+			  <h2 class="mb-6 pb-2 text-4xl font-bold">
+				Why choose us?
+			  </h2>
+			  <p class="mb-6 pb-2 text-neutral-500 dark:text-neutral-300">
+				TrackC is the perfect tool for anyone looking to get into crypto investing or for those who are already in the game. With its user-friendly interface and real-time updates, it takes the stress out of managing your investments and lets you focus on what's important. Plus, with its comprehensive news section, you'll never miss a beat in the ever-changing world of crypto. So why not give TrackC a try and see how it can help you take your investments to the next level?			  
+			  </p>
+			  <div class="grid gap-x-6 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+				<div class="mb-6">
+				  <p class="flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+					  stroke="currentColor" class="mr-3 h-6 w-6 text-neutral-900 dark:text-neutral-100">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Support
+					24/7
+				  </p>
+				</div>
+  
+				<div class="mb-6">
+				  <p class="flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+					  stroke="currentColor" class="mr-3 h-6 w-6 text-neutral-900 dark:text-neutral-100">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Analytics
+				  </p>
+				</div>
+  
+				<div class="mb-6">
+				  <p class="flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+					  stroke="currentColor" class="mr-3 h-6 w-6 text-neutral-900 dark:text-neutral-100">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Crypto
+				  </p>
+				</div>
+				<div class="mb-6">
+				  <p class="flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+					  stroke="currentColor" class="mr-3 h-6 w-6 text-neutral-900 dark:text-neutral-100">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Updates
+				  </p>
+				</div>
+  
+				<div class="mb-6">
+				  <p class="flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+					  stroke="currentColor" class="mr-3 h-6 w-6 text-neutral-900 dark:text-neutral-100">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Reports
+				  </p>
+				</div>
+  
+				<div class="mb-6">
+				  <p class="flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+					  stroke="currentColor" class="mr-3 h-6 w-6 text-neutral-900 dark:text-neutral-100">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Crypto Markets
+				  </p>
+				</div>
+				<div class="mb-6">
+				  <p class="flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+					  stroke="currentColor" class="mr-3 h-6 w-6 text-neutral-900 dark:text-neutral-100">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>News
+				  </p>
+				</div>
+  
+				<div class="mb-6">
+				  <p class="flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+					  stroke="currentColor" class="mr-3 h-6 w-6 text-neutral-900 dark:text-neutral-100">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Portfolio Insights
+				  </p>
+				</div>
+  
+				<div class="mb-6">
+				  <p class="flex items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+					  stroke="currentColor" class="mr-3 h-6 w-6 text-neutral-900 dark:text-neutral-100">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Requests & Partnerships
+				  </p>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</section>
+	<!-- Section: Design Block -->
+  </div>
+  <!-- Container for demo purpose -->
+  <div
+  id="carouselExampleCaptions"
+  class="relative"
+  data-te-carousel-init
+  data-te-carousel-slide>
+  <div
+    class="absolute bottom-0 left-0 right-0 z-[2] mx-[15%] mb-4 flex list-none justify-center p-0"
+    data-te-carousel-indicators>
+    <button
+      type="button"
+      data-te-target="#carouselExampleCaptions"
+      data-te-slide-to="0"
+      data-te-carousel-active
+      class="mx-[3px] box-content h-[3px] w-[30px] flex-initial cursor-pointer border-0 border-y-[10px] border-solid border-transparent bg-white bg-clip-padding p-0 -indent-[999px] opacity-50 transition-opacity duration-[600ms] ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-reduce:transition-none"
+      aria-current="true"
+      aria-label="Slide 1"></button>
+    <button
+      type="button"
+      data-te-target="#carouselExampleCaptions"
+      data-te-slide-to="1"
+      class="mx-[3px] box-content h-[3px] w-[30px] flex-initial cursor-pointer border-0 border-y-[10px] border-solid border-transparent bg-white bg-clip-padding p-0 -indent-[999px] opacity-50 transition-opacity duration-[600ms] ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-reduce:transition-none"
+      aria-label="Slide 2"></button>
+    <button
+      type="button"
+      data-te-target="#carouselExampleCaptions"
+      data-te-slide-to="2"
+      class="mx-[3px] box-content h-[3px] w-[30px] flex-initial cursor-pointer border-0 border-y-[10px] border-solid border-transparent bg-white bg-clip-padding p-0 -indent-[999px] opacity-50 transition-opacity duration-[600ms] ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-reduce:transition-none"
+      aria-label="Slide 3"></button>
+  </div>
+  <div
+    class="relative w-full overflow-hidden after:clear-both after:block after:content-['']">
+    <div
+      class="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
+      data-te-carousel-active
+      data-te-carousel-item
+      style="backface-visibility: hidden">
+      <div
+        class="relative overflow-hidden bg-cover bg-no-repeat"
+        style="background-position: 50%">
+        <img
+          src="../static/images/deposit.jpg"
+          class="block w-full" />
+        <div
+          class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-50"></div>
+      </div>
+      <div
+        class="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-white md:block">
+        <h5 class="text-xl">Invest</h5>
+        <p>
+          Invest and buy a coin on any platform of your choice.
+        </p>
+      </div>
+    </div>
+    <div
+      class="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
+      data-te-carousel-item
+      style="backface-visibility: hidden">
+      <div
+        class="relative overflow-hidden bg-cover bg-no-repeat"
+        style="background-position: 50%">
+        <img
+          src="../static/images/bitty.jpg"
+          class="block w-full" />
+        <div
+          class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-50"></div>
+      </div>
+      <div
+        class="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-white md:block">
+        <h5 class="text-xl">Add Transaction</h5>
+        <p>
+          Add the transaction details to track instantly and watch your investments grow with TrackC.
+        </p>
+      </div>
+    </div>
+    <div
+      class="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
+      data-te-carousel-item
+      style="backface-visibility: hidden">
+      <div
+        class="relative overflow-hidden bg-cover bg-no-repeat"
+        style="background-position: 50%">
+        <img
+          src="../static/images/user.jpg"
+          class="block w-full" />
+        <div
+          class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-50"></div>
+      </div>
+      <div
+        class="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-white md:block">
+        <h5 class="text-xl"> Get real-time updates</h5>
+        <p>
+          Relax and let us serve you premium real-time updates on everything happening in the crypto world for free.
+        </p>
+      </div>
+    </div>
+  </div>
+  <button
+    class="absolute bottom-0 left-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
+    type="button"
+    data-te-target="#carouselExampleCaptions"
+    data-te-slide="prev">
+    <span class="inline-block h-8 w-8">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="h-6 w-6">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M15.75 19.5L8.25 12l7.5-7.5" />
+      </svg>
+    </span>
+    <span
+      class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+      >Previous</span
+    >
+  </button>
+  <button
+    class="absolute bottom-0 right-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
+    type="button"
+    data-te-target="#carouselExampleCaptions"
+    data-te-slide="next">
+    <span class="inline-block h-8 w-8">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="h-6 w-6">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+      </svg>
+    </span>
+    <span
+      class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+      >Next</span
+    >
+  </button>
+</div>
+  <!-- Container for demo purpose -->
+  <div class="container my-24 mx-auto md:px-6">
+	<!-- Section: Design Block -->
+	<section class="mb-32 text-center">
+	  <h2 class="mb-12 text-3xl font-bold">
+		Meet the <u class="text-primary dark:text-primary-400">team</u>
+	  </h2>
+  
+	  <div class="grid gap-x-6 md:grid-cols-3 lg:gap-x-12">
+		<div class="mb-6 lg:mb-0">
+		  <div
+			class="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+			<div class="relative overflow-hidden bg-cover bg-no-repeat">
+			  <img src="../static/images/TeeJay.jpeg" class="w-full rounded-t-lg" />
+			  <a href="#!">
+				<div class="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed"></div>
+			  </a>
+			  <svg class="absolute text-white dark:text-neutral-700 left-0 bottom-0" xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 1440 320">
+				<path fill="currentColor"
+				  d="M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,250.7C1248,256,1344,288,1392,304L1440,320L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+				</path>
+			  </svg>
+			</div>
+			<div class="p-6">
+			  <h5 class="mb-4 text-lg font-bold">Tijani Saheed Olalekan</h5>
+			  <p class="mb-4 text-neutral-500 dark:text-neutral-300">Backend Developer, Project Manager</p>
+			  <ul class="mx-auto flex list-inside justify-center">
+				<a href="https://github.com/TSOlami" class="px-2">
+				  <!-- GitHub --> 
+				  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+					class="h-4 w-4 text-primary dark:text-primary-400">
+					<path fill="currentColor"
+					  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+				  </svg>
+				</a>
+				<a href="https://twitter.com/def_input_name" class="px-2">
+				  <!-- Twitter -->
+				  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+					class="h-4 w-4 text-primary dark:text-primary-400">
+					<path fill="currentColor"
+					  d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+				  </svg>
+				</a>
+				<a href="https://www.linkedin.com/in/saheed-tijani-b9935625b/" class="px-2">
+				  <!-- Linkedin -->
+				  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+					class="h-3.5 w-3.5 text-primary dark:text-primary-400">
+					<path fill="currentColor"
+					  d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
+				  </svg>
+				</a>
+			  </ul>
+			</div>
+		  </div>
+		</div>
+  
+		<div class="mb-6 lg:mb-0">
+		  <div
+			class="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+			<div class="relative overflow-hidden bg-cover bg-no-repeat">
+			  <img src="https://mdbcdn.b-cdn.net/img/new/avatars/8.jpg" class="w-full rounded-t-lg" />
+			  <a href="#!">
+				<div class="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed"></div>
+			  </a>
+			  <svg class="absolute text-white dark:text-neutral-700  left-0 bottom-0" xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 1440 320">
+				<path fill="currentColor"
+				  d="M0,96L48,128C96,160,192,224,288,240C384,256,480,224,576,213.3C672,203,768,213,864,202.7C960,192,1056,160,1152,128C1248,96,1344,64,1392,48L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+				</path>
+			  </svg>
+			</div>
+			<div class="p-6">
+			  <h5 class="mb-4 text-lg font-bold">Abdulquddus Abdulquddus</h5>
+			  <p class="mb-4 text-neutral-500 dark:text-neutral-300">Marketing expert</p>
+			  <ul class="mx-auto flex list-inside justify-center">
+				<a href="#!" class="px-2">
+				  <!-- Facebook -->
+				  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary dark:text-primary-400"
+					fill="currentColor" viewBox="0 0 24 24">
+					<path
+					  d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+				  </svg>
+				</a>
+				<a href="#!" class="px-2">
+				  <!-- Twitter -->
+				  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+					class="h-4 w-4 text-primary dark:text-primary-400">
+					<path fill="currentColor"
+					  d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+				  </svg>
+				</a>
+				<a href="#!" class="px-2">
+				  <!-- Linkedin -->
+				  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+					class="h-3.5 w-3.5 text-primary dark:text-primary-400">
+					<path fill="currentColor"
+					  d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
+				  </svg>
+				</a>
+			  </ul>
+			</div>
+		  </div>
+		</div>
+  
+		<div class="">
+		  <div
+			class="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+			<div class="relative overflow-hidden bg-cover bg-no-repeat">
+			  <img src="../static/images/timi.jpeg" class="w-full rounded-t-lg" />
+			  <a href="#!">
+				<div class="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed"></div>
+			  </a>
+			  <svg class="absolute text-white dark:text-neutral-700 left-0 bottom-0" xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 1440 320">
+				<path fill="currentColor"
+				  d="M0,288L48,256C96,224,192,160,288,160C384,160,480,224,576,213.3C672,203,768,117,864,85.3C960,53,1056,75,1152,69.3C1248,64,1344,32,1392,16L1440,0L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+				</path>
+			  </svg>
+			</div>
+			<div class="p-6">
+			  <h5 class="mb-4 text-lg font-bold">Timilehin Olusa</h5>
+			  <p class="mb-4 text-neutral-500 dark:text-neutral-300">Web designer</p>
+			  <ul class="mx-auto flex list-inside justify-center">
+				<a href="#!" class="px-2">
+				  <!-- Dribbble -->
+				  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+					class="h-4 w-4 text-primary dark:text-primary-400">
+					<path fill="currentColor"
+					  d="M12 0c-6.628 0-12 5.373-12 12s5.372 12 12 12 12-5.373 12-12-5.372-12-12-12zm9.885 11.441c-2.575-.422-4.943-.445-7.103-.073-.244-.563-.497-1.125-.767-1.68 2.31-1 4.165-2.358 5.548-4.082 1.35 1.594 2.197 3.619 2.322 5.835zm-3.842-7.282c-1.205 1.554-2.868 2.783-4.986 3.68-1.016-1.861-2.178-3.676-3.488-5.438.779-.197 1.591-.314 2.431-.314 2.275 0 4.368.779 6.043 2.072zm-10.516-.993c1.331 1.742 2.511 3.538 3.537 5.381-2.43.715-5.331 1.082-8.684 1.105.692-2.835 2.601-5.193 5.147-6.486zm-5.44 8.834l.013-.256c3.849-.005 7.169-.448 9.95-1.322.233.475.456.952.67 1.432-3.38 1.057-6.165 3.222-8.337 6.48-1.432-1.719-2.296-3.927-2.296-6.334zm3.829 7.81c1.969-3.088 4.482-5.098 7.598-6.027.928 2.42 1.609 4.91 2.043 7.46-3.349 1.291-6.953.666-9.641-1.433zm11.586.43c-.438-2.353-1.08-4.653-1.92-6.897 1.876-.265 3.94-.196 6.199.196-.437 2.786-2.028 5.192-4.279 6.701z" />
+				  </svg>
+				</a>
+				<a href="#!" class="px-2">
+				  <!-- Linkedin -->
+				  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+					class="h-3.5 w-3.5 text-primary dark:text-primary-400">
+					<path fill="currentColor"
+					  d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
+				  </svg>
+				</a>
+				<a href="#!" class="px-2">
+				  <!-- Instagram -->
+				  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+					class="h-4 w-4 text-primary dark:text-primary-400">
+					<path fill="currentColor"
+					  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+				  </svg>
+				</a>
+			  </ul>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</section>
+	<!-- Section: Design Block -->
+  </div>
+  <!-- Container for demo purpose -->
+  <!-- Container for demo purpose -->
+<div class="container my-24 mx-auto md:px-6">
+	<!-- Section: Design Block -->
+	<section class="mb-32">
+	  <!-- Jumbotron -->
+	  <div class="container mx-auto text-center lg:text-left xl:px-32">
+		<div class="flex grid items-center lg:grid-cols-2">
+		  <div class="mb-12 lg:mb-0">
+			<div
+			  class="block rounded-lg bg-[hsla(0,0%,100%,0.55)] px-6 py-12 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-[hsla(0,0%,5%,0.55)] dark:shadow-black/20 md:px-12 lg:-mr-14 backdrop-blur-[30px]">
+			  <h3 class="mb-3 text-2xl font-bold">
+				We know how valuable your time is
+			  </h3>
+			  <h5 class="mb-12 text-lg font-bold text-primary dark:text-primary-400 lg:mb-10 xl:mb-12">
+				Let us answer your questions
+			  </h5>
+  
+			  <p class="mb-4 font-bold">
+				How do I create an account on TrackC?
+			  </p>
+			  <p class="mb-6 text-gray-500 dark:text-neutral-300">
+				To create an account on TrackC, simply go to our website and click on the "Sign Up" button. It's quick and easy!
+			  </p>
+  
+			  <p class="mb-4 font-bold">
+				Is TrackC free to use?
+			  </p>
+			  <p class="mb-6 text-gray-500 dark:text-neutral-300">
+				Yes, TrackC is completely free to use. We believe that everyone should have access to the best tools for managing their investments.
+			  </p>
+  
+			  <p class="mb-4 font-bold">
+				What platforms does TrackC support?
+			  </p>
+			  <p class="text-gray-500 dark:text-neutral-300">
+				TrackC currently supports most major crypto platforms, including Binance, Coinbase, Kraken, and more. We're always adding new platforms to our list, so stay tuned!
+			  </p>
+			  <p class="mb-4 font-bold">
+				Can I track multiple portfolios on TrackC?
+			  </p>
+			  <p class="text-gray-500 dark:text-neutral-300">
+				Absolutely! You can track multiple portfolios on TrackC, making it easy to manage all your investments in one place.
+			  </p>
+			  <p class="mb-4 font-bold">
+				How does TrackC keep my information secure?
+			  </p>
+			  <p class="text-gray-500 dark:text-neutral-300">
+				We take the security of your information very seriously. We use the latest encryption technology and follow industry best practices to keep your data safe.
+			  </p>
+			  <p class="mb-4 font-bold">
+				How do I contact customer support if I have a question?
+			  </p>
+			  <p class="text-gray-500 dark:text-neutral-300">
+				If you have a question or need help using TrackC, you can contact our customer support team through our website or by email. We're always here to help!
+			  </p>
+			</div>
+		  </div>
+  
+		  <div>
+			<img src="../static/images/bitcoin-3732876_1280.jpg"
+			  class="w-full rounded-lg shadow-lg dark:shadow-black/20" alt="FAQ" />
+		  </div>
+		</div>
+	  </div>
+	  <!-- Jumbotron -->
+	</section>
+	<!-- Section: Design Block -->
+  </div>
+  <!-- Container for demo purpose -->
+  <!-- Container for demo purpose -->
+<div class="container my-12 mx-auto md:px-6">
+	<!-- Section: Design Block -->
+	<section class="mb-32 text-center">
+	  <div class="px-6 py-12 md:px-12">
+		<div class="container mx-auto xl:px-32">
+		  <div class="flex grid items-center lg:grid-cols-2">
+			<div class="mb-12 md:mt-12 lg:mt-0 lg:mb-0">
+			  <div class="relative z-[1] block rounded-lg bg-[hsla(0,0%,100%,0.55)] px-6 py-12 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] backdrop-blur-[25px] dark:bg-[hsla(0,0%,5%,0.55)] dark:shadow-black/20 md:px-12 lg:-mr-14">
+				<h1 class="mt-2 mb-8 text-4xl font-bold tracking-tight md:text-5xl xl:text-6xl">
+				  Time is money <br /><span class="text-primary dark:text-primary-400">Do it now!</span>
+				</h1>
+				<a href="/sign-up">
+					<button type="button"
+					class="inline-block rounded bg-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+					data-te-ripple-init data-te-ripple-color="light">
+					Start
+					</button>
+				</a>
+			  </div>
+			</div>
+			<div class="md:mb-12 lg:mb-0">
+			  <img src="../static/images/man-3126802_640.jpg"
+				class="lg:rotate-[3deg] w-full rounded-lg shadow-lg dark:shadow-black/20" alt="image" />
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</section>
+	<!-- Section: Design Block -->
+  </div>
+  <!-- Container for demo purpose -->
+  <!-- Container for demo purpose -->
+<div class="container my-24 mx-auto md:px-6">
+	<!-- Section: Design Block -->
+	<section class="mb-32">
+	  <div
+		class="relative h-[300px] overflow-hidden bg-cover bg-[50%] bg-no-repeat bg-[url('https://mdbcdn.b-cdn.net/img/new/textures/full/171.jpg')]">
+	  </div>
+	  <div class="container px-6 md:px-12">
+		<div
+		  class="block rounded-lg bg-[hsla(0,0%,100%,0.7)] px-6 py-12 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-[hsla(0,0%,5%,0.7)] dark:shadow-black/20 md:py-16 md:px-12 -mt-[100px] backdrop-blur-[30px]">
+		  <div class="mb-12 grid gap-x-6 md:grid-cols-2 lg:grid-cols-4">
+			<div class="mx-auto mb-12 text-center lg:mb-0">
+			  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+				stroke="currentColor" class="mx-auto mb-6 h-8 w-8 text-primary dark:text-primary-400">
+				<path stroke-linecap="round" stroke-linejoin="round"
+				  d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 01-1.161.886l-.143.048a1.107 1.107 0 00-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 01-1.652.928l-.679-.906a1.125 1.125 0 00-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 00-8.862 12.872M12.75 3.031a9 9 0 016.69 14.036m0 0l-.177-.529A2.25 2.25 0 0017.128 15H16.5l-.324-.324a1.453 1.453 0 00-2.328.377l-.036.073a1.586 1.586 0 01-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643m5.276-3.67a9.012 9.012 0 01-5.276 3.67m0 0a9 9 0 01-10.275-4.835M15.75 9c0 .896-.393 1.7-1.016 2.25" />
+			  </svg>
+			  <h6 class="font-medium">Nigeria</h6>
+			</div>
+			<div class="mx-auto mb-12 text-center lg:mb-0">
+			  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+				stroke="currentColor" class="mx-auto mb-6 h-8 w-8 text-primary dark:text-primary-400">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+				<path stroke-linecap="round" stroke-linejoin="round"
+				  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+			  </svg>
+			  <h6 class="font-medium">Lagos, 100266</h6>
+			</div>
+			<div class="mx-auto mb-6 text-center md:mb-0">
+			  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+				stroke="currentColor" class="mx-auto mb-6 h-8 w-8 text-primary dark:text-primary-400">
+				<path stroke-linecap="round" stroke-linejoin="round"
+				  d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+			  </svg>
+			  <h6 class="font-medium">+ 234 706 158 3271</h6>
+			</div>
+			<div class="mx-auto text-center">
+			  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+				stroke="currentColor" class="mx-auto mb-6 h-8 w-8 text-primary dark:text-primary-400">
+				<path stroke-linecap="round" stroke-linejoin="round"
+				  d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+			  </svg>
+			  <h6 class="font-medium">Tax ID: 273 384</h6>
+			</div>
+		  </div>
+		  <div class="mx-auto max-w-[700px]">
+			<form>
+			  <div class="relative mb-6" data-te-input-wrapper-init>
+				<input type="text"
+				  class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+				  id="exampleInput90" placeholder="Name" />
+				<label
+				  class="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+				  for="exampleInput90">Name
+				</label>
+			  </div>
+			  <div class="relative mb-6" data-te-input-wrapper-init>
+				<input type="email"
+				  class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+				  id="exampleInput91" placeholder="Email address" />
+				<label
+				  class="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+				  for="exampleInput91">Email address
+				</label>
+			  </div>
+			  <div class="relative mb-6" data-te-input-wrapper-init>
+				<textarea
+				  class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+				  id="exampleFormControlTextarea1" rows="3" placeholder="Your message"></textarea>
+				<label for="exampleFormControlTextarea1"
+				  class="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">Message</label>
+			  </div>
+			  <div class="mb-6 inline-block min-h-[1.5rem] justify-center pl-[1.5rem] md:flex">
+				<input
+				  class="relative float-left mt-[0.15rem] mr-[6px] -ml-[1.5rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.25rem] checked:after:-mt-px checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-t-0 checked:after:border-l-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:ml-[0.25rem] checked:focus:after:-mt-px checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-t-0 checked:focus:after:border-l-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600 dark:checked:border-primary dark:checked:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
+				  type="checkbox" value="" id="exampleCheck96" checked />
+				<label class="inline-block pl-[0.15rem] hover:cursor-pointer" for="exampleCheck96">
+				  Send me a copy of this message
+				</label>
+			  </div>
+			  <button type="button" data-te-ripple-init data-te-ripple-color="light"
+				class="inline-block w-full rounded bg-primary px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] lg:mb-0">
+				Send
+			  </button>
+			</form>
+		  </div>
+		</div>
+	  </div>
+	</section>
+	<!-- Section: Design Block -->
+  </div>
+  <!-- Container for demo purpose -->
+  <!--Footer container-->
+<footer
+class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutral-200">
+<div class="container p-6">
+  <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
+	<div class="mb-6 lg:mb-0">
+	  <img
+		src="../static/images/analyze.jpeg"
+		class="w-full rounded-md shadow-lg" />
+	</div>
+	<div class="mb-6 lg:mb-0">
+	  <img
+		src="../static/images/coin-money.jpeg"
+		class="w-full rounded-md shadow-lg" />
+	</div>
+	<div class="mb-6 lg:mb-0">
+	  <img
+		src="../static/images/rich.jpeg"
+		class="w-full rounded-md shadow-lg" />
+	</div>
+	<div class="mb-6 lg:mb-0">
+	  <img
+		src="../static/images/lambo.jpg"
+		class="w-full rounded-md shadow-lg" />
+	</div>
+	<div class="mb-6 lg:mb-0">
+	  <img
+		src="../static/images/house.png"
+		class="w-full rounded-md shadow-lg" />
+	</div>
+	<div class="mb-6 lg:mb-0">
+	  <img
+		src="../static/images/touch-screen-6091015_640.jpg"
+		class="w-full rounded-md shadow-lg" />
+	</div>
+  </div>
+</div>
+
+<!--Copyright section-->
+<div
+  class="bg-neutral-300 p-4 text-center text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
+  © 2023 Copyright:
+  <a class="dark:text-neutral-400" href="https://tailwind-elements.com/"
+	>TrackC</a
+  >
+</div>
+</footer>
+  <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+  <script type="module" src="../static/scripts/index.js"></script>
+</body>
+</html>

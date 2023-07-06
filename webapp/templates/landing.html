@@ -10,7 +10,6 @@
 	rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
 	<link rel="stylesheet" href="../static/css/dist/output.css">
-	<link rel="stylesheet" href="{{ url_for('static', filename='mdb5-free-standard/css/mdb.min.css' )}}">
 	<title>TrackC</title>
 </head>
 <body>
@@ -117,7 +116,7 @@
 			</h1>
 			<a class="mb-2 inline-block rounded bg-neutral-50 px-12 pt-4 pb-3.5 text-sm font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] md:mr-2 md:mb-0" data-te-ripple-init data-te-ripple-color="light" href="/sign-up" role="button">Get started</a>
 			<a class="inline-block rounded px-12 pt-4 pb-3.5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-200 focus:text-neutral-200 focus:outline-none focus:ring-0 active:text-neutral-300"
-            data-te-ripple-init data-te-ripple-color="light" href="#!" role="button">Learn more</a>
+            data-te-ripple-init data-te-ripple-color="light" href="/about" role="button">Learn more</a>
 		  </div>
 		  <div class="mb-12 lg:mb-0">
 			<img src="../static/images/bitcoin-3089728_640.jpg" class="w-full rounded-lg shadow-lg dark:shadow-black/20" alt="crypto" />
@@ -771,6 +770,5 @@ class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutr
 </footer>
   <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
   <script type="module" src="../static/scripts/index.js"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='mdb5-free-standard/js/mdb.min.js' )}}"></script>
 </body>
 </html>

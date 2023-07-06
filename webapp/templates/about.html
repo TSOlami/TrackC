@@ -4,10 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
+  <link href="https://fonts.googleapis.com/css2?family=Futura&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../static/css/dist/output.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='mdb5-free-standard/css/mdb.min.css' )}}">
   <title>About Us</title>
+  <style>
+	.font-futura {
+	  font-family: "Futura", sans-serif;
+	}
+  </style>
 </head>
 
 <body class="bg-gray-100">
@@ -75,10 +82,10 @@
 
   <!-- Main Content -->
   <main class="container mx-auto px-4 py-8">
-    <h2 class="text-3xl font-bold mb-4">About Us!</h2>
-    <h3 class="text-center mb-6">Welcome To <span class="text-blue-600">TrackC</span></h3>
+    <h2 class="text-3xl text-primary-900 font-bold mb-4">About Us!</h2>
+    <h3 class="text-center text-2xl mb-6">Welcome To <span class="text-primary-600">TrackC</span></h3>
     <p>
-      <span class="text-blue-600">TrackC</span> is a professional crypto tracker platform. Here we provide you with
+      <span class="text-primary-600 font-futura">TrackC</span> is a professional crypto tracker platform. Here we provide you with
       interesting content related to cryptocurrency tracking. We're dedicated to providing you with the best
       crypto tracking experience, focusing on dependability and tracking crypto investments. We're working
       to turn our passion for crypto tracking into a booming online website. We hope you enjoy our crypto tracking
@@ -88,11 +95,7 @@
       We're constantly posting important updates and insights on our website to keep you informed. Your support and love
       mean the world to us.
     </p>
-    <p class="font-bold text-center mt-8">Thanks For Visiting Our Site</p>
-    <p class="text-blue-600 font-bold text-center text-lg">Have a nice day!</p>
-
-    <div class="mt-8">
-      <h2 class="text-3xl font-bold mb-4">Welcome to our crypto tracking web app!</h2>
+    <div class="mt-8 font-futura">
       <p>
         We're a team of software engineers and crypto enthusiasts who are passionate about making it easy for investors
         to track their cryptocurrency portfolios.
@@ -127,11 +130,10 @@ class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutr
 <div
   class="bg-neutral-300 p-4 text-center text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
   © 2023 Copyright:
-  <a class="dark:text-neutral-400" href="https://tailwind-elements.com/"
+  <a class="text-primary-400" href="/"
 	>TrackC</a>
 </div>
 </footer>
-<script type="text/javascript" src="{{ url_for('static', filename='mdb5-free-standard/js/mdb.min.js' )}}"></script>
 </body>
 
 </html>

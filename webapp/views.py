@@ -21,6 +21,11 @@ def landing():
     return render_template("landing.html")
 
 
+@views.route('/about')
+def about():
+    return render_template("about.html")
+
+
 @views.route('/home/<user_id>')
 @login_required
 def home(user_id):
@@ -351,8 +356,3 @@ def remove_transaction(user_id):
         # Handle the specific exception and flash an appropriate response
         flash("An error occurred!", category="error")
         return redirect(url_for("views.transactions", user_id=user_id))
-    
-
-@views.route('/about')
-def about():
-    return redirect(url_for("views.about"))

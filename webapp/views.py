@@ -97,9 +97,6 @@ def home(user_id):
             time_transacted_list.append(trans.time_transacted)
             time_updated_list.append(trans.time_updated)
 
-            
-
-
         # Calculate portfolio worth
         portfolio_worth = sum(current_values.values())
         portfolio_equity = sum(equities.values())
@@ -297,6 +294,8 @@ def new_transactions(user_id):
                     user = User.query.get(user_id)
                     portfolio_worth = float(user.portfolio_worth) + (float(current_price) * float(no_of_coins))
                     session.commit()
+                    session.close()
+                    flash("Transaction added successfully.", category="success")
                 else:
                     # Create a new transaction
                     user = User.query.get(user_id)
@@ -312,6 +311,8 @@ def new_transactions(user_id):
                     session.add(new_trans)
                     user.portfolio_worth = portfolio_worth
                     session.commit()
+                    session.close()
+                    flash("Transaction added successfully.", category="success")
                 break
 
         # If no matching cryptocurrency found
@@ -351,6 +352,7 @@ def remove_transaction(user_id):
                 User.query.get(user_id).portfolio_worth = portfolio_worth
                 db.session.commit()
                 db.session.close()
+                flash("Transaction removed successfully.", category="success")
                 return redirect(url_for("views.transactions", user_id=user_id))
 
         # If no matching cryptocurrency found

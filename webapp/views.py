@@ -12,6 +12,10 @@ views = Blueprint('views', __name__)
 LIVE_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price"
 
 
+@views.route ('/index')
+def index():
+    return render_template("index.html")
+
 @views.route ('/')
 def landing():
     return render_template("landing.html")

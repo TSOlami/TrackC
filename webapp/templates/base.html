@@ -9,9 +9,10 @@
 	<link
 	rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
-	<script src="https://cdn.tailwindcss.com/3.3.0"></script>
+	<link rel="stylesheet" href="../static/css/dist/output.css">
 	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='mdb5-free-standard/css/mdb.min.css' )}}">
 	<title>{% block title %}Home{% endblock %}</title>
 
 	<style>
@@ -152,5 +153,6 @@ class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutr
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/tw-elements"></script>
 <script type="module" src="../static/scripts/alert-dismiss.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='mdb5-free-standard/js/mdb.min.js' )}}"></script>
 </body>
 </html>

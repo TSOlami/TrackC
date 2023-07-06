@@ -9,7 +9,8 @@
 	<link
 	rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
-	<script src="https://cdn.tailwindcss.com/3.3.0"></script>
+	<link rel="stylesheet" href="../static/css/dist/output.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='mdb5-free-standard/css/mdb.min.css' )}}">
 	<title>TrackC</title>
 </head>
 <body>
@@ -770,5 +771,6 @@ class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutr
 </footer>
   <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
   <script type="module" src="../static/scripts/index.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='mdb5-free-standard/js/mdb.min.js' )}}"></script>
 </body>
 </html>

@@ -268,6 +268,11 @@ def new_transactions(user_id):
         price_purchased_at = request.form.get('price_purchased_at')
         amount_spent = float(price_purchased_at) * float(no_of_coins)
 
+        # Check if any of the form data is missing
+        if not coin_name or not no_of_coins or not price_purchased_at:
+            flash("Please provide all required data.", category="error")
+            return redirect(url_for("views.transactions", user_id=user_id))
+
         # Setup CoinMarketCap API 
         url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
         api_key = "032b9c4e-d442-4fdf-8359-ca6736c4216c"
@@ -331,6 +336,10 @@ def remove_transaction(user_id):
     coin_name = coin_name.lower()
     no_of_coins = request.form.get('no_of_coins')
     price_sold = request.form.get('price_sold')
+
+    if not coin_name or not no_of_coins or not price_sold:
+        flash("Please provide all required data.", category="error")
+        return redirect(url_for("views.transactions", user_id=user_id))
     
     try:
         transactions = Transaction.query.filter_by(user_id=user_id).all()

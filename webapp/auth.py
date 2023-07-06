@@ -63,7 +63,7 @@ def sign_up():
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
-            flash('Account created successfully, Welcome {}!'.format(user.username), category='success')
+            flash('Account created successfully, Welcome {}!'.format(new_user.username), category='success')
             user_id = new_user.id
             username = new_user.username
             email = new_user.email

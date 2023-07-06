@@ -1,5 +1,6 @@
 #!/bin/bash
 
+pip install --upgrade pip
 # Change directory to the location of your Flask app's code
 #cd /path/to/your/flask/app
 

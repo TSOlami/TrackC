@@ -1,6 +1,6 @@
 import datetime
 import json
-from flask import Blueprint, flash, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, flash, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 import requests
 from requests.exceptions import RequestException, ConnectionError, Timeout, TooManyRedirects
@@ -11,10 +11,6 @@ views = Blueprint('views', __name__)
 
 LIVE_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price"
 
-
-@views.route ('/index')
-def index():
-    return render_template("index.html")
 
 @views.route ('/')
 def landing():

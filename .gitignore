@@ -11,7 +11,7 @@ instance/
 venv/
 *.env
 .env.*
-webapp\.env
+webapp/.env
 
 # Editor/IDE files
 .vscode/

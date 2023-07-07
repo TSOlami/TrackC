@@ -1,8 +1,7 @@
 import datetime
 import json
-from flask import Blueprint, flash, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, flash, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
-from sqlalchemy.orm import sessionmaker
 import requests
 from requests.exceptions import RequestException, ConnectionError, Timeout, TooManyRedirects
 from .models import *
@@ -16,6 +15,11 @@ LIVE_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price"
 @views.route ('/')
 def landing():
     return render_template("landing.html")
+
+
+@views.route('/about')
+def about():
+    return render_template("about.html")
 
 
 @views.route('/home/<user_id>')
@@ -41,12 +45,75 @@ def home(user_id):
     results = data['data']
 
     for result in results:
-        result['quote']['USD']['price'] = '$ ' + "{:.2f}".format(result['quote']['USD']['price'])
-        result['quote']['USD']['volume_24h'] = '$ ' + "{:.2f}".format(result['quote']['USD']['volume_24h'])
-        result['quote']['USD']['percent_change_24h'] = "{:.2f}".format(result['quote']['USD']['percent_change_24h']) + '%'
+        result['quote']['USD']['price'] = '$ ' + "{:,.2f}".format(result['quote']['USD']['price'])
+        result['quote']['USD']['volume_24h'] = '$ ' + "{:,.2f}".format(result['quote']['USD']['volume_24h'])
+        result['quote']['USD']['percent_change_24h'] = "{:,.2f}".format(result['quote']['USD']['percent_change_24h']) + '%'
+    
+    coin_name_list = []
+    amount_spent_list = []
+    symbol_list = []
+    price_purchased_at_list = []
+    no_of_coins_list = []
+    time_transacted_list = []
+    time_updated_list = []
+
+    # Fetch data from the database
+    user = User.query.get(user_id)
+    transactions = Transaction.query.filter_by(user_id=user_id).all()
+
+    coin_prices = {}
+    for trans in transactions:
+        coin_prices[trans.coin_name.lower()] = trans.price_purchased_at
+
+    
+    # Make API request to get live price for the coin
+    url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+    api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
+    headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
+    params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
+    data = requests.get(url, params=params, headers=headers).json()
+
+    current_values = {}
+    equities = {}
+
+    try:
+        for trans in transactions:
+            coin_name = trans.coin_name.lower()
+            coin_name_list.append(trans.coin_name)
+            amount_spent_list.append(trans.amount_spent)
+            symbol_list.append(trans.symbol)
+            price_purchased_at_list.append(trans.price_purchased_at)
+            no_of_coins = trans.no_of_coins
+
+            for i in range(0, 5000):
+                if data['data'][i]['name'].lower() == trans.coin_name.lower(): 
+                    current_price = data['data'][i]['quote']['USD']['price']
+                    current_value = current_price * float(trans.no_of_coins)
+                    equity = (current_value - (float(trans.no_of_coins) * float(trans.price_purchased_at))) / 100
+                    current_values[coin_name] = current_value
+                    equities[coin_name] = equity
+                    break
+            no_of_coins_list.append(no_of_coins)
+            time_transacted_list.append(trans.time_transacted)
+            time_updated_list.append(trans.time_updated)
+
+        # Calculate portfolio worth
+        portfolio_worth = sum(current_values.values())
+        portfolio_equity = sum(equities.values())
+        
+    except Exception as e:
+        # Handle the specific exception and flash an appropriate response
+        print(f"Error occurred: {str(e)}")
+        flash('An error occurred!', category='error')
 
     #Render results on the homepage
-    return render_template("home.html", user_id=user_id, results=results, user=current_user)
+    return render_template("home.html", 
+                           user_id=user_id, 
+                           username=user.username.title(),
+                           results=results,
+                           user=current_user,
+                           portfolio_worth=portfolio_worth,
+                           portfolio_equity=portfolio_equity)
 
 @views.route ('/news')
 @login_required
@@ -141,11 +208,10 @@ def transactions(user_id):
                 time_transacted_list, time_updated_list, current_values, equities),
             key=lambda x: x[-2], reverse=True
         )
-        # Assign the length of coin_name_list
-        length = len(coin_name_list)
 
         # Create a list of dictionaries containing transaction data
         trans_list = []
+        
         for (
             coin_name, amount_spent, symbol, price_purchased_at, no_of_coins, time_transacted,
             time_updated, current_value, equity
@@ -166,20 +232,21 @@ def transactions(user_id):
             trans_list.append(trans_dict)
         # Close the session
         db.session.close()
-        
         # Render the template with the fetched data for the user
         return render_template(
             'transactions.html',
             user_id=user_id,
-            username=user.username,
+            username=user.username.title(),
             trans_list=trans_list,
-            length=len(coin_name_list),
+            length=len(trans_list),
             portfolio_worth=portfolio_worth,
             portfolio_equity=portfolio_equity)
     
-    except (RequestException, ConnectionError, Timeout, TooManyRedirects) as e:
+    except Exception as e:
         # Handle the specific exception and flash an appropriate response
+        print(f"Error occurred: {str(e)}")
         flash('An error occurred!', category='error')
+        return redirect(url_for('views.transactions', user_id=user_id))
         
 
 
@@ -194,11 +261,16 @@ def new_transactions(user_id):
         price_purchased_at = request.form.get('price_purchased_at')
         amount_spent = float(price_purchased_at) * float(no_of_coins)
 
+        # Check if any of the form data is missing
+        if not coin_name or not no_of_coins or not price_purchased_at:
+            flash("Please provide all required data.", category="error")
+            return redirect(url_for("views.transactions", user_id=user_id))
+
         # Setup CoinMarketCap API 
         url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
         api_key = "032b9c4e-d442-4fdf-8359-ca6736c4216c"
         headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
-        params = {'start': '1', 'limit': '2', 'convert': 'USD'}
+        params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
         data = requests.get(url, params=params, headers=headers).json()
         print (data)
 
@@ -222,6 +294,8 @@ def new_transactions(user_id):
                     user = User.query.get(user_id)
                     portfolio_worth = float(user.portfolio_worth) + (float(current_price) * float(no_of_coins))
                     session.commit()
+                    session.close()
+                    flash("Transaction added successfully.", category="success")
                 else:
                     # Create a new transaction
                     user = User.query.get(user_id)
@@ -237,6 +311,8 @@ def new_transactions(user_id):
                     session.add(new_trans)
                     user.portfolio_worth = portfolio_worth
                     session.commit()
+                    session.close()
+                    flash("Transaction added successfully.", category="success")
                 break
 
         # If no matching cryptocurrency found
@@ -257,6 +333,10 @@ def remove_transaction(user_id):
     coin_name = coin_name.lower()
     no_of_coins = request.form.get('no_of_coins')
     price_sold = request.form.get('price_sold')
+
+    if not coin_name or not no_of_coins or not price_sold:
+        flash("Please provide all required data.", category="error")
+        return redirect(url_for("views.transactions", user_id=user_id))
     
     try:
         transactions = Transaction.query.filter_by(user_id=user_id).all()
@@ -272,6 +352,7 @@ def remove_transaction(user_id):
                 User.query.get(user_id).portfolio_worth = portfolio_worth
                 db.session.commit()
                 db.session.close()
+                flash("Transaction removed successfully.", category="success")
                 return redirect(url_for("views.transactions", user_id=user_id))
 
         # If no matching cryptocurrency found

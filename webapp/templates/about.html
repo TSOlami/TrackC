@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
+  <link href="https://fonts.googleapis.com/css2?family=Futura&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/dist/output.css">
+  <title>About Us</title>
+  <style>
+	.font-futura {
+	  font-family: "Futura", sans-serif;
+	}
+  </style>
+</head>
+
+<body class="bg-gray-100">
+  <!-- Navbar -->
+	<nav class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start" data-te-navbar-ref>
+		<!-- Container wrapper -->
+		<div class="flex w-full flex-wrap items-center justify-between px-6">
+		  <div class="flex items-center">
+			<!-- Toggle button -->
+			<button class="block border-0 bg-transparent py-2 pr-2.5 text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden" type="button" data-te-collapse-init data-te-target="#navbarSupportedContentY" aria-controls="navbarSupportedContentY" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="[&>svg]:w-7">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
+				  <path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+				</svg>
+			  </span>
+			</button>
+	
+			<!-- Navbar Brand -->
+			<a class="text-primary dark:text-primary-400" href="/">
+			  <span class="[&>svg]:ml-2 [&>svg]:mr-3 [&>svg]:h-6 [&>svg]:w-6 [&>svg]:lg:ml-0">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+				  <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+				</svg>
+			  </span>
+			</a>
+		  </div>
+	
+		  <!-- Collapsible wrapper -->
+		  <div class="!visible hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto" id="navbarSupportedContentY" data-te-collapse-item>
+			<!-- Left links -->
+			<ul class="mr-auto lg:flex lg:flex-row" data-te-navbar-nav-ref>
+			  <li data-te-nav-item-ref>
+				<a class="block py-2 pr-2 text-3xl text-primary-600 mb-4 font-bold transition duration-150 ease-in-out hover:text-primary-700 focus:text-neutral-600 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-black/80 dark:[&.active]:text-white/80" href="/" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light" disabled>TrackC</a>
+			  </li>
+			</ul>
+			<!-- Left links -->
+		  </div>
+		  <!-- Collapsible wrapper -->
+	
+		  <!-- Right elements -->
+		  <div class="my-1 flex items-center lg:my-0 lg:ml-auto">
+			<a href="https://github.com/TSOlami/TrackC">
+			  <button
+			  type="button"
+			  data-te-ripple-init
+			  data-te-ripple-color="light"
+			  class="mr-3 inline-block rounded px-3 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg motion-reduce:transition-none"
+			  style="background-color: #333">
+			  <svg
+			  xmlns="http://www.w3.org/2000/svg"
+			  class="h-4 w-4"
+			  fill="currentColor"
+			  viewBox="0 0 24 24">
+			  <path
+				  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+			  </svg>
+			  </button>
+			</a>
+		  </div>
+		  <!-- Right elements -->
+		</div>
+		<!-- Container wrapper -->
+	  </nav>
+	  <!-- Navbar -->
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <h2 class="text-3xl text-primary-900 font-bold mb-4">About Us!</h2>
+    <h3 class="text-center text-2xl mb-6">Welcome To <span class="text-primary-600">TrackC</span></h3>
+    <p>
+      <span class="text-primary-600 font-futura">TrackC</span> is a professional crypto tracker platform. Here we provide you with
+      interesting content related to cryptocurrency tracking. We're dedicated to providing you with the best
+      crypto tracking experience, focusing on dependability and tracking crypto investments. We're working
+      to turn our passion for crypto tracking into a booming online website. We hope you enjoy our crypto tracking
+      services as much as we enjoy offering them to you.
+    </p>
+    <p>
+      We're constantly posting important updates and insights on our website to keep you informed. Your support and love
+      mean the world to us.
+    </p>
+    <div class="mt-8 font-futura">
+      <p>
+        We're a team of software engineers and crypto enthusiasts who are passionate about making it easy for investors
+        to track their cryptocurrency portfolios.
+      </p>
+      <p>
+        Our mission is to provide our users with a simple, user-friendly platform that helps them stay on top of their
+        investments and make informed decisions. We believe that everyone should have access to the tools and
+        information they need to succeed in the world of cryptocurrency, and we're committed to making that a reality.
+      </p>
+      <p>
+        As avid crypto investors ourselves, we understand the challenges and complexities of managing a cryptocurrency
+        portfolio. That's why we've developed a platform that's intuitive, powerful, and easy to use. With our app, you
+        can track your investments in real-time, get detailed insights into your portfolio performance, and stay
+        up-to-date on the latest market trends.
+      </p>
+      <p>
+        At our core, we believe in the power of innovation and are constantly seeking new and creative ways to help our
+        users succeed. Whether it's through cutting-edge technology, streamlined processes, or tailored solutions, we are
+        always looking for ways to push the boundaries and exceed expectations.
+      </p>
+      <p>
+        Thank you for choosing our app as your go-to tool for tracking your cryptocurrency investments. We're excited to
+        be a part of your journey and look forward to helping you achieve your financial goals.
+      </p>
+    </div>
+  </main>
+
+  <!--Footer container-->
+<footer
+class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutral-200">
+<!--Copyright section-->
+<div
+  class="bg-neutral-300 p-4 text-center text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
+  © 2023 Copyright:
+  <a class="text-primary-400" href="/"
+	>TrackC</a>
+</div>
+</footer>
+</body>
+
+</html>

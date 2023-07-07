@@ -86,7 +86,7 @@
       <td>{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
       <td class="current_value">${{ "{:,.2f}".format(trans.current_value) }}</td>
       <td {% if trans.equity|int >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
-      {% if trans.equity|int >= 0 %}+{% else %}-{% endif %}
+      {% if trans.equity|int >= 0 %}{% else %}{% endif %}
       {{ "{:,.2f}".format(trans.equity) }}%
       </td>
     </tr>

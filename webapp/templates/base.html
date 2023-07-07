@@ -51,7 +51,7 @@
 			<li>
 				<a
 				class="py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400"
-				href="/{{user_id}}/home"
+				href="{{ url_for('views.home', user_id=user_id) }}"
 				data-te-nav-link-ref
 				>Home/Dashboard</a
          	  >
@@ -59,7 +59,7 @@
 			<li>
 				<a
 				class="py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400"
-				href="/{{user_id}}/transactions"
+				href="{{ url_for('views.transactions', user_id=user_id) }}"
 				data-te-nav-link-ref
 				>My Transactions</a
          	  >

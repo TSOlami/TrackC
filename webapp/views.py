@@ -25,7 +25,9 @@ def about():
 @views.route('/home/<user_id>')
 @login_required
 def home(user_id):
-    # Endpoint to get top 10 cryptocurrencies from CMC
+    """Home Endpoint"""
+    
+    # API call to get top 10 cryptocurrencies from CMC
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
     parameters = {
         'start': '1',

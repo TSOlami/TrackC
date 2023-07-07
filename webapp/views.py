@@ -244,7 +244,6 @@ def transactions(user_id):
     
     except Exception as e:
         # Handle the specific exception and flash an appropriate response
-        print(f"Error occurred: {str(e)}")
         flash('An error occurred!', category='error')
         return redirect(url_for('views.transactions', user_id=user_id))
         

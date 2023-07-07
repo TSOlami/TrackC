@@ -1,5 +1,7 @@
 # Flask specific files and directories
 __pycache__/
+/__pycache__
+/venv
 *.pyc
 instance/
 *.egg-info/
@@ -9,6 +11,7 @@ instance/
 venv/
 *.env
 .env.*
+webapp\.env
 
 # Editor/IDE files
 .vscode/

@@ -26,7 +26,7 @@ def about():
 @login_required
 def home(user_id):
     """Home Endpoint"""
-    
+    print("Entering home() function") 
     # API call to get top 10 cryptocurrencies from CMC
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
     parameters = {
@@ -43,6 +43,7 @@ def home(user_id):
     session.headers.update(headers)
     
     response = session.get(url, params=parameters)
+    response.raise_for_status()
     data = json.loads(response.text)
     results = data['data']
 
@@ -66,14 +67,15 @@ def home(user_id):
     coin_prices = {}
     for trans in transactions:
         coin_prices[trans.coin_name.lower()] = trans.price_purchased_at
-
     
+    print("Transactions fetched successfully") 
     # Make API request to get live price for the coin
     url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
     api_key = "05bf26b5-a99a-4eb7-92f4-e2c8bc263693"
     headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': api_key}
     params = {'start': '1', 'limit': '5000', 'convert': 'USD'}
     data = requests.get(url, params=params, headers=headers).json()
+    print(data)
 
     current_values = {}
     equities = {}
@@ -108,6 +110,7 @@ def home(user_id):
         print(f"Error occurred: {str(e)}")
         flash('An error occurred!', category='error')
 
+    print("Exiting home() function")
     #Render results on the homepage
     return render_template("home.html", 
                            user_id=user_id, 

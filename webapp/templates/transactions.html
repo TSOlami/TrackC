@@ -6,42 +6,34 @@
 <div class="container mx-auto">
   <div class="flex justify-between">
     <form id="form" action="/{{ user_id }}/transactions/add_transaction" method="POST"
-      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2">
-      
-      <!-- Form fields for adding transaction -->
-      <form id="form" action="/{{ user_id }}/transactions/add_transaction" method="POST"
-      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full md:w-1/2">
       <h3 class="text-2xl text-primary-700 font-bold text-center mb-6">Add Transaction</h3>
-        <div class="mb-4">
-          <label for="coin_name" class="block text-primary-700 text-sm font-bold mb-2">Name of Coin</label>
-          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="coin_bought" name="coin_name" placeholder="Enter name of coin">
-        </div>
-        <div class="mb-6">
-          <label for="no_of_coins" class="block text-primary-700 text-sm font-bold mb-2">Number of coins bought</label>
-          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="no_of_coins_bought" name="no_of_coins" placeholder="Enter number of coins bought">
-        </div>
-        <div class="mb-6">
-          <label for="price_purchased_at" class="block text-primary-700 text-sm font-bold mb-2">Price Bought</label>
-          <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="price_purchased_at" name="price_purchased_at" placeholder="Enter the unit price(in USD)">
-        </div>
-        <div class="flex items-center justify-between">
-          <button id="sub" type="submit"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            Add
-          </button>
-        </div>
-      </form>
+      <div class="mb-4">
+        <label for="coin_name" class="block text-primary-700 text-sm font-bold mb-2">Name of Coin</label>
+        <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="coin_bought" name="coin_name" placeholder="Enter name of coin">
+      </div>
+      <div class="mb-6">
+        <label for="no_of_coins" class="block text-primary-700 text-sm font-bold mb-2">Number of coins bought</label>
+        <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="no_of_coins_bought" name="no_of_coins" placeholder="Enter number of coins bought">
+      </div>
+      <div class="mb-6">
+        <label for="price_purchased_at" class="block text-primary-700 text-sm font-bold mb-2">Price Bought</label>
+        <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="price_purchased_at" name="price_purchased_at" placeholder="Enter the unit price (in USD)">
+      </div>
+      <div class="flex items-center justify-between">
+        <button id="sub" type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Add
+        </button>
+      </div>
     </form>
 
     <form id="form2" action="/{{ user_id }}/transactions/remove_transaction" method="POST"
-      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2">
-      <!-- Form fields for removing transaction -->
-      <form id="form2" action="/{{ user_id }}/transactions/remove_transaction" method="POST"
-      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h3 class="text-2xl font-bold text-center mb-6">Remove Transaction</h3>
+      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full md:w-1/2">
+      <h3 class="text-2xl text-primary-700 font-bold text-center mb-6">Remove Transaction</h3>
       <div class="mb-4">
         <label for="coin_name" class="block text-primary-700 text-sm font-bold mb-2">Name of Coin</label>
         <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -50,7 +42,7 @@
       <div class="mb-6">
         <label for="no_of_coins" class="block text-primary-700 text-sm font-bold mb-2">Number of coins sold</label>
         <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="no_of_coins_sold" name="no_of_coins" placeholder="Enter the number of coins sold">
+          id="no_of_coins_sold" name="no_of_coinssold" placeholder="Enter the number of coins sold">
       </div>
       <div class="mb-6">
         <label for="price_sold" class="block text-primary-700 text-sm font-bold mb-2">Price sold</label>
@@ -58,14 +50,15 @@
           id="price_sold" name="price_sold" placeholder="Enter the price you sold each unit">
       </div>
       <div class="flex items-center justify-between">
-      <button id="sub2" type="submit"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-        Remove
-    </button>
-  </div>
-</form>
+        <button id="sub2" type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Remove
+        </button>
+      </div>
     </form>
   </div>
+</div>
+
 <h1 class="text-2xl font-bold text-center text-white mb-4">Transactions List</h1>
 <table class="table-auto w-full bg-white">
   <thead>

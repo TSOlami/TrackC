@@ -88,14 +88,14 @@
           <td class="py-2 px-4 border-b">${{ "{:,.2f}".format(trans.amount_spent) }}</td>
           <td class="current_value py-2 px-4 border-b">${{ "{:,.2f}".format(trans.current_value) }}</td>
           <td {% if trans.equity|int > 0 %}class="py-2 px-4 border-b text-green-500"{% else %}class="py-2 px-4 border-b text-red-500"{% endif %}>
-            {{ "{:,.4f}".format(trans.equity) }}%
+            {{ "{:,.2f}".format(trans.equity) }}%
           </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
     <p class="text-xl text-primary-700 font-medium">Portfolio Worth: ${{ "{:,.2f}".format(portfolio_worth) }}</p>
-    <p class="text-xl text-primary-700 font-medium">Total Equity: ${{ "{:,.2f}".format(portfolio_equity) }}</p>
+    <p class="text-xl text-primary-700 font-medium">Total Equity: {{ "{:,.2f}".format(portfolio_equity) }}%</p>
   </section>
 </div>
 </div>

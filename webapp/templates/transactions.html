@@ -88,7 +88,7 @@
           <td class="py-2 px-4 border-b">${{ "{:,.2f}".format(trans.amount_spent) }}</td>
           <td class="current_value py-2 px-4 border-b">${{ "{:,.2f}".format(trans.current_value) }}</td>
           <td {% if trans.equity|int > 0 %}class="py-2 px-4 border-b text-green-500"{% else %}class="py-2 px-4 border-b text-red-500"{% endif %}>
-            {{ "{:,.4f}".format(abs(trans.equity)) }}%
+            {{ "{:,.4f}".format(trans.equity) }}%
           </td>
         </tr>
         {% endfor %}

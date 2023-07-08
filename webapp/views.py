@@ -117,6 +117,10 @@ def get_formatted_news_data(news_url):
     response = requests.get(news_url)
     data = response.json()
     formatted_data = format_data(data)
+
+    if not formatted_data:
+        flash('No news available.', category='info')
+
     return formatted_data
 
 def format_data(data):

@@ -9,7 +9,6 @@
       <p class="text-2xl text-primary-700 font-medium">Portfolio Worth: ${{ "{:,.2f}".format(portfolio_worth) }}</p>
       <p class="text-2xl text-primary-700 font-medium">Total Equity:
         <span {% if portfolio_equity >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
-          {% if portfolio_equity >= 0 %}+{% else %}-{% endif %}
           {{ "{:,.2f}".format(portfolio_equity) }}%
         </span>
       </p>
@@ -57,7 +56,11 @@
         <!-- <td class="py-2 px-4 border-b text-center">{{ obj['slug'] }}</td> -->
         <td class="py-2 px-4 border-b text-center">{{ obj['current_price'] }}</td>
         <td class="py-2 px-4 border-b text-center">{{ obj['total_volume'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['price_change_percentage_24h'] }}</td>
+        <td class="py-2 px-4 border-b text-center">
+          <span {% if obj['price_change_percentage_24h']|float > 0 %}class="text-green-500"{% elif obj['price_change_percentage_24h']|float < 0 %}class="text-red-500"{% endif %}>
+            {{ obj['price_change_percentage_24h'] }}
+          </span>
+        </td>
       </tr>
       {% endfor %}
     </tbody>

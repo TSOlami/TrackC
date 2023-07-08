@@ -17,9 +17,9 @@ def landing():
     return render_template("landing.html")
 
 
-@views.route('/about')
-def about():
-    return render_template("about.html")
+@views.route('/about/<user_id>')
+def about(user_id):
+    return render_template("about.html", user_id=user_id)
 
 
 @views.route('/home/<user_id>')
@@ -40,7 +40,7 @@ def home(user_id):
     for result in results:
         result['current_price'] = '$ ' + "{:,.2f}".format(result['current_price'])
         result['total_volume'] = '$ ' + "{:,.2f}".format(result['total_volume'])
-        result['price_change_percentage_24h'] = "{:,.2f}".format(result['price_change_percentage_24h']) + '%'
+        result['price_change_percentage_24h'] = "{:,.2f}".format(float(result['price_change_percentage_24h'])) + '%'
 
     coin_name_list = []
     amount_spent_list = []

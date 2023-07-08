@@ -38,10 +38,10 @@
   <table class="min-w-full bg-white border border-gray-300 text-center">
     <thead>
       <tr>
-        <th scope="col">#</th>
+        <th scope="col">Rankings</th>
         <th class="py-2 px-4 border-b">Name</th>
         <th class="py-2 px-4 border-b">Symbol</th>
-        <th class="py-2 px-4 border-b">Slug</th>
+        <!-- <th class="py-2 px-4 border-b">Slug</th> -->
         <th class="py-2 px-4 border-b">Price</th>
         <th class="py-2 px-4 border-b">Volume</th>
         <th class="py-2 px-4 border-b">24hr</th>
@@ -52,19 +52,19 @@
       {% for obj in results %}
       <tr>
         <td class="py-2 px-4 border-b text-center">{{ loop.index }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['name'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['symbol'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['slug'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['quote']['USD']['price'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['quote']['USD']['volume_24h'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['quote']['USD']['percent_change_24h'] }}</td>
+        <td class="py-2 px-4 border-b text-center" style="text-transform: uppercase;">{{ obj['name'] }}</td>
+        <td class="py-2 px-4 border-b text-center" style="text-transform: uppercase;">{{ obj['symbol'] }}</td>
+        <!-- <td class="py-2 px-4 border-b text-center">{{ obj['slug'] }}</td> -->
+        <td class="py-2 px-4 border-b text-center">{{ obj['current_price'] }}</td>
+        <td class="py-2 px-4 border-b text-center">{{ obj['total_volume'] }}</td>
+        <td class="py-2 px-4 border-b text-center">{{ obj['price_change_percentage_24h'] }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
   <br/>
   <br/>
-  <a href="/news"><button
+  <a href="{{ url_for('views.news', user_id=user_id) }}"><button
     type="button"
     class="mb-2 block w-full rounded border-2 border-primary px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:border-primary-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:border-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:border-primary-700 active:text-primary-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
     data-te-ripple-init>

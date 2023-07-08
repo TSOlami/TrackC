@@ -42,7 +42,7 @@
       <div class="mb-6">
         <label for="no_of_coins" class="block text-primary-700 text-sm font-bold mb-2">Number of coins sold</label>
         <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="no_of_coins_sold" name="no_of_coinssold" placeholder="Enter the number of coins sold">
+          id="no_of_coins_sold" name="no_of_coins" placeholder="Enter the number of coins sold">
       </div>
       <div class="mb-6">
         <label for="price_sold" class="block text-primary-700 text-sm font-bold mb-2">Price sold</label>
@@ -85,9 +85,9 @@
       <td>{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
       <td>{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
       <td class="current_value">${{ "{:,.2f}".format(trans.current_value) }}</td>
-      <td {% if trans.equity|int >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
-      {% if trans.equity|int >= 0 %}{% else %}{% endif %}
-      {{ "{:,.2f}".format(trans.equity) }}%
+      <td {% if trans.equity|int > 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
+      {% if trans.equity|int >= 0 %}+{% else %}-{% endif %}
+      {{ "{:,.4f}".format(abs(trans.equity)) }}%
       </td>
     </tr>
   {% endfor %}

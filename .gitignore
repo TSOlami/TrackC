@@ -1,0 +1,60 @@
+# Flask specific files and directories
+__pycache__/
+/__pycache__
+/venv
+*.pyc
+instance/
+*.egg-info/
+*.egg
+
+# Development files
+venv/
+*.env
+.env.*
+webapp/.env
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs and backups
+logs/
+*.log
+*.swp
+*~
+
+# Dependency directories
+env/
+lib/
+bin/
+
+# Environment-specific files
+.env
+.env.local
+.env.*.local
+
+# Compiled files
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+*.egg-info
+*.egg
+*.exe
+*.dll
+*.obj
+*.o
+*.a
+*.tgz
+*.swp
+*.log
+*.out
+
+# Miscellaneous
+.DS_Store
+Thumbs.db

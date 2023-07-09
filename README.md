@@ -48,14 +48,12 @@ The app has been deployed on **[Render]** and can be accessed at [app URL](https
  `source venv/bin/activate`
 4. Install the dependencies:
  `pip install -r requirements.txt`
-5. Set up the database:
- `flask db init` 
- `flask db migrate -m "Initial migration"`
- `flask db upgrade`
-6. Set the environment variables:
- `cd webapp`
- `echo "SECRET_KEY=<your-secret-key>" > .env`
- `cd ..`
+5. Set the environment variables:
+ * Rename the `.env.example` file to `.env`.
+ * Open the `.env` file and provide your values for the `SECRET_KEY`
+6. Set up the database:
+ * Rename the `config.py.example` file to `config.py`. 
+ * Open the `config.py` file and provide your values for your database URI
 7. Run the application:
  `flask run`
 8. Open your web browser and visit http://localhost:5000 to access the application.
@@ -82,9 +80,9 @@ The app has been deployed on **[Render]** and can be accessed at [app URL](https
 * [/tailwind-elements](/tailwind-elements) - Directory for custom Tailwind CSS components.
 * [/webapp/](/webapp) - Directory containing the web application code.
 *   [/init.py](/webapp/__init__.py) -  Initialization file for the web application.
-*   [/.env](/webapp/.env) -  Environment variables file (not be committed to version control).
+*   [/.env](/webapp/.env) -  Environment variables file (not to be committed to version control).
 *   [/auth.py](/webapp/auth.py) - Module handling user authentication and authorization.
-*   [/config.py](/webapp/config.py) - Configuration file for the web application.
+*   [/config.py](/webapp/config.py) - Configuration file for the web application (not to be committed to version control)..
 *   [/models.py](/webapp/models.py) - Database models and schema definitions.
 *   [/views.py](/webapp/views.py) - Contains the route handlers and views.
 *   [/static/](/webapp/static) - Directory for static files (CSS, JavaScript, etc.).

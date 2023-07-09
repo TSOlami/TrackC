@@ -5,14 +5,21 @@
   <div class="my-6">
     <section class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <h3 class="text-3xl text-center font-bold text-primary-700 mb-4">Main Portfolio</h3>
-      <p class="text-2xl text-primary-700 font-medium">Name: {{ username }}</p>
-      <p class="text-2xl text-primary-700 font-medium">Portfolio Worth: ${{ "{:,.2f}".format(portfolio_worth) }}</p>
-      <p class="text-2xl text-primary-700 font-medium">Total Equity:
-        <span {% if portfolio_equity >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
-          {% if portfolio_equity >= 0 %}+{% else %}-{% endif %}
-          {{ "{:,.2f}".format(portfolio_equity) }}%
-        </span>
-      </p>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-lg text-primary-700 font-medium">Name: {{ username }}</p>
+          <p class="text-lg text-primary-700 font-medium">Email: {{ user.email }}</p>
+          <p class="text-lg text-primary-700 font-medium">Date Created: {{ user.date_created.strftime("%Y-%m-%d") }}</p>
+        </div>
+        <div>
+          <p class="text-lg text-primary-700 font-medium">Portfolio Worth: ${{ "{:,.2f}".format(portfolio_worth) }}</p>
+          <p class="text-lg text-primary-700 font-medium">Total Equity:
+            <span {% if portfolio_equity >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
+              {{ "{:,.2f}".format(portfolio_equity) }}%
+            </span>
+          </p>
+        </div>
+      </div>
     </section>
   </div>
   <div>
@@ -57,7 +64,11 @@
         <!-- <td class="py-2 px-4 border-b text-center">{{ obj['slug'] }}</td> -->
         <td class="py-2 px-4 border-b text-center">{{ obj['current_price'] }}</td>
         <td class="py-2 px-4 border-b text-center">{{ obj['total_volume'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['price_change_percentage_24h'] }}</td>
+        <td class="py-2 px-4 border-b text-center">
+          <span {% if obj['price_change_percentage_24h']|float > 0 %}class="text-green-500"{% elif obj['price_change_percentage_24h']|float < 0 %}class="text-red-500"{% endif %}>
+            {{ obj['price_change_percentage_24h'] }}
+          </span>
+        </td>
       </tr>
       {% endfor %}
     </tbody>

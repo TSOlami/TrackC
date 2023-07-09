@@ -9,7 +9,6 @@
       <p class="text-2xl text-primary-700 font-medium">Portfolio Worth: ${{ "{:,.2f}".format(portfolio_worth) }}</p>
       <p class="text-2xl text-primary-700 font-medium">Total Equity:
         <span {% if portfolio_equity >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
-          {% if portfolio_equity >= 0 %}+{% else %}-{% endif %}
           {{ "{:,.2f}".format(portfolio_equity) }}%
         </span>
       </p>
@@ -27,7 +26,7 @@
   </div>
 </div>
 
-<div class="container mx-auto my-4">
+
   <br/>
   <br/>
   <br/>
@@ -50,14 +49,18 @@
   
     <tbody>
       {% for obj in results %}
-      <tr>
+      <tr class="trans_table">
         <td class="py-2 px-4 border-b text-center">{{ loop.index }}</td>
         <td class="py-2 px-4 border-b text-center" style="text-transform: uppercase;">{{ obj['name'] }}</td>
         <td class="py-2 px-4 border-b text-center" style="text-transform: uppercase;">{{ obj['symbol'] }}</td>
         <!-- <td class="py-2 px-4 border-b text-center">{{ obj['slug'] }}</td> -->
-        <td class="py-2 px-4 border-b text-center">{{ obj['current_price'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['total_volume'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['price_change_percentage_24h'] }}</td>
+        <td class="current_price py-2 px-4 border-b text-center">{{ obj['current_price'] }}</td>
+        <td class="total_volume py-2 px-4 border-b text-center">{{ obj['total_volume'] }}</td>
+        <td class="price_change_percentage py-2 px-4 border-b text-center">
+          <span {% if obj['price_change_percentage_24h']|float > 0 %}class="text-green-500"{% elif obj['price_change_percentage_24h']|float < 0 %}class="text-red-500"{% endif %}>
+            {{ obj['price_change_percentage_24h'] }}
+          </span>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
@@ -71,6 +74,55 @@
     Check out the latest articles
   </button>
 </div>
+<script>
+  async function fetchCryptoPrices() {
+    $(document).ready(function() {
+      // Loop through each '.trans_table' row
+      console.log("SUP?")
+      $('.trans_table').each(function() {
+        var row = $(this);
+        var coinName = row.find('td:eq(1)').text().toLowerCase();
+        //var numberOfCoins = row.data('coins');
+        //numberOfCoins = parseFloat(numberOfCoins);
+        //var price_purchased_at = row.data('price_purchased_at')
+
+        $.ajax({
+          url: 'https://api.coingecko.com/api/v3/coins/markets',
+          method: 'GET',
+          cache: false,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          data: {
+            'ids': coinName,
+            'vs_currency': 'usd',
+          },
+          success: function(response) {
+            console.log("DONE")
+            var current_price = response[0]['current_price'];
+            var total_volume = response[0]['total_volume'];
+            var price_change_percentage = response[0]['price_change_percentage_24h'];
+            row.find('.current_price').text(parseInt(current_price)); // Update the current value within the row
+            row.find('.total_volume').text(total_volume);
+            row.find('.price_change_percentage').text(price_change_percentage);
+            // var equity = ((data - price_purchased_at) / price_purchased_at) * 100;
+            // //row.find('#equity').text(equity);
+            // if (equity >= 0 ) {
+            //   row.find('#equity').html(`<td class="text-green-500"> + ${Math.abs(equity).toFixed(4)}% </td>`)
+            // } else {
+            //   row.find('#equity').html(`<td class="text-red-500"> - ${Math.abs(equity).toFixed(4)}% </td>`)
+            // }
+          },
+          error: function(xhr, status, error) {
+            // Handle errors
+            console.log("ERROR")
+          }
+        });
+      });
+    });
+    }
+    setInterval(fetchCryptoPrices, 20000);
+</script>
 <br/>
 <br/>
 </a>

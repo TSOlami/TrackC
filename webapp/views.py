@@ -17,9 +17,9 @@ def landing():
     return render_template("landing.html")
 
 
-@views.route('/about')
-def about():
-    return render_template("about.html")
+@views.route('/about/<user_id>')
+def about(user_id):
+    return render_template("about.html", user_id=user_id)
 
 
 @views.route('/home/<user_id>')
@@ -38,9 +38,9 @@ def home(user_id):
     data = response.json()
     results = data
     for result in results:
-        result['current_price'] = '$ ' + "{:,.2f}".format(result['current_price'])
+        result['current_price'] = '$ ' + "{:,.2f}".format(int(result['current_price']))
         result['total_volume'] = '$ ' + "{:,.2f}".format(result['total_volume'])
-        result['price_change_percentage_24h'] = "{:,.2f}".format(result['price_change_percentage_24h']) + '%'
+        result['price_change_percentage_24h'] = "{:,.2f}".format(float(result['price_change_percentage_24h'])) + '%'
 
     coin_name_list = []
     amount_spent_list = []
@@ -145,62 +145,64 @@ def transactions(user_id):
     no_of_coins_list = []
     time_transacted_list = []
     time_updated_list = []
+    image_link_list = []
 
     # Fetch data from the database
     user = User.query.get(user_id)
     transactions = Transaction.query.filter_by(user_id=user_id).all()
-    
+
     coin_prices = {}
     for trans in transactions:
         coin_prices[trans.coin_name.lower()] = trans.price_purchased_at
 
-
+    #print(coin_prices.keys())
     # Make API request to get live price for the coin
-    url = "https://api.coingecko.com/api/v3/simple/price"
+    url = "https://api.coingecko.com/api/v3/coins/markets"
     headers = {'Accepts': 'application/json'}
-
+    params = {'ids': ','.join(coin_prices.keys()), 'vs_currency': 'usd', 'order': ' id_desc'}
+    data = requests.get(url, params=params, headers=headers).json()
     current_values = {}
     equities = {}
 
     try: 
         for trans in transactions:
+            #print(coin_prices.keys())
             coin_name = trans.coin_name.lower()
             coin_name_list.append(trans.coin_name)
-            amount_spent_list.append(trans.amount_spent)
+            amount_spent_list.append(trans.amount_spent * -1)
             symbol_list.append(trans.symbol)
             price_purchased_at_list.append(trans.price_purchased_at)
             no_of_coins = trans.no_of_coins 
-
-            
-            params = {'ids': coin_name, 'vs_currencies': 'usd'}
-            data = requests.get(url, params=params, headers=headers).json() 
-            current_price = data[coin_name]['usd']
-            current_value = current_price * float(trans.no_of_coins)
-            equity = (current_value - (float(trans.no_of_coins) * float(trans.price_purchased_at))) / 100
+            for i in range(len(data)):
+                if data[i]['id'] == coin_name:
+                    current_price = data[i]['current_price']
+                    current_value = current_price * float(trans.no_of_coins)
+                    image_link_list.append(data[i]['image'])
+                    break
+            #equity = (current_value - (float(trans.no_of_coins) * float(trans.price_purchased_at))) / 100
+            equity = ((float(current_price) - float(trans.price_purchased_at)) / float(trans.price_purchased_at)) * 100
             current_values[coin_name] = current_value
             equities[coin_name] = equity
             no_of_coins_list.append(no_of_coins)
             time_transacted_list.append(trans.time_transacted)
             time_updated_list.append(trans.time_updated)
 
-
         # Calculate portfolio worth
         portfolio_worth = sum(current_values.values())
         portfolio_equity = sum(equities.values())
-        
+
         # Sort transactions by time_updated in descending order (most recent on top)
         sorted_transactions = sorted(
             zip(coin_name_list, amount_spent_list, symbol_list, price_purchased_at_list, no_of_coins_list,
-                time_transacted_list, time_updated_list, current_values, equities),
+                time_transacted_list, time_updated_list, image_link_list, current_values, equities),
             key=lambda x: x[-2], reverse=True
         )
 
         # Create a list of dictionaries containing transaction data
         trans_list = []
-        
         for (
             coin_name, amount_spent, symbol, price_purchased_at, no_of_coins, time_transacted,
-            time_updated, current_value, equity
+            time_updated, image_link, current_value, equity
         ) in sorted_transactions:
             current_value = current_values[coin_name.lower()]  
             equity = equities[coin_name.lower()]
@@ -212,6 +214,7 @@ def transactions(user_id):
                 'no_of_coins': no_of_coins,
                 'time_transacted': time_transacted,
                 'time_updated': time_updated,
+                'image_link': image_link,
                 'current_value': current_value,
                 'equity': equity
             }
@@ -219,18 +222,19 @@ def transactions(user_id):
         # Close the session
         db.session.close()
         # Render the template with the fetched data for the user
-        return render_template(
-            'transactions.html',
-            user_id=user_id,
-            username=user.username.title(),
-            trans_list=trans_list,
-            length=len(trans_list),
-            portfolio_worth=portfolio_worth,
-            portfolio_equity=portfolio_equity)
-    
+        return render_template("transactions.html",
+                               user_id=user_id,
+                               username=user.username.title(),
+                               trans_list=trans_list,
+                               length=len(trans_list),
+                               portfolio_worth=portfolio_worth,
+                               portfolio_equity=portfolio_equity
+                               )    
     except Exception as e:
         # Handle the specific exception and flash an appropriate response
         flash('An error occurred!', category='error')
+        print(e)
+        return 'ERROR'
         return redirect(url_for('views.transactions', user_id=user_id))
         
 
@@ -252,19 +256,30 @@ def new_transactions(user_id):
             return redirect(url_for("views.transactions", user_id=user_id))
 
         # Setup CoinMarketCap API 
-        url = "https://api.coingecko.com/api/v3/simple/price"
+        url = "https://api.coingecko.com/api/v3/coins/markets"
         headers = {'Accepts': 'application/json'}
-        params = {'ids': coin_name, 'vs_currencies': 'usd'}
-        response = requests.get(url, params=params, headers=headers)
-        data = response.json()
-
-        current_price = data[coin_name]['usd']
-        symbol = 'NA'
+        params = {'ids': coin_name, 'vs_currency': 'usd', 'order': ' id_desc'}
+        data = requests.get(url, params=params, headers=headers).json()
+        current_price = data[0]['current_price']
+        symbol = data[0]['symbol'].upper()
 
         # Create a database session
         session = db.session()
 
         # Check if the transaction already exists for the user and coin
+
+        new_history = TransactionHistory(
+            user_id=user_id,
+            coin_name=coin_name,
+            symbol=symbol,
+            price_purchased_at=price_purchased_at,
+            amount_spent=amount_spent,
+            no_of_coins=no_of_coins,
+            time_transacted=datetime.now(),
+            transaction_type = 0
+        )
+        session.add(new_history)
+        session.commit()
         existing_trans = Transaction.query.filter_by(user_id=user_id, coin_name=coin_name.capitalize()).first()
         if existing_trans:
             # Update the existing transaction
@@ -292,11 +307,10 @@ def new_transactions(user_id):
             user.portfolio_worth = portfolio_worth
             session.commit()
             session.close()
-            if (response.history is None):
-                flash("Transaction added successfully.", category="success")
+            flash("Transaction added successfully.", category="success")
 
         # If no matching cryptocurrency found
-        if (response.history is None):
+        if data is None:
             flash("Unable to add transaction.", category="error")
         return redirect(url_for("views.transactions", user_id=user_id))
 
@@ -331,6 +345,19 @@ def remove_transaction(user_id):
                 trans.time_updated = datetime.now()
                 portfolio_worth = float(User.query.get(user_id).portfolio_worth) - float(price_sold)
                 User.query.get(user_id).portfolio_worth = portfolio_worth
+                new_history = TransactionHistory(
+                        user_id=user_id,
+                        coin_name=coin_name,
+                        symbol=trans.symbol,
+                        price_purchased_at=price_sold,
+                        amount_spent=new_amount_spent,
+                        no_of_coins=no_of_coins,
+                        time_transacted=datetime.now(),
+                        transaction_type = 1
+                        )
+                db.session.add(new_history)
+                if new_no_of_coins <= 0:
+                    db.session.delete(trans)
                 db.session.commit()
                 db.session.close()
                 flash("Transaction removed successfully.", category="success")
@@ -344,3 +371,73 @@ def remove_transaction(user_id):
         # Handle the specific exception and flash an appropriate response
         flash("An error occurred!", category="error")
         return redirect(url_for("views.transactions", user_id=user_id))
+    
+@views.route('/<user_id>/transaction-history', methods=['GET'])
+@login_required
+def transaction_history(user_id):
+    """Endpoint to fetch data from the database"""
+
+    coin_name_list = []
+    amount_spent_list = []
+    symbol_list = []
+    price_purchased_at_list = []
+    no_of_coins_list = []
+    time_transacted_list = []
+    #image_link_list = []
+    transaction_type_list = []
+
+    # Fetch data from the database
+    user = User.query.get(user_id)
+    transaction_history = TransactionHistory.query.filter_by(user_id=user_id).all()
+
+    try: 
+        for trans in transaction_history:
+            #print(coin_prices.keys())
+            coin_name = trans.coin_name.lower()
+            coin_name_list.append(trans.coin_name)
+            amount_spent_list.append(trans.amount_spent * -1)
+            symbol_list.append(trans.symbol)
+            price_purchased_at_list.append(trans.price_purchased_at)
+            no_of_coins = trans.no_of_coins 
+            no_of_coins_list.append(no_of_coins)
+            time_transacted_list.append(trans.time_transacted)
+            #image_link_list.append(trans.image_link)
+            transaction_type_list.append(trans.transaction_type)
+
+        # Sort transactions by time_updated in descending order (most recent on top)
+        sorted_transactions = sorted(
+            zip(coin_name_list, amount_spent_list, symbol_list, price_purchased_at_list, no_of_coins_list,
+                time_transacted_list, transaction_type_list),
+            key=lambda x: x[-2], reverse=True
+        )
+
+        # Create a list of dictionaries containing transaction data
+        trans_list = []
+        for (
+            coin_name, amount_spent, symbol, price_purchased_at, no_of_coins, time_transacted,
+            transaction_type
+        ) in sorted_transactions:
+            trans_dict = {
+                'coin_name': coin_name,
+                'amount_spent': amount_spent,
+                'symbol': symbol,
+                'price_purchased_at': price_purchased_at,
+                'no_of_coins': no_of_coins,
+                'transaction_type': transaction_type,
+                'time_transacted': time_transacted,
+            }
+            trans_list.append(trans_dict)
+        # Close the session
+        db.session.close()
+        # Render the template with the fetched data for the user
+        return render_template("transaction_history.html",
+                               user_id=user_id,
+                               username=user.username.title(),
+                               trans_list=trans_list
+                               )    
+    except Exception as e:
+        # Handle the specific exception and flash an appropriate response
+        flash('An error occurred!', category='error')
+        print(e)
+        return 'ERROR'
+        return redirect(url_for('views.transactions', user_id=user_id))

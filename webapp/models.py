@@ -4,7 +4,19 @@ from sqlalchemy import *
 import uuid
 
 
+class TransactionHistory(db.Model):
+    """ The Transaction Model """
 
+    __tablename__ = 'transaction history'
+    id = db.Column(db.String(40), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = db.Column(db.String, db.ForeignKey('users.id'))
+    coin_name = db.Column(db.String(30), nullable=False)
+    symbol =  db.Column(db.String(30), nullable=False)
+    price_purchased_at = db.Column(db.Numeric, nullable=False)
+    amount_spent = db.Column(db.Numeric, nullable=False)
+    no_of_coins = db.Column(db.Numeric, nullable=False)
+    time_transacted = db.Column(db.DateTime(timezone=True))
+    transaction_type = db.Column(db.Numeric, nullable=False)
 
 class Transaction(db.Model):
     """ The Transaction Model """

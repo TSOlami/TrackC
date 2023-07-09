@@ -1,0 +1,14 @@
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+class ApplicationConfig:
+    
+    SECRET_KEY = os.environ["SECRET_KEY"]
+    
+    # Configure the Flask app to use the PostgreSQL database
+    SQLALCHEMY_DATABASE_URI = 'your_database_credentials'
+    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+

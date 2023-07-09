@@ -179,7 +179,7 @@ def transactions(user_id):
                     current_value = current_price * float(trans.no_of_coins)
                     image_link_list.append(data[i]['image'])
                     break
-            #equity = (current_value - (float(trans.no_of_coins) * float(trans.price_purchased_at))) / 100
+
             equity = ((float(current_price) - float(trans.price_purchased_at)) / float(trans.price_purchased_at)) * 100
             current_values[coin_name] = current_value
             equities[coin_name] = equity

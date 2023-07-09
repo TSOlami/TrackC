@@ -73,41 +73,39 @@ The app has been deployed on **[Render]** and can be accessed at [app URL](https
 [main.py](main.py) - The main entry point of the application. It contains the Flask app setup.
 [requirements.txt](requirements.txt ) - List of Python dependencies required by the application.
 [tailwind.config.js](tailwind.config.js) -  Configuration file for Tailwind CSS.
-[README.md](README.md) - The main entry point of the application. It contains the Flask app setup.
-[package.json](package.json) - The main entry point of the application. It contains the Flask app setup.
-[package-lock.json](package-lock.json) - The main entry point of the application. It contains the Flask app setup.
-[.gitignore](.gitignore) - The main entry point of the application. It contains the Flask app setup.
-[node_modules](node_modules) - The main entry point of the application. It contains the Flask app setup.
-[tailwind-elements](tailwind-elements) - The main entry point of the application. It contains the Flask app setup.
-[webapp](webapp) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/init.py](/webapp/__init__.py) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/.env](webapp/.env) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/auth.py](webapp/auth.py) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/config.py](webapp/config.py) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/models.py](webapp/models.py) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/views.py](webapp/views.py) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/static](webapp/static) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/static/css](webapp/static/css) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/static/css/dist](webapp/static/css/dist) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/static/css/dist/output.css](webapp/static/css/dist/output.css) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/static/src](webapp/static/src) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/static/src/input.css](webapp/static/src/input.css) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/static/scripts:](webapp/static/scripts:) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/static/scripts/index.js](webapp/static/scripts/index.js) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/static/scripts/alert-dismiss.js](webapp/static/scripts/alert-dismiss.js) - The main entry point of the application. It contains the Flask app setup.
-  [webapp/static/main.css](webapp/static/main.css) - The main entry point of the application. It contains the Flask app setup. 
-  [templates](/webapp/templates) - The main entry point of the application. It contains the Flask app setup.
-[webapp/templates/about.html](webapp/templates/about.html) - The main entry point of the application. It contains the Flask app setup.
-[webapp/templates/base.html](webapp/templates/base.html) - The main entry point of the application. It contains the Flask app setup.
-[webapp/templates/landing.html](webapp/templates/landing.html) - The main entry point of the application. It contains the Flask app setup.
-[main.py](main.py) - The main entry point of the application. It contains the Flask app setup.
-[main.py](main.py) - The main entry point of the application. It contains the Flask app setup.
-[main.py](main.py) - The main entry point of the application. It contains the Flask app setup.
-[main.py](main.py) - The main entry point of the application. It contains the Flask app setup.
-[main.py](main.py) - The main entry point of the application. It contains the Flask app setup.
-[main.py](main.py) - The main entry point of the application. It contains the Flask app setup.
-[main.py](main.py) - The main entry point of the application. It contains the Flask app setup.
-
+[README.md](README.md) - The project's README file.
+[package.json](package.json) - Configuration file for npm and Node.js packages.
+[package-lock.json](package-lock.json) - Generated file that locks the versions of npm packages.
+[build.sh](build.sh) - A shell script for building the project.
+[.gitignore](.gitignore) -  Specifies which files and directories should be ignored by Git.
+[node_modules](node_modules) -  Directory containing the installed Node.js packages.
+[tailwind-elements](tailwind-elements) - Directory for custom Tailwind CSS components.
+[webapp](webapp) - Directory containing the web application code.
+  [/init.py](/webapp/__init__.py) -  Initialization file for the web application.
+  [/.env](webapp/.env) -  Environment variables file (not be committed to version control).
+  [/auth.py](webapp/auth.py) - Module handling user authentication and authorization.
+  [/config.py](webapp/config.py) - Configuration file for the web application.
+  [/models.py](webapp/models.py) - Database models and schema definitions.
+  [/views.py](webapp/views.py) - Contains the route handlers and views.
+  [/static](webapp/static) - Directory for static files (CSS, JavaScript, etc.).
+    [/static/css](webapp/static/css) -  Directory for CSS files.
+      [/static/css/dist](webapp/static/css/dist) - Directory for compiled CSS files.
+        [/static/css/dist/output.css](webapp/static/css/dist/output.css) - Compiled CSS file for the project.
+    [/static/src](webapp/static/src) - Directory for source CSS and JavaScript files.
+      [/static/src/input.css](webapp/static/src/input.css) - Example source CSS file.
+    [/static/scripts:](webapp/static/scripts:) -  Directory for JavaScript files.
+      [/static/scripts/index.js](webapp/static/scripts/index.js) - Example JavaScript file.
+      [/static/scripts/alert-dismiss.js](webapp/static/scripts/alert-dismiss.js) - JavaScript file for dismissing alerts.
+    [/static/main.css](webapp/static/main.css) - Example main CSS file.
+  [templates](/webapp/templates) - Directory for HTML templates.
+    [/templates/about.html](webapp/templates/about.html) - Example About page template.
+    [/templates/base.html](webapp/templates/base.html) - Base template used as the layout for other templates.
+    [/templates/landing.html](webapp/templates/landing.html) - Example landing page template.
+    [/templates/login.html](webapp/templates/login.html) -  Login page template.
+    [/templates/home.html](webapp/templates/home.html) - Home page template.
+    [/templates/news.html](webapp/templates/news.html) - News page template.
+    [/templates/sign_up.html](webapp/templates/sign_up.html) - Sign up page template.
+    [/templates/transactions.html](webapp/templates/transactions.html) - Transactions page template.
 
 ## Bugs
 No known bugs at this time. 
@@ -119,5 +117,6 @@ Contributions to the Portfolio Tracker project are welcome! If you find any issu
 Tijani Saheed Olalekan - [Github](https://github.com/TSOlami) / [Twitter](https://twitter.com/def_input_name) / [Linkedin](https://linkedin.com/in/saheed-tijani-b9935625b)
 Timilehin Olusa - [Github](https://github.com/DeepBrain07) / [Twitter](https://twitter.com/TimmieOlusa)
 Abdulkareem Abdulquddus Olayinka - [Github](https://github.com/Slimanyy) / [Twitter](https://twitter.com/Slimany_) / [Linkedin](https://www.linkedin.com/in/slimany/)
+
 ## License
 Public Domain. No copy write protection. 

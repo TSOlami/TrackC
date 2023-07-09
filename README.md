@@ -55,7 +55,7 @@ The app has been deployed on **[Render]** and can be accessed at [app URL](https
  * Rename the `config.py.example` file to `config.py`. 
  * Open the `config.py` file and provide your values for your database URI
 7. Run the application:
- `flask run`
+ Navigate to the directory where the main.py file is located and run `python main.py`
 8. Open your web browser and visit http://localhost:5000 to access the application.
 
 ## Usage

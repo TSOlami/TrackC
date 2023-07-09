@@ -112,9 +112,9 @@ No known bugs at this time.
 Contributions to the Portfolio Tracker project are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request. You can also contact us through our [email](trackcteam@gmail.com)
 
 ## Authors
-Tijani Saheed Olalekan - [Github](https://github.com/TSOlami) / [Twitter](https://twitter.com/def_input_name) / [Linkedin](https://linkedin.com/in/saheed-tijani-b9935625b)
-Timilehin Olusa - [Github](https://github.com/DeepBrain07) / [Twitter](https://twitter.com/TimmieOlusa)
-Abdulkareem Abdulquddus Olayinka - [Github](https://github.com/Slimanyy) / [Twitter](https://twitter.com/Slimany_) / [Linkedin](https://www.linkedin.com/in/slimany/)
+1. Tijani Saheed Olalekan - [Github](https://github.com/TSOlami) / [Twitter](https://twitter.com/def_input_name) / [Linkedin](https://linkedin.com/in/saheed-tijani-b9935625b)
+2. Timilehin Olusa - [Github](https://github.com/DeepBrain07) / [Twitter](https://twitter.com/TimmieOlusa) / [Linkedin](https://www.linkedin.com/in/timilehin-olusa-781386250/)
+3. Abdulkareem Abdulquddus Olayinka - [Github](https://github.com/Slimanyy) / [Twitter](https://twitter.com/Slimany_) / [Linkedin](https://www.linkedin.com/in/slimany/)
 
 ## License
 Public Domain. No copy write protection. 

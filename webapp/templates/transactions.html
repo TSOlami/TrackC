@@ -88,7 +88,7 @@
       <td class="current_value py-2 px-4 border-b text-center">${{ "{:,.2f}".format(trans.current_value) }}</td>
       <td id="equity" {% if trans.equity >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}>
       {% if trans.equity >= 0 %}+{% else %}-{% endif %}
-      {{ "{:,.4f}".format(trans.equity|abs) }}%
+      {{ "{:,.2f}".format(trans.equity|abs) }}%
       </td>
     </tr>
   {% endfor %}

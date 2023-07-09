@@ -232,11 +232,10 @@ def transactions(user_id):
                                )    
     except Exception as e:
         # Handle the specific exception and flash an appropriate response
-        flash('An error occurred!', category='error')
-        print(e)
-        return 'ERROR'
-        return redirect(url_for('views.transactions', user_id=user_id))
-        
+        error_message = f"An error occurred: {str(e)}"
+        flash(error_message, category='error')
+        return redirect(url_for('views.home', user_id=user_id))
+    
 
 
 @views.route('/<user_id>/transactions/add_transaction', methods=['POST'])
@@ -439,5 +438,4 @@ def transaction_history(user_id):
         # Handle the specific exception and flash an appropriate response
         flash('An error occurred!', category='error')
         print(e)
-        return 'ERROR'
         return redirect(url_for('views.transactions', user_id=user_id))

@@ -77,7 +77,8 @@ def sign_up():
             flash(str(e), category='error')
         except Exception as e:
             db.session.rollback()
-            flash('An unexpected error occurred. Please try again later.', category='error')
+            error_message = f"An error occurred: {str(e)}"
+            flash(error_message, category='error')
             # Log the error for debugging purposes
             print('Error:', str(e))
 

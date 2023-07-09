@@ -1,4 +1,5 @@
 # Flask specific files and directories
+__pycache__
 __pycache__/
 /__pycache__
 /venv

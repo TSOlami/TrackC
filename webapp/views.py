@@ -38,7 +38,7 @@ def home(user_id):
     data = response.json()
     results = data
     for result in results:
-        result['current_price'] = '$ ' + "{:,.2f}".format(int(result['current_price']))
+        result['current_price'] = '$ ' + "{:,.2f}".format(float(result['current_price']))
         result['total_volume'] = '$ ' + "{:,.2f}".format(result['total_volume'])
         result['price_change_percentage_24h'] = "{:,.2f}".format(float(result['price_change_percentage_24h'])) + '%'
 
@@ -228,13 +228,12 @@ def transactions(user_id):
                                trans_list=trans_list,
                                length=len(trans_list),
                                portfolio_worth=portfolio_worth,
-                               portfolio_equity=portfolio_equity
+                               portfolio_equity=portfolio_equity,
+                               total_amount_spent=sum(amount_spent_list)
                                )    
     except Exception as e:
         # Handle the specific exception and flash an appropriate response
         flash('An error occurred!', category='error')
-        print(e)
-        return 'ERROR'
         return redirect(url_for('views.transactions', user_id=user_id))
         
 
@@ -317,6 +316,7 @@ def new_transactions(user_id):
     except (RequestException, ConnectionError, Timeout, TooManyRedirects, KeyError) as e:
         # Handle the specific exception and flash an appropriate response
         flash("An error occurred while adding the transaction.", category="error")
+        print(e)
         return redirect(url_for("views.transactions", user_id=user_id))
     
 

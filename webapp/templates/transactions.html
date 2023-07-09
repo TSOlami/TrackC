@@ -60,6 +60,7 @@
 </div>
 <br/>
 <br/>
+<<<<<<< HEAD
 {% if trans_list %}
   <h1 class="text-2xl font-bold text-center text-blue-900 mb-4">HOLDINGS</h1>
   <table class="table-auto w-full bg-white">
@@ -98,6 +99,42 @@
   {% else %}
   <h1 class="text-2xl font-bold text-center text-blue-900 mb-4">NO TRANSACTION</h1>   
   {% endif %}
+=======
+<h1 class="text-2xl font-bold text-center text-blue-900 mb-4">HOLDINGS</h1>
+<table class="table-auto w-full bg-white">
+  <thead>
+    <tr class="bg-primary-800 font-medium text-white">
+      <th class="py-2 px-4">Name</th>
+      <th class="py-2 px-4">Symbol</th>
+      <th class="py-2 px-4">Price Purchased at</th>
+      <th class="py-2 px-4">Cost Basis</th>
+      <th class="py-2 px-4">Number of Coins</th>
+      <th class="py-2 px-4">Time Transacted</th>
+      <th class="py-2 px-4">Time Updated</th>
+      <th class="py-2 px-4">Current value</th>
+      <th class="py-2 px-4">Equity</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for trans in trans_list %}
+    <tr class="trans_table" data-coins="{{ trans.no_of_coins }}" data-price_purchased_at="{{ trans.price_purchased_at }}">
+      <td class = "py-2 px-4 border-b text-center" style="display: flex; align-items: center;"><img src="{{trans.image_link}}" alt="" style="width: 25px; height: 25px; object-fit: cover; margin-right: 10px;"><span>{{ trans.coin_name }}</span></td>
+      <td class = "py-2 px-4 border-b text-center">{{ trans.symbol }}</td>
+      <td class = "py-2 px-4 border-b text-center">${{ trans.price_purchased_at }}</td>
+      <td {% if trans.amount_spent >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}> ${{ "{:,.2f}".format(trans.amount_spent|abs) }}</td>
+      <td class = "py-2 px-4 border-b text-center">{{ trans.no_of_coins }}</td>
+      <td class = "py-2 px-4 border-b text-center">{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+      <td class = "py-2 px-4 border-b text-center">{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+      <td class="current_value py-2 px-4 border-b text-center">${{ "{:,.2f}".format(trans.current_value) }}</td>
+      <td id="equity" {% if trans.equity >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}>
+      {% if trans.equity >= 0 %}+{% else %}-{% endif %}
+      {{ "{:,.2f}".format(trans.equity|abs) }}%
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>    
+>>>>>>> ready
 </div>
 <br/>
 <br/>

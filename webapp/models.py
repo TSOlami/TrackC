@@ -31,6 +31,7 @@ class Transaction(db.Model):
     no_of_coins = db.Column(db.Numeric, nullable=False)
     time_transacted = db.Column(db.DateTime(timezone=True), default=func.now())
     time_updated = db.Column(db.DateTime(timezone=True), default=func.now())
+    added = db.Column(db.Numeric, default=0)
 
 class User(db.Model, UserMixin):
     """The User Model"""

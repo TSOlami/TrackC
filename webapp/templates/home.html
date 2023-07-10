@@ -76,14 +76,9 @@
   async function fetchCryptoPrices() {
     $(document).ready(function() {
       // Loop through each '.trans_table' row
-      console.log("SUP?")
       $('.trans_table').each(function() {
         var row = $(this);
         var coinName = row.find('td:eq(1)').text().toLowerCase();
-        //var numberOfCoins = row.data('coins');
-        //numberOfCoins = parseFloat(numberOfCoins);
-        //var price_purchased_at = row.data('price_purchased_at')
-
         $.ajax({
           url: 'https://api.coingecko.com/api/v3/coins/markets',
           method: 'GET',
@@ -103,13 +98,6 @@
             row.find('.current_price').text(parseInt(current_price)); // Update the current value within the row
             row.find('.total_volume').text(total_volume);
             row.find('.price_change_percentage').text(price_change_percentage);
-            // var equity = ((data - price_purchased_at) / price_purchased_at) * 100;
-            // //row.find('#equity').text(equity);
-            // if (equity >= 0 ) {
-            //   row.find('#equity').html(`<td class="text-green-500"> + ${Math.abs(equity).toFixed(4)}% </td>`)
-            // } else {
-            //   row.find('#equity').html(`<td class="text-red-500"> - ${Math.abs(equity).toFixed(4)}% </td>`)
-            // }
           },
           error: function(xhr, status, error) {
             // Handle errors

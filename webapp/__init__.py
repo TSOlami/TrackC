@@ -1,19 +1,25 @@
 from flask import Flask
+from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from .config import ApplicationConfig
 from flask_login import LoginManager
 
 db = SQLAlchemy()
+mail = Mail()
+
 
 def create_app():
     # configure app
     app = Flask(__name__, static_folder='static')
 
     app.config.from_object(ApplicationConfig)
-    
+
     # Initialize the SQLAlchemy extension
     db.init_app(app)
-    
+
+    # Initialize the Mail extension
+    mail.init_app(app)
+
     from .views import views
     from .auth import auth
 
@@ -21,8 +27,7 @@ def create_app():
     app.register_blueprint(auth, url_prefix='/')
 
     from .models import User, Transaction
-    
-    
+
     # Create the database tables
     with app.app_context():
         db.create_all()
@@ -38,9 +43,10 @@ def create_app():
             # This means the user is a guest
             return None
         user = User.query.get(user_id)
-        return user  
+        return user
 
     return app
+
 
 def create_database(app):
     """Create database tables if they don't exist"""

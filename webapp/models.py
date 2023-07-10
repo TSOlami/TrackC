@@ -2,6 +2,13 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy import *
 import uuid
+import secrets, os
+from flask import url_for
+from flask_mail import Message
+from webapp import mail
+from itsdangerous import URLSafeTimedSerializer as Serializer
+
+
 
 
 class TransactionHistory(db.Model):
@@ -44,3 +51,20 @@ class User(db.Model, UserMixin):
     transactions = db.relationship('Transaction', backref='user', lazy=True)
     portfolio_worth = db.Column(db.Integer, default=0)
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
+
+    # Generate a password reset token
+    def generate_reset_token(self, expires=1800):
+        s = Serializer(os.environ['SECRET_KEY'])
+        return s.dumps({'user_id': self.id})
+    
+    
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(os.environ['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+

@@ -27,12 +27,7 @@ def send_reset_email(user):
                   sender=os.environ['MAIL_USERNAME'], recipients=[user.email])
     msg.body = message
     mail.send(msg)
-
-
-# @views.route('/', methods=['GET', 'POST'])
-# def landing():
-#     return render_template("landing.html")
-
+    
 
 @views.route('/', methods=['GET', 'POST'])
 def landing():

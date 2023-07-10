@@ -87,7 +87,6 @@
       <td class = "py-2 px-4 border-b text-center">{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
       <td class="current_value py-2 px-4 border-b text-center">${{ "{:,.2f}".format(trans.current_value) }}</td>
       <td id="equity" {% if trans.equity >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}>
-      {% if trans.equity >= 0 %}+{% else %}-{% endif %}
       {{ "{:,.2f}".format(trans.equity|abs) }}%
       </td>
     </tr>
@@ -105,9 +104,9 @@
   var portfolio_worth = {{portfolio_worth}};
   var total_amount_spent = {{total_amount_spent}};
   if (portfolio_worth >= total_amount_spent ) {
-    $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(4)} </h1>`)
+    $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(2)} </h1>`)
     } else {
-      $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(4)} </h1>`)
+      $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(2)} </h1>`)
   };
   $('#chartContainer').html(`<br/><br/><br/><br/><h1 class="text-black-500 font-medium">  Loading Chart... </h1>`)
   async function fetchCryptoPrices() {
@@ -142,15 +141,15 @@
             var equity = ((data - price_purchased_at) / price_purchased_at) * 100;
             //row.find('#equity').text(equity);
             if (equity >= 0 ) {
-              row.find('#equity').html(`<td class="text-green-500"> + ${Math.abs(equity).toFixed(4)}% </td>`)
+              row.find('#equity').html(`<td class="text-green-500"> + ${Math.abs(equity).toFixed(2)}% </td>`)
             } else {
-              row.find('#equity').html(`<td class="text-red-500"> - ${Math.abs(equity).toFixed(4)}% </td>`)
+              row.find('#equity').html(`<td class="text-red-500"> - ${Math.abs(equity).toFixed(2)}% </td>`)
             };
 
             if (portfolio_worth >= total_amount_spent ) {
-              $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(4)} </h1>`)
+              $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(2)} </h1>`)
             } else {
-              $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(4)} </h1>`)
+              $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(2)} </h1>`)
             };
             //$('#portfolio_worth').text(portfolio_worth);
             var value = { x: new Date(), y: portfolio_worth };
@@ -185,7 +184,7 @@
       });
     });
     }
-    setInterval(fetchCryptoPrices, 20000);
+    setInterval(fetchCryptoPrices, 100000);
 </script>
 <br/>
 <br/>

@@ -31,7 +31,11 @@
 			hsl(218, 41%, 20%) 75%,
 			hsl(218, 41%, 19%) 80%,
 			transparent 100%);
-	  }
+	    }
+	  #btn-back-to-top {
+		position: fixed;
+		display: none;
+		}
 	</style>
 	<!-- Navbar -->
 	<nav class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start" data-te-navbar-ref>
@@ -61,7 +65,7 @@
 			<!-- Left links -->
 			<ul class="mr-auto lg:flex lg:flex-row" data-te-navbar-nav-ref>
 			  <li data-te-nav-item-ref>
-				<a class="block py-2 pr-2 text-3xl text-primary-600 mb-4 font-bold transition duration-150 ease-in-out hover:text-primary-700 focus:text-neutral-600 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-black/80 dark:[&.active]:text-white/80" href="/" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light" disabled>TrackC</a>
+				<a class="block py-2 pr-2 text-3xl text-primary-600 mb-4 font-bold transition duration-150 ease-in-out hover:text-primary-700 focus:text-primary-600 disabled:text-primary/30 dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-primary/80 dark:[&.active]:text-white/80" href="/" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light" disabled>TrackC</a>
 			  </li>
 			</ul>
 			<!-- Left links -->
@@ -103,9 +107,39 @@
 		  <!-- Right elements -->
 		</div>
 		<!-- Container wrapper -->
-	  </nav>
-	  <!-- Navbar -->
-  
+	</nav>
+	<!-- Navbar -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+	<div class="bg-white">
+		{% if messages %}
+		{% for category, message in messages %}
+		{% if category == 'error' %}
+			<div class="mb-3 hidden w-full items-center rounded-lg bg-warning-100 px-6 py-5 text-base text-warning-800 data-[te-alert-show]:inline-flex" role="alert" data-te-alert-init data-te-alert-show>
+			<strong class="mr-1">ERROR! </strong> {{ message }}
+			<button type="button" class="ml-auto box-content rounded-none border-none p-1 text-warning-900 opacity-50 hover:text-warning-900 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none" data-te-alert-dismiss aria-label="Close">
+				<span class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+					<path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+				</svg>
+				</span>
+			</button>
+			</div>
+		{% else %}
+			<div class="mb-3 hidden w-full items-center rounded-lg bg-success-100 px-6 py-5 text-base text-success-800 data-[te-alert-show]:inline-flex" role="alert" data-te-alert-init data-te-alert-show>
+			<strong class="mr-1">SUCCESS! </strong> {{ message }}
+			<button type="button" class="ml-auto box-content rounded-none border-none p-1 text-success-900 opacity-50 hover:text-success-900 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none" data-te-alert-dismiss aria-label="Close">
+				<span class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+					<path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+				</svg>
+				</span>
+			</button>
+			</div>
+		{% endif %}
+		{% endfor %}
+	{% endif %}
+	</div>
+	{% endwith %}
 	<!-- Jumbotron -->
 	<div class="px-6 py-12 text-center md:px-12 lg:text-left">
 	  <div class="w-100 mx-auto sm:max-w-2xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl">
@@ -695,7 +729,7 @@
 				<div class="relative mb-6" data-te-input-wrapper-init>
 					<input type="text"
 						class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-						name="name" placeholder="Name" />
+						name="name" placeholder="Please enter your name" />
 					<label
 						class="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
 						for="exampleInput90">Name
@@ -704,14 +738,14 @@
 				<div class="relative mb-6" data-te-input-wrapper-init>
 					<input type="email"
 						class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-						name="email" placeholder="Email address" />
+						name="email" placeholder="Please enter your email address" />
 					<label
 						class="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
 						for="exampleInput91">Email address
 					</label>
 				</div>	
 				<div class="relative mb-6" data-te-input-wrapper-init>
-					<textarea class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0" id="message" name="message" rows="3" placeholder="Your message"></textarea>
+					<textarea class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0" id="message" name="message" rows="3" placeholder="Please enter your message"></textarea>
 					<label for="message" class="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">Message</label>
 				</div>
 				<div class="mb-6 inline-block min-h-[1.5rem] justify-center pl-[1.5rem] md:flex">
@@ -775,7 +809,10 @@ class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutr
 	</div>
   </div>
 </div>
-
+<!-- Back to top button -->
+<button type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="inline-block p-3 bg-primary-600 text-primary font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg transition duration-150 ease-in-out bottom-5 right-5" id="btn-back-to-top">
+	<svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-4 h-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>
+  </button>
 <!--Copyright section-->
 <div
   class="bg-neutral-300 p-4 text-center text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
@@ -787,5 +824,7 @@ class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutr
 </footer>
   <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
   <script type="module" src="../static/scripts/index.js"></script>
+  <script type="module" src="../static/scripts/alert-dismiss.js"></script>
+  <script type="module" src="../static/scripts/back-to-top.js"></script>
 </body>
 </html>

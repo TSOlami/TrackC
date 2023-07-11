@@ -27,7 +27,7 @@ def send_reset_email(user):
                   sender=os.environ['MAIL_USERNAME'], recipients=[user.email])
     msg.body = message
     mail.send(msg)
-    
+
 
 @views.route('/', methods=['GET', 'POST'])
 def landing():
@@ -102,7 +102,7 @@ def home(user_id):
     headers = {'Accepts': 'application/json'}
     params = {'ids': ','.join(coin_prices.keys()), 'vs_currencies': 'usd'}
     data = requests.get(url, params=params, headers=headers).json()
-
+    print(data)
     current_values = {}
     equities = {}
 

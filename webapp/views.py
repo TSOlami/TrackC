@@ -1,6 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from webapp import mail
-import json
 import os
 import requests
 from flask import Blueprint, flash, render_template, request, redirect, url_for, abort
@@ -10,15 +9,13 @@ from requests.exceptions import RequestException, ConnectionError, Timeout, TooM
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import *
 from .config import *
-import cgi
 
 views = Blueprint('views', __name__)
 
 LIVE_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price"
 
+
 # Send the password reset email
-
-
 @staticmethod
 def send_reset_email(user):
     token = user.generate_reset_token()
@@ -33,6 +30,7 @@ def send_reset_email(user):
 @views.route('/', methods=['GET', 'POST'])
 def landing():
     if request.method == 'POST':
+        # Collect the form data
         name = request.form['name']
         email = request.form['email']
         message = request.form['message']
@@ -41,25 +39,26 @@ def landing():
 
         recipients = [os.environ['MAIL_USERNAME']]
 
+        # Check if the send copy option is selected and send a copy to the user
         if send_copy:
             recipients.append(email)
 
         msg = Message('New Message from Trackc Contact form',
                       sender=os.environ['MAIL_USERNAME'], recipients=recipients)
         msg.body = f"Name: {name}\nEmail: {email}\nMessage: {message}"
-
+        # Send the message
         try:
             mail.send(msg)
             flash('Message sent successfully!', 'success')
         except Exception as e:
             flash(
                 'An error occurred while sending the message. Please try again.', 'error')
-            print(str(e))
     return render_template('landing.html')
 
 
 @views.route('/about/<user_id>')
 def about(user_id):
+    """The about page endpoint"""
     return render_template("about.html", user_id=user_id)
 
 
@@ -78,11 +77,14 @@ def home(user_id):
     response = requests.get(url, params=parameters)
     data = response.json()
     results = data
+    
+    # Iterate through the results and get the required data
     for result in results:
         result['current_price'] = '$ ' + "{:,.2f}".format(float(result['current_price']))
         result['total_volume'] = '$ ' + "{:,.2f}".format(result['total_volume'])
         result['price_change_percentage_24h'] = "{:,.2f}".format(float(result['price_change_percentage_24h'])) + '%'
 
+    # Create a list for storing values
     coin_name_list = []
     amount_spent_list = []
     symbol_list = []
@@ -95,18 +97,22 @@ def home(user_id):
     user = User.query.get(user_id)
     transactions = Transaction.query.filter_by(user_id=user_id).all()
 
+    # Create a dictionary for storing values
     coin_prices = {}
     for trans in transactions:
         coin_prices[trans.coin_name.lower()] = trans.price_purchased_at
+
     # Make API request to get live price for the coin
     url = "https://api.coingecko.com/api/v3/simple/price"
     headers = {'Accepts': 'application/json'}
     params = {'ids': ','.join(coin_prices.keys()), 'vs_currencies': 'usd'}
     data = requests.get(url, params=params, headers=headers).json()
-    print(data)
+
+    # Create a dictionary for storing values
     current_values = {}
     equities = {}
 
+    # Get the user data from the db
     try:
         for trans in transactions:
             coin_name = trans.coin_name.lower()
@@ -116,6 +122,7 @@ def home(user_id):
             price_purchased_at_list.append(trans.price_purchased_at)
             no_of_coins = trans.no_of_coins
 
+            # Get the current value for the coins from the api response
             if coin_name in data:
                 current_price = data[coin_name]['usd']
                 current_value = current_price * float(trans.no_of_coins)
@@ -124,6 +131,7 @@ def home(user_id):
                 current_values[coin_name] = current_value
                 equities[coin_name] = equity
 
+            # Save the data into the corresponding list
             no_of_coins_list.append(no_of_coins)
             time_transacted_list.append(trans.time_transacted)
             time_updated_list.append(trans.time_updated)
@@ -134,7 +142,6 @@ def home(user_id):
 
     except Exception as e:
         # Handle the specific exception and flash an appropriate response
-        print(f"Error occurred: {str(e)}")
         flash('An error occurred!', category='error')
 
     # Render results on the homepage
@@ -157,13 +164,13 @@ def news(user_id):
 
 
 def get_formatted_news_data(news_url):
+    # Returns the news results in json format
     response = requests.get(news_url)
     data = response.json()
     formatted_data = format_data(data)
-
+    # Check if the formatted news is present
     if not formatted_data:
         flash('No news available.', category='info')
-
     return formatted_data
 
 

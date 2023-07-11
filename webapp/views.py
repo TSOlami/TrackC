@@ -294,8 +294,9 @@ def transactions(user_id):
             for i in range(len(crypto_list)):
                 crypto_name_list.append(crypto_list[i]['name'])
         except Exception as e:
-            error_message = f"An error occurred: {str(e)}"
-            flash(error_message, category='error')
+            pass
+            # error_message = f"An error occurred: {str(e)}"
+            # flash(error_message, category='error')
 
         #Render the template with the fetched data for the user
         return render_template("transactions.html",
@@ -311,7 +312,7 @@ def transactions(user_id):
                                )    
     except Exception as e:
         # Handle the specific exception and flash an appropriate response
-        error_message = f"An error occurred: {str(e)}"
+        error_message = f"An error occurred."
         flash(error_message, category='error')
         return redirect(url_for('views.home', user_id=user_id))    
 
@@ -393,7 +394,6 @@ def new_transactions(user_id):
         )
         session.add(new_history)
         session.commit()
-        print(user.portfolio_worth_list)
         session.close()
 
         # If no matching cryptocurrency found
@@ -404,7 +404,6 @@ def new_transactions(user_id):
     except (RequestException, ConnectionError, Timeout, TooManyRedirects, KeyError) as e:
         # Handle the specific exception and flash an appropriate response
         flash("An error occurred while adding the transaction.", category="error")
-        print(e)
         return redirect(url_for("views.transactions", user_id=user_id))
 
 
@@ -412,7 +411,7 @@ def new_transactions(user_id):
 @login_required
 def remove_transaction(user_id):
     """Endpoint to update a transaction"""
-    coin_name = request.form.get('coin_name')
+    coin_name = request.form.get('coin_name').strip()
     coin_name = coin_name.lower()
     no_of_coins = request.form.get('no_of_coins')
     price_sold = request.form.get('price_sold')
@@ -427,12 +426,13 @@ def remove_transaction(user_id):
         for trans in transactions:
             if trans.coin_name.lower() == coin_name:
                 new_no_of_coins = float(trans.no_of_coins) - float(no_of_coins)
-                new_amount_spent = float(trans.amount_spent) - (float(price_sold) * no_of_coins)
+                new_amount_spent = float(trans.amount_spent) - (float(price_sold) * float(no_of_coins))
                 trans.amount_spent = new_amount_spent
                 trans.no_of_coins = new_no_of_coins
                 trans.time_updated = datetime.now()
-                portfolio_worth = float(User.query.get(user_id).portfolio_worth) - (float(price_sold) * no_of_coins)
+                portfolio_worth = float(User.query.get(user_id).portfolio_worth) - (float(price_sold) * float(no_of_coins))
                 User.query.get(user_id).portfolio_worth = portfolio_worth
+                User.query.get(user_id).portfolio_worth_list = User.query.get(user_id).portfolio_worth_list + [{'x': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'y':portfolio_worth}]
                 new_history = TransactionHistory(
                         user_id=user_id,
                         coin_name=coin_name,

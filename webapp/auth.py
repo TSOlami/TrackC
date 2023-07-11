@@ -3,6 +3,7 @@ from .models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user,login_required, logout_user, current_user
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime
 
 auth = Blueprint('auth', __name__)
 
@@ -76,7 +77,10 @@ def sign_up():
             user_id = new_user.id
             username = new_user.username
             email = new_user.email
-
+            user = User.query.get(user_id)
+            user.portfolio_worth_list = user.portfolio_worth_list + [{'x': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'y':0}]
+            print(user.portfolio_worth_list)
+            db.session.commit()
             # Close db
             db.session.close()
 

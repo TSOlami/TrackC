@@ -1,8 +1,7 @@
-from flask import Blueprint,  render_template, request, flash, make_response, redirect, url_for
+from flask import Blueprint,  render_template, request, flash, redirect, url_for
 from .models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user,login_required, logout_user, current_user
-from sqlalchemy.exc import IntegrityError
 from datetime import datetime
 
 auth = Blueprint('auth', __name__)
@@ -14,9 +13,9 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        
+        # Get user data from the database
         user = User.query.filter_by(email=email).first() 
-
+        # Validate input data
         if user is not None and check_password_hash(user.password, password) and (user.access is None or user.access == 1):
             # Login Successful
             flash('Login successful. Welcome back {}!'.format(user.username), category='success')
@@ -26,13 +25,13 @@ def login():
         else:
             # Incorrect email or password
             flash('Incorrect email address or password.', category='error')
-
     return render_template("login.html", user=current_user)
 
 
 @auth.route('/sign-up', methods=['GET', 'POST']) 
 def sign_up():
     if request.method == 'POST':
+        # Collect the input data
         email = request.form.get('email')
         username = request.form.get('username')
         password1 = request.form.get('password1')
@@ -53,17 +52,14 @@ def sign_up():
             return render_template("sign_up.html")
 
         # Check if the username or email already exists
-        
         try:
             user = User.query.filter_by(email=email).first()
             if user:
-                #raise IntegrityError('This email is already taken, try again with another email!')
                 flash('This email is already taken, try again with another email!', category='error')
                 return render_template("sign_up.html")
             
             user = User.query.filter_by(username=username).first()
             if user:
-                #raise IntegrityError('This username is already taken, try again with another username!')
                 flash('This username is already taken, try again with another username!', category='error')
                 return render_template("sign_up.html")
 
@@ -79,27 +75,19 @@ def sign_up():
             email = new_user.email
             user = User.query.get(user_id)
             user.portfolio_worth_list = user.portfolio_worth_list + [{'x': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'y':0}]
-            print(user.portfolio_worth_list)
             db.session.commit()
             # Close db
             db.session.close()
-
             return redirect(url_for('views.home', user_id=user_id))
-        except IntegrityError as e:
-            db.session.rollback()
-            flash("An error occurred, please try again or contact our customer support.", category='error')
         except Exception as e:
             db.session.rollback()
-            error_message = f"An error occurred: {str(e)}"
-            flash(error_message, category='error')
-            # Log the error for debugging purposes
-            print('Error:', str(e))
-
+            return render_template("sign_up.html")
     return render_template("sign_up.html", user=current_user)
 
 
 @auth.route('/logout')
 @login_required
 def logout():
+    # Log out the user 
     logout_user()
     return redirect(url_for('auth.login'))

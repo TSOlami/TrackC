@@ -52,11 +52,11 @@ def sign_up():
         try:
             user = User.query.filter_by(username=username).first()
             if user:
-                raise IntegrityError('This username is already taken, try again with another username!')
+                flash('Username already exists, please try with another username.', category='error')
 
             user = User.query.filter_by(email=email).first()
             if user:
-                raise IntegrityError('This email is already taken, try again with another email!')
+                flash('Email already exists, please try with another email.', category='error')
 
             # Create a new user and save it to the database
             new_user = User(username=username, email=email, password=generate_password_hash(password1, method='sha256'))
@@ -72,15 +72,12 @@ def sign_up():
             db.session.close()
 
             return redirect(url_for('views.home', user_id=user_id))
-        except IntegrityError as e:
-            db.session.rollback()
-            flash(str(e), category='error')
+
         except Exception as e:
             db.session.rollback()
-            error_message = f"An error occurred: {str(e)}"
-            flash(error_message, category='error')
-            # Log the error for debugging purposes
-            print('Error:', str(e))
+            # flash('An unexpected error occured, please try again later or contact support', category='error')
+            return render_template("sign_up.html")
+
 
     return render_template("sign_up.html", user=current_user)
 

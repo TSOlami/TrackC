@@ -431,8 +431,7 @@ def remove_transaction(user_id):
                 trans.amount_spent = new_amount_spent
                 trans.no_of_coins = new_no_of_coins
                 trans.time_updated = datetime.now()
-                portfolio_worth = float(User.query.get(
-                    user_id).portfolio_worth) - float(price_sold)
+                portfolio_worth = float(User.query.get(user_id).portfolio_worth) - (float(price_sold) * no_of_coins)
                 User.query.get(user_id).portfolio_worth = portfolio_worth
                 new_history = TransactionHistory(
                         user_id=user_id,

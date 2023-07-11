@@ -40,23 +40,32 @@ def sign_up():
         # Validate the input data
         if not email or len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
+            return render_template("sign_up.html")
         elif not username or len(username) < 2:
             flash('Username must be greater than 1 character.', category='error')
-        elif not password1 or not password2 or password1 != password2:
-            flash('Passwords don\'t match.', category='error')
+            return render_template("sign_up.html")
         elif len(password1) < 7:
             flash('Password must be at least 7 characters.', category='error')
+            return render_template("sign_up.html")
+        elif not password1 or not password2 or password1 != password2:
+            flash('Passwords don\'t match.', category='error')
+            return render_template("sign_up.html")
 
         # Check if the username or email already exists
         
         try:
-            user = User.query.filter_by(username=username).first()
-            if user:
-                raise IntegrityError('This username is already taken, try again with another username!')
-
             user = User.query.filter_by(email=email).first()
             if user:
-                raise IntegrityError('This email is already taken, try again with another email!')
+                #raise IntegrityError('This email is already taken, try again with another email!')
+                flash('This email is already taken, try again with another email!', category='error')
+                return render_template("sign_up.html")
+            
+            user = User.query.filter_by(username=username).first()
+            if user:
+                #raise IntegrityError('This username is already taken, try again with another username!')
+                flash('This username is already taken, try again with another username!', category='error')
+                return render_template("sign_up.html")
+
 
             # Create a new user and save it to the database
             new_user = User(username=username, email=email, password=generate_password_hash(password1, method='sha256'))
@@ -74,7 +83,7 @@ def sign_up():
             return redirect(url_for('views.home', user_id=user_id))
         except IntegrityError as e:
             db.session.rollback()
-            flash(str(e), category='error')
+            flash("An error occurred, please try again or contact our customer support.", category='error')
         except Exception as e:
             db.session.rollback()
             error_message = f"An error occurred: {str(e)}"

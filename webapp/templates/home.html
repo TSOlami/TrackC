@@ -15,7 +15,8 @@
           <p class="text-lg text-primary-700 font-medium">Portfolio Worth: ${{ "{:,.2f}".format(portfolio_worth) }}</p>
           <p class="text-lg text-primary-700 font-medium">Total Equity:
             <span {% if portfolio_equity >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
-              {{ "{:,.2f}".format(portfolio_equity) }}%
+              {% if portfolio_equity >= 0 %}+{% else %}-{% endif %}
+              {{ "{:,.2f}".format(portfolio_equity|abs) }}%
             </span>
           </p>
         </div>

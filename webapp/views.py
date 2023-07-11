@@ -1,15 +1,16 @@
 from datetime import datetime, timedelta
-#from webapp import mail
+from webapp import mail
 import json
 import os
 import requests
 from flask import Blueprint, flash, render_template, request, redirect, url_for
-#from flask_mail import Message
+from flask_mail import Message
 from flask_login import login_required, current_user
 from requests.exceptions import RequestException, ConnectionError, Timeout, TooManyRedirects
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import *
 from .config import *
+import cgi
 
 views = Blueprint('views', __name__)
 
@@ -180,9 +181,16 @@ def format_data(data):
     return formatted_data
 
 
-@views.route('/<user_id>/transactions', methods=['GET'])
+@views.route('/<user_id>/transactions', methods=['GET', 'POST'])
 @login_required
 def transactions(user_id):
+    if request.method == 'POST':
+        portfolio_worth = request.form.get("portfolio_worth")
+        user = User.query.get(user_id)
+        user.portfolio_worth = float(portfolio_worth)
+        user.portfolio_worth_list = user.portfolio_worth_list + [{'x': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'y':float(portfolio_worth)}]
+        db.session.commit()
+        portfolio_worth_list = user.portfolio_worth_list
     """Endpoint to fetch data from the database"""
 
     coin_name_list = []
@@ -267,20 +275,22 @@ def transactions(user_id):
             trans_list.append(trans_dict)
         # Close the session
         db.session.close()
+        #get portfolio_worth_list from the database
+        user = User.query.get(user_id)
+        portfolio_worth_list = user.portfolio_worth_list
         #get a list of cryptocurrencies
-        # try:
-        #     params = {'vs_currency': 'usd', 'per_page': 200, 'page': 1}
-        #     headers = {'Accepts': 'application/json'}
-        #     crypto_list = requests.get('https://api.coingecko.com/api/v3/coins/markets', params=params,headers=headers).json()
-        #     print (crypto_list)
-        #     crypto_name_list = []
-        #     for i in range(len(crypto_list)):
-        #         crypto_name_list.append(crypto_list[i]['name'])
-        #     print(crypto_name_list)
-        # except Exception as e:
-        #     error_message = f"An error occurred: {str(e)}"
-        #     flash(error_message, category='error')
-        # Render the template with the fetched data for the user
+        try:
+            params = {'vs_currency': 'usd', 'per_page': 100, 'page': 1}
+            headers = {'Accepts': 'application/json'}
+            crypto_list = requests.get('https://api.coingecko.com/api/v3/coins/markets', params=params,headers=headers).json()
+            crypto_name_list = []
+            for i in range(len(crypto_list)):
+                crypto_name_list.append(crypto_list[i]['name'])
+        except Exception as e:
+            error_message = f"An error occurred: {str(e)}"
+            flash(error_message, category='error')
+
+        #Render the template with the fetched data for the user
         return render_template("transactions.html",
                                user_id=user_id,
                                username=user.username.title(),
@@ -288,8 +298,9 @@ def transactions(user_id):
                                length=len(trans_list),
                                portfolio_worth=portfolio_worth,
                                portfolio_equity=portfolio_equity,
-                               total_amount_spent=sum(amount_spent_list)
-                               #crypto_name_list=crypto_name_list
+                               total_amount_spent=sum(amount_spent_list),
+                               crypto_name_list=crypto_name_list,
+                               portfolio_worth_list=portfolio_worth_list
                                )    
     except Exception as e:
         # Handle the specific exception and flash an appropriate response
@@ -308,7 +319,6 @@ def new_transactions(user_id):
         no_of_coins = request.form.get('no_of_coins')
         price_purchased_at = request.form.get('price_purchased_at')
         amount_spent = float(price_purchased_at) * float(no_of_coins)
-
         # Check if any of the form data is missing
         if not coin_name or not no_of_coins or not price_purchased_at:
             flash("Please provide all required data.", category="error")
@@ -327,18 +337,6 @@ def new_transactions(user_id):
 
         # Check if the transaction already exists for the user and coin
 
-        new_history = TransactionHistory(
-            user_id=user_id,
-            coin_name=coin_name,
-            symbol=symbol,
-            price_purchased_at=price_purchased_at,
-            amount_spent=amount_spent,
-            no_of_coins=no_of_coins,
-            time_transacted=datetime.now(),
-            transaction_type = 0
-        )
-        session.add(new_history)
-        session.commit()
         existing_trans = Transaction.query.filter_by(user_id=user_id, coin_name=coin_name.capitalize()).first()
         if existing_trans:
             # Update the existing transaction
@@ -347,8 +345,8 @@ def new_transactions(user_id):
             existing_trans.time_updated = datetime.now()
             user = User.query.get(user_id)
             portfolio_worth = float(user.portfolio_worth) + (float(current_price) * float(no_of_coins))
+            user.portfolio_worth = portfolio_worth
             session.commit()
-            session.close()
             flash("Transaction added successfully.", category="success")
         else:
             # Create a new transaction
@@ -365,8 +363,25 @@ def new_transactions(user_id):
             session.add(new_trans)
             user.portfolio_worth = portfolio_worth
             session.commit()
-            session.close()
             flash("Transaction added successfully.", category="success")
+        
+        user = User.query.get(user_id)
+        user.portfolio_worth_list = user.portfolio_worth_list + [{'x': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'y':portfolio_worth}]
+        
+        new_history = TransactionHistory(
+            user_id=user_id,
+            coin_name=coin_name,
+            symbol=symbol,
+            price_purchased_at=price_purchased_at,
+            amount_spent=amount_spent,
+            no_of_coins=no_of_coins,
+            time_transacted=datetime.now(),
+            transaction_type = 0
+        )
+        session.add(new_history)
+        session.commit()
+        print(user.portfolio_worth_list)
+        session.close()
 
         # If no matching cryptocurrency found
         if data is None:
@@ -399,8 +414,7 @@ def remove_transaction(user_id):
         for trans in transactions:
             if trans.coin_name.lower() == coin_name:
                 new_no_of_coins = float(trans.no_of_coins) - float(no_of_coins)
-                new_amount_spent = float(
-                    trans.amount_spent) - float(price_sold)
+                new_amount_spent = float(trans.amount_spent) - (float(price_sold) * no_of_coins)
                 trans.amount_spent = new_amount_spent
                 trans.no_of_coins = new_no_of_coins
                 trans.time_updated = datetime.now()
@@ -455,7 +469,7 @@ def transaction_history(user_id):
     try: 
         for trans in transaction_history:
             #print(coin_prices.keys())
-            coin_name = trans.coin_name.lower()
+            coin_name = trans.coin_name.capitalize()
             coin_name_list.append(trans.coin_name)
             amount_spent_list.append(trans.amount_spent * -1)
             symbol_list.append(trans.symbol)
@@ -549,3 +563,4 @@ def reset_password(token):
                 'Your password has been successfully reset. Please login with your new password.', 'success')
             return redirect(url_for('auth.login'))
         return render_template('reset_password.html', token=token)
+

@@ -26,10 +26,16 @@
 		}
 	</style>
 <body>
-	<!-- Section: Design Block -->
+	<style>
+		#btn-back-to-top {
+		  position: fixed;
+		  display: none;
+		  }
+	  </style>
+<!-- Section: Design Block -->
 <section>
 	<!-- Navbar -->
-	<nav class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start" data-te-navbar-ref>
+	<nav class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start font-lato" data-te-navbar-ref>
 	  <!-- Container wrapper -->
 	  <div class="flex w-full flex-wrap items-center justify-between px-6">
 		<div class="flex items-center">
@@ -43,7 +49,7 @@
 		  </button>
   
 		  <!-- Navbar Brand -->
-		  <a class="text-primary dark:text-primary-400" href="#!">
+		  <a class="text-primary dark:text-primary-400" href="/">
 			<span class="[&>svg]:ml-2 [&>svg]:mr-3 [&>svg]:h-6 [&>svg]:w-6 [&>svg]:lg:ml-0">
 				<img src="../static/images/icon.png"/>
 				<path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
@@ -97,8 +103,8 @@
 		<!-- Collapsible wrapper -->
   
 		<!-- Right elements -->
-		<div class="my-1 flex items-center lg:my-0 lg:ml-auto">
-			<a href="/about">
+		<div class="my-1 flex items-center lg:my-0 lg:ml-auto font-lato">
+			<a href="{{ url_for('views.about', user_id=user_id) }}">
 				<button type="button" class="mr-2 inline-block rounded px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 dark:text-primary-400 dark:hover:bg-neutral-700 dark:hover:bg-opacity-60 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600" data-te-ripple-init data-te-ripple-color="light">
 					About us
 				</button>
@@ -151,6 +157,10 @@
 <!-- Jumbotron -->
 </section>
 <!-- Section: Design Block -->
+<!-- Back to top button -->
+<button type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="inline-block p-3 bg-primary-600 text-primary font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg transition duration-150 ease-in-out bottom-5 right-5" id="btn-back-to-top">
+	<svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-4 h-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>
+</button>
 <!--Footer container-->
 <footer
 class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutral-200">
@@ -165,6 +175,7 @@ class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutr
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/tw-elements"></script>
 <script type="module" src="../static/scripts/alert-dismiss.js"></script>
+<script type="module" src="../static/scripts/back-to-top.js"></script>
 </body>
 </html>
 		

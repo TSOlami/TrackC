@@ -79,13 +79,12 @@
 <br/>
 <br/>
 {% if trans_list %}
-  <h1 class="text-2xl font-bold text-center text-blue-900 mb-4">MY WALLET</h1>
+  <h1 class="text-2xl font-bold text-center text-blue-900 mb-4">HOLDINGS</h1>
   <table class="table-auto w-full bg-white">
     <thead>
       <tr class="bg-primary-800 font-medium text-white">
         <th class="py-2 px-4">Name</th>
         <th class="py-2 px-4">Symbol</th>
-        <th class="py-2 px-4">Price Purchased at</th>
         <th class="py-2 px-4">Cost Basis</th>
         <th class="py-2 px-4">Number of Coins</th>
         <th class="py-2 px-4">Time Transacted</th>
@@ -99,15 +98,15 @@
       <tr class="trans_table" data-coins="{{ trans.no_of_coins }}" data-current_value="{{ trans.current_value }}" data-price_purchased_at="{{ trans.price_purchased_at }}">
         <td class = "py-2 px-4 border-b text-center" style="display: flex; align-items: center;"><img src="{{trans.image_link}}" alt="" style="width: 25px; height: 25px; object-fit: cover; margin-right: 10px;"><span>{{ trans.coin_name }}</span></td>
         <td class = "py-2 px-4 border-b text-center">{{ trans.symbol }}</td>
-        <td class = "py-2 px-4 border-b text-center">
+        <!-- <td class = "py-2 px-4 border-b text-center">
           {% if trans.price_purchased_at is string %}
             ${{ trans.price_purchased_at }} (average)
           {% else %}
             ${{ trans.price_purchased_at }}
           {% endif %}
-        </td>
+        </td> -->
         <td {% if trans.amount_spent >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}> ${{ "{:,.2f}".format(trans.amount_spent|abs) }}</td>
-        <td class = "py-2 px-4 border-b text-center">{{ trans.no_of_coins }}</td>
+        <td class = "py-2 px-4 border-b text-center">{{ "{:,.2f}".format(trans.no_of_coins) }}</td>
         <td class = "py-2 px-4 border-b text-center">{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
         <td class = "py-2 px-4 border-b text-center">{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
         <td class="current_value py-2 px-4 border-b text-center">${{ "{:,.2f}".format(trans.current_value) }}</td>
@@ -129,25 +128,68 @@
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 
 <script>
-  var myList = [];
+  var portfolio_worth = {{portfolio_worth}};
+  var total_amount_spent = {{total_amount_spent}};
+  var lineColor = "blue";
+  if (portfolio_worth < total_amount_spent) {
+    lineColor = "red";
+  } else {
+    lineColor = "green";
+  }
+  if (portfolio_worth <= 0) {
+    $('#chartContainer').hide();
+  }
+
+  var myList = {{ portfolio_worth_list|tojson }}; //import portfolio_worth_list from views.py
+  var portfolio_value_list = [];
+  //formatting myList
+  for (let i=0; i<myList.length; i++) {
+    myList[i]['x'] = new Date(myList[i]['x'])
+    portfolio_value_list.push(myList[i]['y']);
+  }
+  console.log(myList);
+
+  var options = {
+    animationEnabled: true,  
+    title:{
+      text: "Portfolio Chart"
+    },
+    axisX: {
+      valueFormatString: "hh:mm tt" // Format for time
+    },
+    axisY: {
+      title: "Portfolio Amount (in USD)",
+      minimum: Math.min(...portfolio_value_list),
+      maximum: Math.max(...portfolio_value_list),
+      prefix: "$"
+    },
+    data: [{
+      markerSize: 0,
+      lineColor: lineColor,
+      yValueFormatString: "$#,###",
+      xValueFormatString: "hh:mm tt", // Format for time
+      type: "spline",
+      dataPoints: myList
+    }]
+  };
+  $("#chartContainer").CanvasJSChart(options);
+
   var crypto_name_list = [
             {% for item in crypto_name_list %}
                 "{{ item }}",
             {% endfor %}
-        ];
+  ];
   //console.log(crypto_name_list);
-  var portfolio_worth = {{portfolio_worth}};
-  var total_amount_spent = {{total_amount_spent}};
   if (portfolio_worth >= total_amount_spent ) {
-    $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(4)} </h1>`);
+    $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(2)} </h1>`);
     $('#pw').css('color', 'blue');
   } else {
-    $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(4)} </h1>`);
+    $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(2)} </h1>`);
     $('#pw').css('color', 'blue');
     };
-  if (portfolio_worth > 0) {
-    $('#chartContainer').html(`<br/><br/><br/><br/><h1 class="text-black-500 font-medium">  Loading Chart... </h1>`)
-  }
+  // if (portfolio_worth > 0) {
+  //   $('#chartContainer').html(`<br/><br/><br/><br/><h1 class="text-black-500 font-medium">  Loading Chart... </h1>`)
+  // }
 
   $('#coin_name_sold').on('input', function() {
 	  var value = $(this).val();
@@ -162,7 +204,7 @@
         }
         $('#coin_name_list').append(`<li id="coin_name_list_child" class="text-1xl text-primary-700 font-medium text-center mb-6" style="color: white;"><h3> ${crypto_name_list[i]} </h3></li>`);
         $('#coin_name_list li').click(function() {
-          var clickedItem = $(this).text();
+          var clickedItem = $(this).text().trim();
           $('#coin_name_sold').val(clickedItem);
           $('#coin_name_list_div').hide();
         })
@@ -187,7 +229,8 @@
         }
         $('#coin_name_list1').append(`<li id="coin_name_list_child" class="text-1xl text-primary-700 font-medium text-center mb-6" style="color: white;"><h3> ${crypto_name_list[i]} </h3></li>`);
         $('#coin_name_list1 li').click(function() {
-          var clickedItem = $(this).text();
+          var clickedItem = $(this).text().trim();
+          console.log(clickedItem.length)
           $('#coin_bought').val(clickedItem);
           $('#coin_name_list_div1').hide();
         })
@@ -197,6 +240,7 @@
       $('#coin_name_list_div1').hide();
     }
   });
+
   async function fetchCryptoPrices() {
     $(document).ready(function() {
       // Loop through each '.trans_table' row
@@ -227,55 +271,65 @@
             current_value = current_value.toFixed(2);
             row.find('.current_value').text(current_value); // Update the current value within the row
             var equity = ((data - price_purchased_at) / price_purchased_at) * 100;
-            //row.find('#equity').text(equity);
+            
+            $.ajax({
+              url: "../{{user_id}}/transactions",
+              method: "POST",
+              data: { portfolio_worth: portfolio_worth },
+              success: function(response) {
+                console.log("SENT!")
+              }
+            });
+
             if (equity >= 0 ) {
-              row.find('#equity').html(`<td class="text-green-500"> + ${Math.abs(equity).toFixed(4)}% </td>`)
+              row.find('#equity').html(`<td class="text-green-500"> + ${Math.abs(equity).toFixed(2)}% </td>`)
             } else {
-              row.find('#equity').html(`<td class="text-red-500"> - ${Math.abs(equity).toFixed(4)}% </td>`)
+              row.find('#equity').html(`<td class="text-red-500"> - ${Math.abs(equity).toFixed(2)}% </td>`)
             };
 
             if (portfolio_worth >= total_amount_spent ) {
-              $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(4)} </h1>`);
+              $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(2)} </h1>`);
               $('#pw').css('color', 'blue');
             } else {
-              $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(4)} </h1>`);
+              $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(2)} </h1>`);
               $('#pw').css('color', 'blue');
             };
-            //$('#portfolio_worth').text(portfolio_worth);
-            var value = { x: new Date(), y: portfolio_worth };
-            myList.push(value);
-            //console.log(myList);
-            //console.log(value);
-            var options = {
-              animationEnabled: true,  
-              title:{
-                text: "Portfolio Chart"
-              },
-              axisX: {
-                valueFormatString: "hh:mm tt" // Format for time
-              },
-              axisY: {
-                title: "Portfolio Amount (in USD)",
-                prefix: "$"
-              },
-              data: [{
-                markerSize: 0,
-                yValueFormatString: "$#,###",
-                xValueFormatString: "hh:mm tt", // Format for time
-                type: "spline",
-                dataPoints: myList
-              }]
-            };
-          $("#chartContainer").CanvasJSChart(options);
+            // var value = { x: new Date(), y: portfolio_worth_list };
+          //    console.log(myList)
+          //   // myList.push(value);
+          //   var options = {
+          //     animationEnabled: true,  
+          //     title:{
+          //       text: "Portfolio Chart"
+          //     },
+          //     axisX: {
+          //       valueFormatString: "hh:mm tt" // Format for time
+          //     },
+          //     axisY: {
+          //       title: "Portfolio Amount (in USD)",
+          //       prefix: "$"
+          //     },
+          //     data: [{
+          //       markerSize: 10,
+          //       yValueFormatString: "$#,###",
+          //       xValueFormatString: "hh:mm tt", // Format for time
+          //       type: "spline",
+          //       dataPoints: myList
+          //     }]
+          //   };
+          // $("#chartContainer").CanvasJSChart(options);
           },
           error: function(xhr, status, error) {
+             //console.log(myList);
+            // var value = { x: new Date(), y: portfolio_worth_list };
+            // myList.push(value);
             // Handle errors
           }
         });
       });
     });
     }
-    setInterval(fetchCryptoPrices, 20000);
+    setInterval(fetchCryptoPrices, 100000);
 </script>
 <br/>
 <br/>

@@ -1,0 +1,121 @@
+body{
+    background-color: darkcyan;
+}
+
+.grid-container {
+    background-color: red;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: 50px 1fr 50px;
+    grid-template-areas:
+        "aside header"
+        "aside main"
+        "aside footer";
+
+    height: fit-content;
+}
+
+.header {
+    grid-area: header;
+    background-color: orange;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    height: 50px;
+}
+
+.aside {
+    grid-area: aside;
+    background-color: yellow;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+
+.main {
+    grid-area: main;
+    background-color: green;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    margin-top: 30px;
+}
+
+.footer {
+    grid-area: footer;
+    background-color: blue;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    height: 50px;
+}
+
+
+.overview-content {
+
+    display: grid;
+    
+
+    grid-template-columns: 1fr 1fr 1fr;
+    /* grid-gap: 10px; */
+    background-color: indigo;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 50px;
+
+}
+
+.overview-card{
+    margin-right: 10px;
+    margin-left: 10px;
+    background-color: violet;
+    border-radius: inherit;
+}
+
+.chart-content {
+
+    display: grid;
+    background-color: #fffacd;
+    border-radius: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 200px 200px;
+    grid-template-areas:
+                    'chart overview'
+                    'chart overview';
+    
+    grid-gap: 10px;
+
+}
+
+.chart {
+
+    grid-area: chart;
+    background-color: gold;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+
+
+}
+
+.chart-overview {
+    display: grid;
+    margin-top: 10px;
+    grid-area: overview;
+    background-color: sienna;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+
+}

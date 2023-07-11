@@ -295,30 +295,6 @@
               $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(2)} </h1>`);
               $('#pw').css('color', 'blue');
             };
-            // var value = { x: new Date(), y: portfolio_worth_list };
-          //    console.log(myList)
-          //   // myList.push(value);
-          //   var options = {
-          //     animationEnabled: true,  
-          //     title:{
-          //       text: "Portfolio Chart"
-          //     },
-          //     axisX: {
-          //       valueFormatString: "hh:mm tt" // Format for time
-          //     },
-          //     axisY: {
-          //       title: "Portfolio Amount (in USD)",
-          //       prefix: "$"
-          //     },
-          //     data: [{
-          //       markerSize: 10,
-          //       yValueFormatString: "$#,###",
-          //       xValueFormatString: "hh:mm tt", // Format for time
-          //       type: "spline",
-          //       dataPoints: myList
-          //     }]
-          //   };
-          // $("#chartContainer").CanvasJSChart(options);
           },
           error: function(xhr, status, error) {
              //console.log(myList);

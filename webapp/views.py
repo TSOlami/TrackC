@@ -3,7 +3,7 @@ from webapp import mail
 import json
 import os
 import requests
-from flask import Blueprint, flash, render_template, request, redirect, url_for
+from flask import Blueprint, flash, render_template, request, redirect, url_for, abort
 from flask_mail import Message
 from flask_login import login_required, current_user
 from requests.exceptions import RequestException, ConnectionError, Timeout, TooManyRedirects
@@ -215,6 +215,7 @@ def transactions(user_id):
     headers = {'Accepts': 'application/json'}
     params = {'ids': ','.join(coin_prices.keys()), 'vs_currency': 'usd', 'order': ' id_desc'}
     data = requests.get(url, params=params, headers=headers).json()
+    #print(data)
     current_values = {}
     equities = {}
 
@@ -222,9 +223,12 @@ def transactions(user_id):
         for trans in transactions:
             #print(coin_prices.keys())
             coin_name = trans.coin_name.lower()
+            print(coin_name)
             coin_name_list.append(trans.coin_name)
             amount_spent_list.append(trans.amount_spent * -1)
+            print(trans.amount_spent)
             symbol_list.append(trans.symbol)
+            print(trans.symbol)
             price_purchased_at_list.append(trans.price_purchased_at)
             no_of_coins = trans.no_of_coins 
             for i in range(len(data)):
@@ -233,7 +237,10 @@ def transactions(user_id):
                     current_value = current_price * float(trans.no_of_coins)
                     image_link_list.append(data[i]['image'])
                     break
-
+                elif data[i]['id'] != coin_name and i+1 == len(data):
+                    error_message = "An error occurred"
+                    flash(error_message, category='error')
+                    return redirect(url_for('views.home', user_id=user_id))
             equity = ((float(current_price) - float(trans.price_purchased_at)) / float(trans.price_purchased_at)) * 100
             current_values[coin_name] = current_value
             equities[coin_name] = equity
@@ -314,7 +321,7 @@ def new_transactions(user_id):
     """Endpoint to add a new transaction"""
     try:
         # Retrieve form data from the frontend
-        coin_name = request.form.get('coin_name')
+        coin_name = request.form.get('coin_name').strip()
         coin_name = coin_name.lower()
         no_of_coins = request.form.get('no_of_coins')
         price_purchased_at = request.form.get('price_purchased_at')
@@ -329,9 +336,15 @@ def new_transactions(user_id):
         headers = {'Accepts': 'application/json'}
         params = {'ids': coin_name, 'vs_currency': 'usd', 'order': ' id_desc'}
         data = requests.get(url, params=params, headers=headers).json()
+        print(data)
+        if data is None or data == []:
+            flash("Please provide correct data or try again.", category="error")
+            return redirect(url_for("views.transactions", user_id=user_id))
+
         current_price = data[0]['current_price']
         symbol = data[0]['symbol'].upper()
 
+            #return redirect(url_for('views.home', user_id=user_id))
         # Create a database session
         session = db.session()
 

@@ -137,9 +137,6 @@
   } else {
     lineColor = "green";
   }
-  if (portfolio_worth <= 0) {
-    $('#chartContainer').hide();
-  }
 
   var myList = {{ portfolio_worth_list|tojson }}; //import portfolio_worth_list from views.py
   var portfolio_value_list = [];
@@ -148,7 +145,10 @@
     myList[i]['x'] = new Date(myList[i]['x'])
     portfolio_value_list.push(myList[i]['y']);
   }
-  console.log(myList);
+
+  if (portfolio_worth <= 0 && (portfolio_value_list === [] || !portfolio_value_list)) {
+    $('#chartContainer').hide();
+  }
 
   var options = {
     animationEnabled: true,  

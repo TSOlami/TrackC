@@ -2,7 +2,9 @@
 
 {% block title %}Transactions{% endblock %}
 
-{% block content %}      
+{% block content %}
+<div id="portfolio_worth"></div>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>      
 <div class="container mx-auto">
   <div class="flex justify-between">
     <form id="form" action="/{{ user_id }}/transactions/add_transaction" method="POST"
@@ -124,8 +126,7 @@
 </div>
 <br/>
 <br/>
-<div id="portfolio_worth"></div>
-<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
 
 <script>
   var portfolio_worth = {{portfolio_worth}};

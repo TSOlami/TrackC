@@ -56,10 +56,11 @@ def landing():
     return render_template('landing.html')
 
 
-@views.route('/about/<user_id>')
-def about(user_id):
+@views.route('/about')
+def about():
     """The about page endpoint"""
-    return render_template("about.html", user_id=user_id)
+    return render_template("about.html")
+
 
 
 @views.route('/home/<user_id>')

@@ -1,18 +1,192 @@
 {% extends "base.html" %}
 
 {% block content %}
+<br/>
+<div
+  id="carouselExampleCaptions"
+  class="relative"
+  data-te-carousel-init
+  data-te-carousel-slide>
+  <div
+    class="absolute bottom-0 left-0 right-0 z-[2] mx-[15%] mb-4 flex list-none justify-center p-0"
+    data-te-carousel-indicators>
+    <button
+      type="button"
+      data-te-target="#carouselExampleCaptions"
+      data-te-slide-to="0"
+      data-te-carousel-active
+      class="mx-[3px] box-content h-[3px] w-[30px] flex-initial cursor-pointer border-0 border-y-[10px] border-solid border-transparent bg-white bg-clip-padding p-0 -indent-[999px] opacity-50 transition-opacity duration-[600ms] ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-reduce:transition-none"
+      aria-current="true"
+      aria-label="Slide 1"></button>
+    <button
+      type="button"
+      data-te-target="#carouselExampleCaptions"
+      data-te-slide-to="1"
+      class="mx-[3px] box-content h-[3px] w-[30px] flex-initial cursor-pointer border-0 border-y-[10px] border-solid border-transparent bg-white bg-clip-padding p-0 -indent-[999px] opacity-50 transition-opacity duration-[600ms] ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-reduce:transition-none"
+      aria-label="Slide 2"></button>
+    <button
+      type="button"
+      data-te-target="#carouselExampleCaptions"
+      data-te-slide-to="2"
+      class="mx-[3px] box-content h-[3px] w-[30px] flex-initial cursor-pointer border-0 border-y-[10px] border-solid border-transparent bg-white bg-clip-padding p-0 -indent-[999px] opacity-50 transition-opacity duration-[600ms] ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-reduce:transition-none"
+      aria-label="Slide 3"></button>
+  </div>
+  <div
+    class="relative w-full overflow-hidden after:clear-both after:block after:content-['']">
+    <div
+      class="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
+      data-te-carousel-active
+      data-te-carousel-item
+      style="backface-visibility: hidden">
+      <div
+        class="relative overflow-hidden bg-cover bg-no-repeat"
+        style="background-position: 50%">
+        <img
+          src="../static/images/home_templates/3d-cryptocurrency-rendering-design.jpg"
+          class="block w-full object-cover" />
+        <div
+          class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-50"></div>
+      </div>
+      <div
+        class="absolute inset-0 flex items-center justify-center text-[hsl(218,81%,95%)]">
+        <div class="text-center">
+		<h5 class="text-2xl">Hi,<span class="text-[hsl(218,81%,75%)]"> {{ username }}</span> </h5>
+        <h1 class="text-5xl font-medium leading-tight font-lato">
+          <ul class="text-center">
+			<li>Easily keep track</li> 
+			<li>of all your </li>
+			<li>Crypto investments</li>
+			<li>in one place</li>
+		  </ul>
+        </h1>
+		</div>
+      </div>
+    </div>
+    <div
+      class="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
+      data-te-carousel-item
+      style="backface-visibility: hidden">
+      <div
+        class="relative overflow-hidden bg-cover bg-no-repeat"
+        style="background-position: 50%">
+        <img
+          src="../static/images/home_templates/cardano-blockchain-platform-with-smartphone.jpg"
+          class="block w-full object-cover" />
+        <div
+          class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-50"></div>
+      </div>
+	  <div
+        class="absolute inset-x-[15%] bottom-5 py-5 flex items-center justify-center text-[hsl(218,81%,95%)]">
+        <div class="text-center">
+        <h1 class="text-4xl font-medium leading-tight font-lato">
+          <ul class="text-center">
+            <li>Effortlessly add your</li> 
+            <li>Cryptocurrency transactions </li>
+            <li>and stay informed</li>
+            <li>with cryptocurrency market,</li>
+            <li>trends, and more.</li>
+          </ul>
+        </h1>
+		</div>
+      </div>
+    </div>
+    <div
+      class="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
+      data-te-carousel-item
+      style="backface-visibility: hidden">
+      <div
+        class="relative overflow-hidden bg-cover bg-no-repeat"
+        style="background-position: 50%">
+        <img
+          src="../static/images/home_templates/close-up-hands-holding-tablet.jpg"
+          class="block w-full object-cover" />
+        <div
+          class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-50"></div>
+      </div>
+      <div
+        class="absolute inset-x-[15%] bottom-5 py-5 text-center md:block flex items-center justify-center text-[hsl(218,81%,95%)]">
+        <div class="text-center">
+        <h1 class="text-5xl font-medium leading-tight font-lato">
+          <ul class="text-center">
+            <li>Get free access</li> 
+            <li>to a comprehensive table</li> 
+            <li>that displays your transaction</li>
+            <li>history and performance.</li>
+          </ul>
+        </h1>
+		    </div>
+      </div>
+    </div>
+  </div>
+  <button
+    class="absolute bottom-0 left-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
+    type="button"
+    data-te-target="#carouselExampleCaptions"
+    data-te-slide="prev">
+    <span class="inline-block h-8 w-8">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="h-6 w-6">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M15.75 19.5L8.25 12l7.5-7.5" />
+      </svg>
+    </span>
+    <span
+      class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+      >Previous</span
+    >
+  </button>
+  <button
+    class="absolute bottom-0 right-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
+    type="button"
+    data-te-target="#carouselExampleCaptions"
+    data-te-slide="next">
+    <span class="inline-block h-8 w-8">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="h-6 w-6">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+      </svg>
+    </span>
+    <span
+      class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+      >Next</span
+    >
+  </button>
+</div>
 <div class="container mx-auto my-4">
   <div class="my-6">
     <section class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <h3 class="text-3xl text-center font-bold text-primary-700 mb-4">Main Portfolio</h3>
-      <p class="text-2xl text-primary-700 font-medium">Name: {{ username }}</p>
-      <p class="text-2xl text-primary-700 font-medium">Portfolio Worth: ${{ "{:,.2f}".format(portfolio_worth) }}</p>
-      <p class="text-2xl text-primary-700 font-medium">Total Equity:
-        <span {% if portfolio_equity >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
-          {% if portfolio_equity >= 0 %}+{% else %}-{% endif %}
-          {{ "{:,.2f}".format(portfolio_equity) }}%
-        </span>
-      </p>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-lg text-primary-700 font-medium">Name: {{ username }}</p>
+          <p class="text-lg text-primary-700 font-medium">Email: {{ user.email }}</p>
+          <p class="text-lg text-primary-700 font-medium">Date Created: {{ user.date_created.strftime("%Y-%m-%d") }}</p>
+        </div>
+        <div>
+          <p class="text-lg text-primary-700 font-medium">Portfolio Worth: ${{ "{:,.2f}".format(portfolio_worth) }}</p>
+          <p class="text-lg text-primary-700 font-medium">Total Equity:
+            <span {% if portfolio_equity >= 0 %}class="text-green-500"{% else %}class="text-red-500"{% endif %}>
+              {% if portfolio_equity >= 0 %}+{% else %}-{% endif %}
+              {{ "{:,.2f}".format(portfolio_equity|abs) }}%
+            </span>
+          </p>
+        </div>
+      </div>
     </section>
   </div>
   <div>
@@ -26,22 +200,20 @@
     </a>
   </div>
 </div>
-
-<div class="container mx-auto my-4">
   <br/>
   <br/>
   <br/>
   <br/>
-  <h1 class="text-3xl bg-white text-primary-600 font-bold mb-2 text-center">Top 10 Cryptocurrencies</h1>
-  <h3 class="text-lg bg-white text-primary-600 text-center">Displaying the latest Crypto prices from CoinmarketCap API</h3>
+  <h1 class="text-3xl bg-white text-primary-600 font-bold mb-2 text-center">Top 10 Best-Selling Cryptocurrencies</h1>
+  <h3 class="text-lg bg-white text-primary-600 text-center">Displaying the top Crypto prices from CoinmarketCap</h3>
 
   <table class="min-w-full bg-white border border-gray-300 text-center">
     <thead>
       <tr>
-        <th scope="col">#</th>
+        <th scope="col">Rankings</th>
         <th class="py-2 px-4 border-b">Name</th>
         <th class="py-2 px-4 border-b">Symbol</th>
-        <th class="py-2 px-4 border-b">Slug</th>
+        <!-- <th class="py-2 px-4 border-b">Slug</th> -->
         <th class="py-2 px-4 border-b">Price</th>
         <th class="py-2 px-4 border-b">Volume</th>
         <th class="py-2 px-4 border-b">24hr</th>
@@ -50,27 +222,67 @@
   
     <tbody>
       {% for obj in results %}
-      <tr>
+      <tr class="trans_table">
         <td class="py-2 px-4 border-b text-center">{{ loop.index }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['name'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['symbol'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['slug'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['quote']['USD']['price'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['quote']['USD']['volume_24h'] }}</td>
-        <td class="py-2 px-4 border-b text-center">{{ obj['quote']['USD']['percent_change_24h'] }}</td>
+        <td class = "py-2 px-4 border-b text-center" style="display: flex; align-items: center; text-transform: uppercase;"><img src="{{obj['image']}}" alt="" style="width: 25px; height: 25px; object-fit: cover; margin-right: 10px;"><span>{{ obj['name'] }}</span></td>
+        <td class="py-2 px-4 border-b text-center" style="text-transform: uppercase;">{{ obj['symbol'] }}</td>
+        <td class="current_price py-2 px-4 border-b text-center">{{ obj['current_price'] }}</td>
+        <td class="total_volume py-2 px-4 border-b text-center">{{ obj['total_volume'] }}</td>
+        <td class="price_change_percentage py-2 px-4 border-b text-center">
+          <span {% if obj['price_change_percentage_24h']|float > 0 %}class="text-green-500"{% elif obj['price_change_percentage_24h']|float < 0 %}class="text-red-500"{% endif %}>
+            {{ obj['price_change_percentage_24h'] }}
+          </span>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
   <br/>
   <br/>
-  <a href="/news"><button
+  <a href="{{ url_for('views.news', user_id=user_id) }}"><button
     type="button"
     class="mb-2 block w-full rounded border-2 border-primary px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:border-primary-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:border-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:border-primary-700 active:text-primary-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
     data-te-ripple-init>
     Check out the latest articles
   </button>
 </div>
+<script>
+  async function fetchCryptoPrices() {
+    $(document).ready(function() {
+      // Loop through each '.trans_table' row
+      $('.trans_table').each(function() {
+        var row = $(this);
+        var coinName = row.find('td:eq(1)').text().toLowerCase();
+        $.ajax({
+          url: 'https://api.coingecko.com/api/v3/coins/markets',
+          method: 'GET',
+          cache: false,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          data: {
+            'ids': coinName,
+            'vs_currency': 'usd',
+          },
+          success: function(response) {
+            console.log("DONE")
+            var current_price = response[0]['current_price'];
+            var total_volume = response[0]['total_volume'];
+            var price_change_percentage = response[0]['price_change_percentage_24h'];
+            row.find('.current_price').text(parseInt(current_price)); // Update the current value within the row
+            row.find('.total_volume').text(total_volume);
+            row.find('.price_change_percentage').text(price_change_percentage);
+          },
+          error: function(xhr, status, error) {
+            // Handle errors
+            console.log("ERROR")
+          }
+        });
+      });
+    });
+    }
+    setInterval(fetchCryptoPrices, 20000);
+</script>
 <br/>
 <br/>
 </a>

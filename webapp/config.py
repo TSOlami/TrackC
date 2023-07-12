@@ -17,6 +17,11 @@ class ApplicationConfig:
     MAIL_USE_SSL = True  # Enable SSL
     MAIL_USERNAME = os.environ["MAIL_USERNAME"]
     MAIL_PASSWORD = os.environ["MAIL_PASSWORD"]
+    
+    # Configure the Flask app to use the PostgreSQL database
+    SQLALCHEMY_DATABASE_URI = 'postgresql://juuthoos:GaAe2ZbZU77KorqGd7NgIJKfm5Ya9EpH@dumbo.db.elephantsql.com/juuthoos'
+    #SQLALCHEMY_ECHO = True 
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Configure the Flask app to use the PostgreSQL database
     SQLALCHEMY_DATABASE_URI = os.environ["SQLALCHEMY_DATABASE_URI"]

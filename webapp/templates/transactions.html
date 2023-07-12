@@ -2,7 +2,9 @@
 
 {% block title %}Transactions{% endblock %}
 
-{% block content %}      
+{% block content %}
+<div id="portfolio_worth"></div>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>      
 <div class="container mx-auto">
   <div class="flex justify-between">
     <form id="form" action="/{{ user_id }}/transactions/add_transaction" method="POST"
@@ -12,6 +14,15 @@
         <label for="coin_name" class="block text-primary-700 text-sm font-bold mb-2">Name of Coin</label>
         <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
           id="coin_bought" name="coin_name" placeholder="Enter name of coin">
+          <div id="coin_name_list_div1" style="background-color: #285192; display: none; width: 30%; box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline" >
+            <ul id="coin_name_list1">
+              {% for i in crypto_name_list %}
+                <li class="text-1xl text-primary-700 font-medium text-center mb-6">
+                 
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
       </div>
       <div class="mb-6">
         <label for="no_of_coins" class="block text-primary-700 text-sm font-bold mb-2">Number of coins bought</label>
@@ -38,6 +49,15 @@
         <label for="coin_name" class="block text-primary-700 text-sm font-bold mb-2">Name of Coin</label>
         <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
           id="coin_name_sold" name="coin_name" placeholder="Enter name of coin">
+          <div id="coin_name_list_div"  style="background-color: #285192; display: none; width: 30%; box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline" >
+            <ul id="coin_name_list">
+              {% for i in crypto_name_list %}
+                <li class="text-1xl text-primary-700 font-medium text-center mb-6" id="coin_name_list_child">
+                  <!-- <h6> {{ i }} </h6> -->
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
       </div>
       <div class="mb-6">
         <label for="no_of_coins" class="block text-primary-700 text-sm font-bold mb-2">Number of coins sold</label>
@@ -60,53 +80,168 @@
 </div>
 <br/>
 <br/>
-<h1 class="text-2xl font-bold text-center text-blue-900 mb-4">HOLDINGS</h1>
-<table class="table-auto w-full bg-white">
-  <thead>
-    <tr class="bg-primary-800 font-medium text-white">
-      <th class="py-2 px-4">Name</th>
-      <th class="py-2 px-4">Symbol</th>
-      <th class="py-2 px-4">Cost Basis</th>
-      <th class="py-2 px-4">Number of Coins</th>
-      <th class="py-2 px-4">Time Transacted</th>
-      <th class="py-2 px-4">Time Updated</th>
-      <th class="py-2 px-4">Current value</th>
-      <th class="py-2 px-4">Equity</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for trans in trans_list %}
-    <tr class="trans_table" data-coins="{{ trans.no_of_coins }}" data-price_purchased_at="{{ trans.price_purchased_at }}">
-      <td class = "py-2 px-4 border-b text-center" style="display: flex; align-items: center;"><img src="{{trans.image_link}}" alt="" style="width: 25px; height: 25px; object-fit: cover; margin-right: 10px;"><span>{{ trans.coin_name }}</span></td>
-      <td class = "py-2 px-4 border-b text-center">{{ trans.symbol }}</td>
-      <td {% if trans.amount_spent >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}> ${{ "{:,.2f}".format(trans.amount_spent|abs) }}</td>
-      <td class = "py-2 px-4 border-b text-center">{{ trans.no_of_coins }}</td>
-      <td class = "py-2 px-4 border-b text-center">{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
-      <td class = "py-2 px-4 border-b text-center">{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
-      <td class="current_value py-2 px-4 border-b text-center">${{ "{:,.2f}".format(trans.current_value) }}</td>
-      <td id="equity" {% if trans.equity >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}>
-      {{ "{:,.2f}".format(trans.equity|abs) }}%
-      </td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>    
+{% if trans_list %}
+  <h1 class="text-2xl font-bold text-center text-blue-900 mb-4">HOLDINGS</h1>
+  <table class="table-auto w-full bg-white">
+    <thead>
+      <tr class="bg-primary-800 font-medium text-white">
+        <th class="py-2 px-4">Name</th>
+        <th class="py-2 px-4">Symbol</th>
+        <th class="py-2 px-4">Cost Basis</th>
+        <th class="py-2 px-4">Number of Coins</th>
+        <th class="py-2 px-4">Time Transacted</th>
+        <th class="py-2 px-4">Time Updated</th>
+        <th class="py-2 px-4">Current value</th>
+        <th class="py-2 px-4">Equity</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for trans in trans_list %}
+      <tr class="trans_table" data-coins="{{ trans.no_of_coins }}" data-current_value="{{ trans.current_value }}" data-price_purchased_at="{{ trans.price_purchased_at }}">
+        <td class = "py-2 px-4 border-b text-center" style="display: flex; align-items: center;"><img src="{{trans.image_link}}" alt="" style="width: 25px; height: 25px; object-fit: cover; margin-right: 10px;"><span>{{ trans.coin_name }}</span></td>
+        <td class = "py-2 px-4 border-b text-center">{{ trans.symbol }}</td>
+        <!-- <td class = "py-2 px-4 border-b text-center">
+          {% if trans.price_purchased_at is string %}
+            ${{ trans.price_purchased_at }} (average)
+          {% else %}
+            ${{ trans.price_purchased_at }}
+          {% endif %}
+        </td> -->
+        <td {% if trans.amount_spent >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}> ${{ "{:,.2f}".format(trans.amount_spent|abs) }}</td>
+        <td class = "py-2 px-4 border-b text-center">{{ "{:,.2f}".format(trans.no_of_coins) }}</td>
+        <td class = "py-2 px-4 border-b text-center">{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        <td class = "py-2 px-4 border-b text-center">{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        <td class="current_value py-2 px-4 border-b text-center">${{ "{:,.2f}".format(trans.current_value) }}</td>
+        <td id="equity" {% if trans.equity >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}>
+        {% if trans.equity >= 0 %}+{% else %}-{% endif %}
+        {{ "{:,.2f}".format(trans.equity|abs) }}%
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <h1 class="text-2xl font-bold text-center text-blue-900 mb-4">NO TRANSACTION</h1>
+  {% endif %}
 </div>
 <br/>
 <br/>
-<div id="portfolio_worth"></div>
-<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
 
 <script>
-  var myList = [];
   var portfolio_worth = {{portfolio_worth}};
   var total_amount_spent = {{total_amount_spent}};
-  if (portfolio_worth >= total_amount_spent ) {
-    $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(2)} </h1>`)
-    } else {
-      $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(2)} </h1>`)
+  var lineColor = "blue";
+  if (portfolio_worth < total_amount_spent) {
+    lineColor = "red";
+  } else {
+    lineColor = "green";
+  }
+
+  var myList = {{ portfolio_worth_list|tojson }}; //import portfolio_worth_list from views.py
+  var portfolio_value_list = [];
+  //formatting myList
+  for (let i=0; i<myList.length; i++) {
+    myList[i]['x'] = new Date(myList[i]['x'])
+    portfolio_value_list.push(myList[i]['y']);
+  }
+
+  if (portfolio_worth <= 0 && (portfolio_value_list === [] || !portfolio_value_list)) {
+    $('#chartContainer').hide();
+  }
+
+  var options = {
+    animationEnabled: true,  
+    title:{
+      text: "Portfolio Chart"
+    },
+    axisX: {
+      valueFormatString: "hh:mm tt" // Format for time
+    },
+    axisY: {
+      title: "Portfolio Amount (in USD)",
+      minimum: Math.min(...portfolio_value_list),
+      maximum: Math.max(...portfolio_value_list),
+      prefix: "$"
+    },
+    data: [{
+      markerSize: 0,
+      lineColor: lineColor,
+      yValueFormatString: "$#,###",
+      xValueFormatString: "hh:mm tt", // Format for time
+      type: "spline",
+      dataPoints: myList
+    }]
   };
-  $('#chartContainer').html(`<br/><br/><br/><br/><h1 class="text-black-500 font-medium">  Loading Chart... </h1>`)
+  $("#chartContainer").CanvasJSChart(options);
+
+  var crypto_name_list = [
+            {% for item in crypto_name_list %}
+                "{{ item }}",
+            {% endfor %}
+  ];
+  //console.log(crypto_name_list);
+  if (portfolio_worth >= total_amount_spent ) {
+    $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(2)} </h1>`);
+    $('#pw').css('color', 'blue');
+  } else {
+    $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(2)} </h1>`);
+    $('#pw').css('color', 'blue');
+    };
+  // if (portfolio_worth > 0) {
+  //   $('#chartContainer').html(`<br/><br/><br/><br/><h1 class="text-black-500 font-medium">  Loading Chart... </h1>`)
+  // }
+
+  $('#coin_name_sold').on('input', function() {
+	  var value = $(this).val();
+	  let foundMatch = false;
+    $('#coin_name_list_div').html('<ul id="coin_name_list"><ul>');
+    for (let i = 0; i < crypto_name_list.length; i++) {
+      if (crypto_name_list[i].toLowerCase().includes(value.toLowerCase())) {
+        foundMatch = true;
+        $('#coin_name_list_div').show();//
+        if (value.length === 0) {
+          $('#coin_name_list_div').hide();
+        }
+        $('#coin_name_list').append(`<li id="coin_name_list_child" class="text-1xl text-primary-700 font-medium text-center mb-6" style="color: white;"><h3> ${crypto_name_list[i]} </h3></li>`);
+        $('#coin_name_list li').click(function() {
+          var clickedItem = $(this).text().trim();
+          $('#coin_name_sold').val(clickedItem);
+          $('#coin_name_list_div').hide();
+        })
+      }
+    }
+    if (!foundMatch) {
+      $('#coin_name_list_div').hide();
+    }
+  });
+
+  $('#coin_bought').on('input', function() {
+	  var value = $(this).val();
+	  //console.log(value);
+    $('#coin_name_list_div1').html('<ul id="coin_name_list1"><ul>');
+    let foundMatch = false;
+    for (let i = 0; i < crypto_name_list.length; i++) {
+      if (crypto_name_list[i].toLowerCase().includes(value.toLowerCase())) {
+        foundMatch = true;
+        $('#coin_name_list_div1').show();
+        if (value.length === 0) {
+          $('#coin_name_list_div1').hide();
+        }
+        $('#coin_name_list1').append(`<li id="coin_name_list_child" class="text-1xl text-primary-700 font-medium text-center mb-6" style="color: white;"><h3> ${crypto_name_list[i]} </h3></li>`);
+        $('#coin_name_list1 li').click(function() {
+          var clickedItem = $(this).text().trim();
+          console.log(clickedItem.length)
+          $('#coin_bought').val(clickedItem);
+          $('#coin_name_list_div1').hide();
+        })
+      }
+    }
+    if (!foundMatch) {
+      $('#coin_name_list_div1').hide();
+    }
+  });
+
   async function fetchCryptoPrices() {
     $(document).ready(function() {
       // Loop through each '.trans_table' row
@@ -137,7 +272,16 @@
             current_value = current_value.toFixed(2);
             row.find('.current_value').text(current_value); // Update the current value within the row
             var equity = ((data - price_purchased_at) / price_purchased_at) * 100;
-            //row.find('#equity').text(equity);
+            
+            $.ajax({
+              url: "../{{user_id}}/transactions",
+              method: "POST",
+              data: { portfolio_worth: portfolio_worth },
+              success: function(response) {
+                console.log("SENT!")
+              }
+            });
+
             if (equity >= 0 ) {
               row.find('#equity').html(`<td class="text-green-500"> + ${Math.abs(equity).toFixed(2)}% </td>`)
             } else {
@@ -145,37 +289,17 @@
             };
 
             if (portfolio_worth >= total_amount_spent ) {
-              $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(2)} </h1>`)
+              $('#portfolio_worth').html(`<h1 class="text-green-500 text-2xl font-medium">  <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(2)} </h1>`);
+              $('#pw').css('color', 'blue');
             } else {
-              $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> Portfolio Worth: $${Math.abs(portfolio_worth).toFixed(2)} </h1>`)
+              $('#portfolio_worth').html(`<h1 class="text-red-500 text-2xl font-medium"> <span id="pw">Portfolio Worth:</span> $${Math.abs(portfolio_worth).toFixed(2)} </h1>`);
+              $('#pw').css('color', 'blue');
             };
-            //$('#portfolio_worth').text(portfolio_worth);
-            var value = { x: new Date(), y: portfolio_worth };
-            myList.push(value);
-            //console.log(myList);
-            //console.log(value);
-            var options = {
-              animationEnabled: true,  
-              title:{
-                text: "Portfolio Chart"
-              },
-              axisX: {
-                valueFormatString: "hh:mm tt" // Format for time
-              },
-              axisY: {
-                title: "Portfolio Amount (in USD)",
-                prefix: "$"
-              },
-              data: [{
-                yValueFormatString: "$#,###",
-                xValueFormatString: "hh:mm tt", // Format for time
-                type: "spline",
-                dataPoints: myList
-              }]
-            };
-          $("#chartContainer").CanvasJSChart(options);
           },
           error: function(xhr, status, error) {
+             //console.log(myList);
+            // var value = { x: new Date(), y: portfolio_worth_list };
+            // myList.push(value);
             // Handle errors
           }
         });

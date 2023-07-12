@@ -222,20 +222,16 @@ def transactions(user_id):
     headers = {'Accepts': 'application/json'}
     params = {'ids': ','.join(coin_prices.keys()), 'vs_currency': 'usd', 'order': ' id_desc'}
     data = requests.get(url, params=params, headers=headers).json()
-    #print(data)
+    
     current_values = {}
     equities = {}
 
     try: 
         for trans in transactions:
-            #print(coin_prices.keys())
             coin_name = trans.coin_name.lower()
-            print(coin_name)
             coin_name_list.append(trans.coin_name)
             amount_spent_list.append(trans.amount_spent * -1)
-            print(trans.amount_spent)
             symbol_list.append(trans.symbol)
-            print(trans.symbol)
             price_purchased_at_list.append(trans.price_purchased_at)
             no_of_coins = trans.no_of_coins 
             for i in range(len(data)):
@@ -289,10 +285,10 @@ def transactions(user_id):
             trans_list.append(trans_dict)
         # Close the session
         db.session.close()
-        #get portfolio_worth_list from the database
+        # Get portfolio_worth_list from the database
         user = User.query.get(user_id)
         portfolio_worth_list = user.portfolio_worth_list
-        #get a list of cryptocurrencies
+        # Get a list of cryptocurrencies
         try:
             params = {'vs_currency': 'usd', 'per_page': 100, 'page': 1}
             headers = {'Accepts': 'application/json'}
@@ -301,10 +297,9 @@ def transactions(user_id):
             for i in range(len(crypto_list)):
                 crypto_name_list.append(crypto_list[i]['name'])
         except Exception as e:
-            pass
-            # error_message = f"An error occurred: {str(e)}"
-            # flash(error_message, category='error')
-
+            # Handle the specific exception and flash an appropriate response
+            flash("An unexpected error occurred.", category="error")
+            
         #Render the template with the fetched data for the user
         return render_template("transactions.html",
                                user_id=user_id,
@@ -319,8 +314,7 @@ def transactions(user_id):
                                )    
     except Exception as e:
         # Handle the specific exception and flash an appropriate response
-        error_message = f"An error occurred."
-        flash(error_message, category='error')
+        flash("An unexpected error occurred.", category="error")
         return redirect(url_for('views.home', user_id=user_id))    
 
 
@@ -334,6 +328,7 @@ def new_transactions(user_id):
         no_of_coins = request.form.get('no_of_coins')
         price_purchased_at = request.form.get('price_purchased_at')
         amount_spent = float(price_purchased_at) * float(no_of_coins)
+
         # Check if any of the form data is missing
         if not coin_name or not no_of_coins or not price_purchased_at:
             flash("Please provide all required data.", category="error")
@@ -344,20 +339,18 @@ def new_transactions(user_id):
         headers = {'Accepts': 'application/json'}
         params = {'ids': coin_name, 'vs_currency': 'usd', 'order': ' id_desc'}
         data = requests.get(url, params=params, headers=headers).json()
-        print(data)
         if data is None or data == []:
             flash("Please provide correct data or try again.", category="error")
             return redirect(url_for("views.transactions", user_id=user_id))
-
+        
+        # Get the required data from the api response
         current_price = data[0]['current_price']
         symbol = data[0]['symbol'].upper()
 
-            #return redirect(url_for('views.home', user_id=user_id))
         # Create a database session
         session = db.session()
 
         # Check if the transaction already exists for the user and coin
-
         existing_trans = Transaction.query.filter_by(user_id=user_id, coin_name=coin_name.capitalize()).first()
         if existing_trans:
             # Update the existing transaction
@@ -368,6 +361,7 @@ def new_transactions(user_id):
             portfolio_worth = float(user.portfolio_worth) + (float(current_price) * float(no_of_coins))
             user.portfolio_worth = portfolio_worth
             session.commit()
+            # Flash a successs message
             flash("Transaction added successfully.", category="success")
         else:
             # Create a new transaction
@@ -385,10 +379,10 @@ def new_transactions(user_id):
             user.portfolio_worth = portfolio_worth
             session.commit()
             flash("Transaction added successfully.", category="success")
-        
+        # Get user data from the database
         user = User.query.get(user_id)
         user.portfolio_worth_list = user.portfolio_worth_list + [{'x': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'y':portfolio_worth}]
-        
+        # Update the existing transaction history
         new_history = TransactionHistory(
             user_id=user_id,
             coin_name=coin_name,
@@ -417,19 +411,20 @@ def new_transactions(user_id):
 @views.route('/<user_id>/transactions/remove_transaction', methods=['POST'])
 @login_required
 def remove_transaction(user_id):
-    """Endpoint to update a transaction"""
+    """Endpoint to remove a transaction"""
     coin_name = request.form.get('coin_name').strip()
     coin_name = coin_name.lower()
     no_of_coins = request.form.get('no_of_coins')
     price_sold = request.form.get('price_sold')
 
+    # Check if any of the form data is missing
     if not coin_name or not no_of_coins or not price_sold:
         flash("Please provide all required data.", category="error")
         return redirect(url_for("views.transactions", user_id=user_id))
 
     try:
+        # Fetch user transactions from the database
         transactions = Transaction.query.filter_by(user_id=user_id).all()
-
         for trans in transactions:
             if trans.coin_name.lower() == coin_name:
                 new_no_of_coins = float(trans.no_of_coins) - float(no_of_coins)
@@ -437,9 +432,13 @@ def remove_transaction(user_id):
                 trans.amount_spent = new_amount_spent
                 trans.no_of_coins = new_no_of_coins
                 trans.time_updated = datetime.now()
+                
+                # Perform the specific logic 
                 portfolio_worth = float(User.query.get(user_id).portfolio_worth) - (float(price_sold) * float(no_of_coins))
                 User.query.get(user_id).portfolio_worth = portfolio_worth
                 User.query.get(user_id).portfolio_worth_list = User.query.get(user_id).portfolio_worth_list + [{'x': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'y':portfolio_worth}]
+                
+                # Update the existing transaction history
                 new_history = TransactionHistory(
                         user_id=user_id,
                         coin_name=coin_name,
@@ -450,11 +449,14 @@ def remove_transaction(user_id):
                         time_transacted=datetime.now(),
                         transaction_type = 1
                         )
+                # Update the database
                 db.session.add(new_history)
                 if new_no_of_coins <= 0:
                     db.session.delete(trans)
                 db.session.commit()
                 db.session.close()
+                
+                # Flash a success message
                 flash("Transaction removed successfully.", category="success")
                 return redirect(url_for("views.transactions", user_id=user_id))
 
@@ -470,8 +472,8 @@ def remove_transaction(user_id):
 @views.route('/<user_id>/transaction-history', methods=['GET'])
 @login_required
 def transaction_history(user_id):
-    """Endpoint to fetch data from the database"""
 
+    """Endpoint to fetch data from the database"""
     coin_name_list = []
     amount_spent_list = []
     symbol_list = []
@@ -481,13 +483,12 @@ def transaction_history(user_id):
     #image_link_list = []
     transaction_type_list = []
 
-    # Fetch data from the database
+    # Fetch the user data from the database
     user = User.query.get(user_id)
     transaction_history = TransactionHistory.query.filter_by(user_id=user_id).all()
 
     try: 
         for trans in transaction_history:
-            #print(coin_prices.keys())
             coin_name = trans.coin_name.capitalize()
             coin_name_list.append(trans.coin_name)
             amount_spent_list.append(trans.amount_spent * -1)
@@ -548,16 +549,17 @@ def reset_password_request():
         if user:
             # Send the reset email
             send_reset_email(user)
-
+        
+        # Flash an appropriate response
         flash('An email with instructions to reset your password has been sent.', 'success')
         return redirect(url_for('auth.login'))
     return render_template('reset_password_request.html')
 
-# Route for resetting the password
-
 
 @views.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
+    """Endpoint for resetting a user password"""
+
     # Check if the token is valid
     if User.verify_reset_token(token) is None:
         flash('That is an invalid or expired token', 'warning')
@@ -567,6 +569,7 @@ def reset_password(token):
             password = request.form.get('password')
             verify_password = request.form.get('verify_password')
 
+            # Validate the input
             if not password or not verify_password or password != verify_password:
                 flash('Passwords don\'t match.', category='error')
             elif len(password) < 7:
@@ -578,6 +581,7 @@ def reset_password(token):
                 password, method='sha256')
             user.password = hashed_new_password
             db.session.commit()
+            # Flash an appropriate response
             flash(
                 'Your password has been successfully reset. Please login with your new password.', 'success')
             return redirect(url_for('auth.login'))

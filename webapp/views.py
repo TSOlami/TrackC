@@ -16,7 +16,7 @@ LIVE_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price"
 
 
 # Send the password reset email
-@staticmethod
+
 def send_reset_email(user):
     token = user.generate_reset_token()
     reset_url = url_for('views.reset_password', token=token, _external=True)

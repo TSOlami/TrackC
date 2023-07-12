@@ -687,6 +687,10 @@ video {
   right: 0.75rem;
 }
 
+.right-5 {
+  right: 1.25rem;
+}
+
 .right-9 {
   right: 2.25rem;
 }
@@ -1633,6 +1637,10 @@ video {
           appearance: none;
 }
 
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .\!flex-row {
   flex-direction: row !important;
 }
@@ -2049,6 +2057,11 @@ video {
   background-color: rgb(227 235 247 / var(--tw-bg-opacity));
 }
 
+.bg-primary-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(48 97 175 / var(--tw-bg-opacity));
+}
+
 .bg-primary-800 {
   --tw-bg-opacity: 1;
   background-color: rgb(32 64 117 / var(--tw-bg-opacity));
@@ -2132,6 +2145,11 @@ video {
   fill: #fff;
 }
 
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 .\!p-0 {
   padding: 0px !important;
 }
@@ -2150,6 +2168,10 @@ video {
 
 .p-2\.5 {
   padding: 0.625rem;
+}
+
+.p-3 {
+  padding: 0.75rem;
 }
 
 .p-4 {
@@ -2539,6 +2561,10 @@ video {
   text-transform: uppercase;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .normal-case {
   text-transform: none;
 }
@@ -2699,6 +2725,11 @@ video {
 
 .text-black\/\[64\] {
   color: rgb(0 0 0 / 64);
+}
+
+.text-blue-900 {
+  --tw-text-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity));
 }
 
 .text-danger {
@@ -3372,6 +3403,11 @@ video {
   background-color: rgb(48 97 175 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-primary-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(40 81 146 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-primary-accent-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(217 228 243 / var(--tw-bg-opacity));
@@ -3541,6 +3577,11 @@ video {
 .focus\:bg-primary-600:focus {
   --tw-bg-opacity: 1;
   background-color: rgb(48 97 175 / var(--tw-bg-opacity));
+}
+
+.focus\:bg-primary-700:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(40 81 146 / var(--tw-bg-opacity));
 }
 
 .focus\:bg-primary-accent-100:focus {
@@ -3823,6 +3864,11 @@ video {
   background-color: rgb(40 81 146 / var(--tw-bg-opacity));
 }
 
+.active\:bg-primary-800:active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(32 64 117 / var(--tw-bg-opacity));
+}
+
 .active\:bg-primary-accent-200:active {
   --tw-bg-opacity: 1;
   background-color: rgb(206 219 238 / var(--tw-bg-opacity));
@@ -3868,6 +3914,10 @@ video {
 
 .disabled\:text-black\/30:disabled {
   color: rgb(0 0 0 / 0.3);
+}
+
+.disabled\:text-primary\/30:disabled {
+  color: rgb(59 113 202 / 0.3);
 }
 
 .disabled\:opacity-25:disabled {
@@ -5080,6 +5130,10 @@ video {
 
 .\[\&\.active\]\:text-black\/90.active {
   color: rgb(0 0 0 / 0.9);
+}
+
+.\[\&\.active\]\:text-primary\/80.active {
+  color: rgb(59 113 202 / 0.8);
 }
 
 :is(.dark .dark\:\[\&\.active\]\:text-primary-400.active) {

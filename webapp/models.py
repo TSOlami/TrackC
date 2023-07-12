@@ -57,7 +57,7 @@ class User(db.Model, UserMixin):
         s = Serializer(os.environ['SECRET_KEY'])
         return s.dumps({'user_id': self.id})
      
-    @staticmethod
+  
     def verify_reset_token(token):
         s = Serializer(os.environ['SECRET_KEY'])
         try:

@@ -5,7 +5,7 @@ import requests
 from flask import Blueprint, flash, render_template, request, redirect, url_for, abort
 from flask_mail import Message
 from flask_login import login_required, current_user
-from requests.exceptions import RequestException, ConnectionError, Timeout, TooManyRedirects
+from requests.exceptions import RequestException, ConnectionError, Timeout, TooManyRedirects, HTTPError
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import *
 from .config import *
@@ -65,94 +65,115 @@ def about(user_id):
 @views.route('/home/<user_id>')
 @login_required
 def home(user_id):
-    """Home Endpoint"""
-    # API call to get top 10 cryptocurrencies from CoinGecko
-    url = 'https://api.coingecko.com/api/v3/coins/markets'
-    parameters = {
-        'vs_currency': 'usd',
-        'order': 'market_cap_desc',
-        'per_page': 10,
-        'page': 1
-    }    
-    response = requests.get(url, params=parameters)
-    data = response.json()
-    results = data
-    
-    # Iterate through the results and get the required data
-    for result in results:
-        result['current_price'] = '$ ' + "{:,.2f}".format(float(result['current_price']))
-        result['total_volume'] = '$ ' + "{:,.2f}".format(result['total_volume'])
-        result['price_change_percentage_24h'] = "{:,.2f}".format(float(result['price_change_percentage_24h'])) + '%'
-
-    # Create a list for storing values
-    coin_name_list = []
-    amount_spent_list = []
-    symbol_list = []
-    price_purchased_at_list = []
-    no_of_coins_list = []
-    time_transacted_list = []
-    time_updated_list = []
-
-    # Fetch data from the database
-    user = User.query.get(user_id)
-    transactions = Transaction.query.filter_by(user_id=user_id).all()
-
-    # Create a dictionary for storing values
-    coin_prices = {}
-    for trans in transactions:
-        coin_prices[trans.coin_name.lower()] = trans.price_purchased_at
-
-    # Make API request to get live price for the coin
-    url = "https://api.coingecko.com/api/v3/simple/price"
-    headers = {'Accepts': 'application/json'}
-    params = {'ids': ','.join(coin_prices.keys()), 'vs_currencies': 'usd'}
-    data = requests.get(url, params=params, headers=headers).json()
-
-    # Create a dictionary for storing values
-    current_values = {}
-    equities = {}
-
-    # Get the user data from the db
     try:
+        # API call to get top 10 cryptocurrencies from CoinGecko
+        url = 'https://api.coingecko.com/api/v3/coins/markets'
+        parameters = {
+            'vs_currency': 'usd',
+            'order': 'market_cap_desc',
+            'per_page': 10,
+            'page': 1
+        }    
+        response = requests.get(url, params=parameters)
+        response.raise_for_status()  # Raise an exception if the response is not successful
+        data = response.json()
+        results = data
+        print(data)
+        
+        # Iterate through the results and get the required data
+        for result in results:
+            result['current_price'] = '$ ' + "{:,.2f}".format(float(result['current_price']))
+            result['total_volume'] = '$ ' + "{:,.2f}".format(result['total_volume'])
+            result['price_change_percentage_24h'] = "{:,.2f}".format(float(result['price_change_percentage_24h'])) + '%'
+
+        # Create a list for storing values
+        coin_name_list = []
+        amount_spent_list = []
+        symbol_list = []
+        price_purchased_at_list = []
+        no_of_coins_list = []
+        time_transacted_list = []
+        time_updated_list = []
+
+        # Fetch data from the database
+        user = User.query.get(user_id)
+        transactions = Transaction.query.filter_by(user_id=user_id).all()
+
+        # Create a dictionary for storing values
+        coin_prices = {}
         for trans in transactions:
-            coin_name = trans.coin_name.lower()
-            coin_name_list.append(trans.coin_name)
-            amount_spent_list.append(trans.amount_spent)
-            symbol_list.append(trans.symbol)
-            price_purchased_at_list.append(trans.price_purchased_at)
-            no_of_coins = trans.no_of_coins
+            coin_prices[trans.coin_name.lower()] = trans.price_purchased_at
 
-            # Get the current value for the coins from the api response
-            if coin_name in data:
-                current_price = data[coin_name]['usd']
-                current_value = current_price * float(trans.no_of_coins)
-                equity = (current_value - (float(trans.no_of_coins)
-                          * float(trans.price_purchased_at))) / 100
-                current_values[coin_name] = current_value
-                equities[coin_name] = equity
+        # Make API request to get live price for the coin
+        url = "https://api.coingecko.com/api/v3/simple/price"
+        headers = {'Accepts': 'application/json'}
+        params = {'ids': ','.join(coin_prices.keys()), 'vs_currencies': 'usd'}
+        data = requests.get(url, params=params, headers=headers).json()
 
-            # Save the data into the corresponding list
-            no_of_coins_list.append(no_of_coins)
-            time_transacted_list.append(trans.time_transacted)
-            time_updated_list.append(trans.time_updated)
+        # Create a dictionary for storing values
+        current_values = {}
+        equities = {}
 
-        # Calculate portfolio worth
-        portfolio_worth = sum(current_values.values())
-        portfolio_equity = sum(equities.values())
+        # Get the user data from the db
+        try:
+            for trans in transactions:
+                coin_name = trans.coin_name.lower()
+                coin_name_list.append(trans.coin_name)
+                amount_spent_list.append(trans.amount_spent)
+                symbol_list.append(trans.symbol)
+                price_purchased_at_list.append(trans.price_purchased_at)
+                no_of_coins = trans.no_of_coins
 
-    except Exception as e:
-        # Handle the specific exception and flash an appropriate response
-        flash('An error occurred!', category='error')
+                # Get the current value for the coins from the api response
+                if coin_name in data:
+                    current_price = data[coin_name]['usd']
+                    current_value = current_price * float(trans.no_of_coins)
+                    equity = (current_value - (float(trans.no_of_coins)
+                            * float(trans.price_purchased_at))) / 100
+                    current_values[coin_name] = current_value
+                    equities[coin_name] = equity
 
-    # Render results on the homepage
-    return render_template("home.html",
-                           user_id=user_id,
-                           username=user.username.title(),
-                           results=results,
-                           user=current_user,
-                           portfolio_worth=portfolio_worth,
-                           portfolio_equity=portfolio_equity)
+                # Save the data into the corresponding list
+                no_of_coins_list.append(no_of_coins)
+                time_transacted_list.append(trans.time_transacted)
+                time_updated_list.append(trans.time_updated)
 
+            # Calculate portfolio worth
+            portfolio_worth = sum(current_values.values())
+            portfolio_equity = sum(equities.values())
+
+        except requests.exceptions.RequestException:
+            # Handle request-related exceptions (e.g., network error)
+            flash('An error occurred while fetching data. Please wait for a minute and try again.', category='error')
+            return redirect(url_for("views.error_404", user_id=user_id))
+
+        except ValueError:
+            # Handle JSON decoding error
+            flash('An error occurred while processing data. Please wait for a minute and try again.', category='error')
+            return redirect(url_for("views.error_404", user_id=user_id))
+
+        except Exception as e:
+            # Handle the specific exception and flash an appropriate response
+            flash('An error occurred!', category='error')
+            return redirect(url_for("views.error_404", user_id=user_id))
+
+        # Render results on the homepage
+        return render_template("home.html",
+                            user_id=user_id,
+                            username=user.username.title(),
+                            results=results,
+                            user=current_user,
+                            portfolio_worth=portfolio_worth,
+                            portfolio_equity=portfolio_equity)
+    except requests.exceptions.HTTPError as err:
+        # Handle the HTTPError exception and flash an appropriate response
+        if err.response.status_code == 429:
+            flash('CoinGecko API is temporarily unavailable. Please wait a minute before refreshing the page.', category='error')
+        else:
+            flash('An unexpected error occurred!', category='error')
+
+    return redirect(url_for('views.error_404', user_id=user_id))
+    
 
 @views.route('/<user_id>/news', methods=['GET'])
 @login_required
@@ -298,7 +319,7 @@ def transactions(user_id):
                 crypto_name_list.append(crypto_list[i]['name'])
         except Exception as e:
             # Handle the specific exception and flash an appropriate response
-            flash("An unexpected error occurred.", category="error")
+            flash("An unexpected error occurred, please wait a minute before trying again", category="error")
             
         #Render the template with the fetched data for the user
         return render_template("transactions.html",
@@ -587,3 +608,14 @@ def reset_password(token):
             return redirect(url_for('auth.login'))
         return render_template('reset_password.html', token=token)
 
+
+# Define the 404 route
+@views.route('/404/<user_id>')
+def error_404(user_id):
+    return render_template("error.html", user_id=user_id)
+
+
+# Define the global 404 error handler
+@views.errorhandler(404)
+def not_found_error(error):
+    return render_template('error.html'), 404

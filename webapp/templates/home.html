@@ -76,16 +76,16 @@
           class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-50"></div>
       </div>
 	  <div
-        class="absolute inset-0 flex items-center justify-center text-[hsl(218,81%,95%)]">
-        <div class="text-center">
+        class="absolute inset-x-[15%] bottom-5 py-5 flex items-center justify-center text-[hsl(218,81%,95%)]">
+        <div class="text-left">
         <h1 class="text-4xl font-medium leading-tight font-lato">
-          <ul class="text-center">
-			<li>Effortlessly add your</li> 
-			<li>Cryptocurrency transactions </li>
-			<li>and stay informed</li>
-			<li>with cryptocurrency market,</li>
-			<li>trends, and more.</li>
-		  </ul>
+          <ul class="text-left">
+            <li>Effortlessly add your</li> 
+            <li>Cryptocurrency transactions </li>
+            <li>and stay informed</li>
+            <li>with cryptocurrency market,</li>
+            <li>trends, and more.</li>
+          </ul>
         </h1>
 		</div>
       </div>
@@ -103,18 +103,18 @@
         <div
           class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-50"></div>
       </div>
-       <div
-        class="absolute inset-0 flex items-center justify-center text-[hsl(218,81%,95%)]">
+      <div
+        class="absolute inset-x-[15%] bottom-5 py-5 text-center md:block flex items-center justify-center text-[hsl(218,81%,95%)]">
         <div class="text-center">
         <h1 class="text-5xl font-medium leading-tight font-lato">
           <ul class="text-center">
-			<li>Get free access</li> 
-			<li>to a comprehensive table</li> 
-			<li>that displays your transaction</li>
-			<li>history and performance.</li>
-		  </ul>
+            <li>Get free access</li> 
+            <li>to a comprehensive table</li> 
+            <li>that displays your transaction</li>
+            <li>history and performance.</li>
+          </ul>
         </h1>
-		</div>
+		    </div>
       </div>
     </div>
   </div>
@@ -224,9 +224,8 @@
       {% for obj in results %}
       <tr class="trans_table">
         <td class="py-2 px-4 border-b text-center">{{ loop.index }}</td>
-        <td class="py-2 px-4 border-b text-center" style="text-transform: uppercase;">{{ obj['name'] }}</td>
+        <td class = "py-2 px-4 border-b text-center" style="display: flex; align-items: center; text-transform: uppercase;"><img src="{{obj['image']}}" alt="" style="width: 25px; height: 25px; object-fit: cover; margin-right: 10px;"><span>{{ obj['name'] }}</span></td>
         <td class="py-2 px-4 border-b text-center" style="text-transform: uppercase;">{{ obj['symbol'] }}</td>
-        <!-- <td class="py-2 px-4 border-b text-center">{{ obj['slug'] }}</td> -->
         <td class="current_price py-2 px-4 border-b text-center">{{ obj['current_price'] }}</td>
         <td class="total_volume py-2 px-4 border-b text-center">{{ obj['total_volume'] }}</td>
         <td class="price_change_percentage py-2 px-4 border-b text-center">

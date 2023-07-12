@@ -16,6 +16,15 @@
 	<script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
 	<title>{% block title %}Home{% endblock %}</title>
 	<link rel="icon" type="image/x-icon" href="../static/images/icon.png">
+	<style>
+		#coin_name_list_child:active {
+			font-size: 1.1em;
+		}
+		
+		#coin_name_list_child:hover {
+			font-size: 1.1em;
+		}
+	</style>
 <body>
 	<style>
 		#btn-back-to-top {
@@ -141,7 +150,7 @@
 		{% endfor %}
 	{% endif %}
 	{% endwith %}
-<div class="container">
+<div class="">
   {% block content %}
   {% endblock %}
 </div>

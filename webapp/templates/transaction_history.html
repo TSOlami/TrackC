@@ -6,35 +6,39 @@
 
 <br/>
 <br/>
-<h1 class="text-2xl font-bold text-center text-blue-900 mb-4">TRANSACTION HISTORY</h1>
-<table class="table-auto w-full bg-white">
-  <thead>
-    <tr class="bg-primary-800 font-medium text-white">
-      <th class="py-2 px-4">Name</th>
-      <th class="py-2 px-4">Symbol</th>
-      <th class="py-2 px-4">Unit Price Sold/Purchased at</th>
-      <th class="py-2 px-4">Cost Basis</th>
-      <th class="py-2 px-4">Number of Coins</th>
-      <th class="py-2 px-4">Time Transacted</th>
-      <th class="py-2 px-4">Transaction Type</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for trans in trans_list %}
-    <tr class="trans_table">
-      <td class = "py-2 px-4 border-b text-center">{{ trans.coin_name.capitalize() }}</td>
-      <td class = "py-2 px-4 border-b text-center">{{ trans.symbol }}</td>
-      <td class = "py-2 px-4 border-b text-center">${{ trans.price_purchased_at }}</td>
-      <td {% if trans.amount_spent >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}> ${{ "{:,.2f}".format(trans.amount_spent|abs) }}</td>
-      <td class = "py-2 px-4 border-b text-center">{{ trans.no_of_coins }}</td>
-      <td class = "py-2 px-4 border-b text-center">{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
-      <td id="equity" {% if trans.transaction_type > 0 %}class="text-red-500 py-2 px-4 border-b text-center"{% else %}class="text-green-500 py-2 px-4 border-b text-center"{% endif %}>
-        {% if trans.transaction_type > 0 %}Sell{% else %}Buy{% endif %}
-      </td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>    
+{% if trans_list %}
+  <h1 class="text-2xl font-bold text-center text-blue-900 mb-4">TRANSACTION HISTORY</h1>
+  <table class="table-auto w-full bg-white">
+    <thead>
+      <tr class="bg-primary-800 font-medium text-white">
+        <th class="py-2 px-4">Name</th>
+        <th class="py-2 px-4">Symbol</th>
+        <th class="py-2 px-4">Unit Price Sold/Purchased at</th>
+        <th class="py-2 px-4">Cost Basis</th>
+        <th class="py-2 px-4">Number of Coins</th>
+        <th class="py-2 px-4">Time Transacted</th>
+        <th class="py-2 px-4">Transaction Type</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for trans in trans_list %}
+      <tr class="trans_table">
+        <td class = "py-2 px-4 border-b text-center">{{ trans.coin_name|capitalize() }}</td>
+        <td class = "py-2 px-4 border-b text-center">{{ trans.symbol }}</td>
+        <td class = "py-2 px-4 border-b text-center">${{ "{:,.2f}".format(trans.price_purchased_at) }}</td>
+        <td {% if trans.amount_spent >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}> ${{ "{:,.2f}".format(trans.amount_spent|abs) }}</td>
+        <td class = "py-2 px-4 border-b text-center">{{ "{:,.2f}".format(trans.no_of_coins) }}</td>
+        <td class = "py-2 px-4 border-b text-center">{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        <td id="equity" {% if trans.transaction_type > 0 %}class="text-red-500 py-2 px-4 border-b text-center"{% else %}class="text-green-500 py-2 px-4 border-b text-center"{% endif %}>
+          {% if trans.transaction_type > 0 %}Sell{% else %}Buy{% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <h1 class="text-2xl font-bold text-center text-blue-900 mb-4"> NO TRANSACTION HISTORY</h1>
+  {% endif %}
 </div>
 <br/>
 <br/>

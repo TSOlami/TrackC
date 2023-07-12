@@ -1,0 +1,38 @@
+<!-- error.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@1,800;1,900&display=swap" rel="stylesheet">
+	
+	<link rel="stylesheet" href="../static/css/dist/output.css">
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+    <title>Error</title>
+    <link rel="icon" type="image/x-icon" href="../static/images/icon.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
+    <!-- Include the tw-element CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-element/dist/tw-element.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="error-message">Oops! An error occurred.</h1>
+        <p class="error-message">It seems that an error occurred while retrieving data from the CoinGecko API.</p>
+        <p class="error-message">Please wait for a minute and try again.</p>
+        <button class="retry-button" onclick="retry()">Retry</button>
+    </div>
+
+    <!-- Include the tw-element JavaScript -->
+    <script>
+        function retry() {
+            // Redirect to the home page or any other appropriate route
+            window.location.href = "/";
+        }
+    </script>
+</body>
+
+</html>

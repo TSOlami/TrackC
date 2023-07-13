@@ -11,6 +11,7 @@ auth = Blueprint('auth', __name__)
 def login():
     """Endpoint to handle User login"""
     if request.method == 'POST':
+        # Get the required data from the form
         email = request.form.get('email')
         password = request.form.get('password')
         # Get user data from the database
@@ -55,11 +56,13 @@ def sign_up():
         try:
             user = User.query.filter_by(email=email).first()
             if user:
+                # The email exists in our database
                 flash('This email is already taken, try again with another email!', category='error')
                 return render_template("sign_up.html")
             
             user = User.query.filter_by(username=username).first()
             if user:
+                # The username exists in our database
                 flash('This username is already taken, try again with another username!', category='error')
                 return render_template("sign_up.html")
 
@@ -68,11 +71,14 @@ def sign_up():
             new_user = User(username=username, email=email, password=generate_password_hash(password1, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
+            # Login the new user
             login_user(new_user, remember=True)
+            # Flash an appropriate message
             flash('Account created successfully, Welcome {}!'.format(new_user.username), category='success')
             user_id = new_user.id
             username = new_user.username
             email = new_user.email
+            # Get the user id and save the necessary details
             user = User.query.get(user_id)
             user.portfolio_worth_list = user.portfolio_worth_list + [{'x': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'y':0}]
             db.session.commit()
@@ -80,6 +86,7 @@ def sign_up():
             db.session.close()
             return redirect(url_for('views.home', user_id=user_id))
         except Exception as e:
+            # An error occured
             db.session.rollback()
             return render_template("sign_up.html")
     return render_template("sign_up.html", user=current_user)

@@ -23,6 +23,7 @@ def create_app():
     from .views import views
     from .auth import auth
 
+    # Register all neccessary blueprints
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
@@ -31,7 +32,8 @@ def create_app():
     # Create the database tables
     with app.app_context():
         db.create_all()
-
+        
+    # Initialize our login manager
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)

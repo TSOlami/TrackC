@@ -8,11 +8,11 @@ from sqlalchemy.dialects.postgresql import JSONB
 
 
 class TransactionHistory(db.Model):
-    """ The Transaction History Model """
+    """Model for storing transaction history"""
     
     __tablename__ = 'transaction history'
     id = db.Column(db.String(40), primary_key=True, default=lambda: str(uuid.uuid4()))
-    user_id = db.Column(db.String, db.ForeignKey('users.id'))
+    user_id = db.Column(db.String, db.ForeignKey('users.id'))  # Foreign key referencing User model
     coin_name = db.Column(db.String(30), nullable=False)
     symbol =  db.Column(db.String(30), nullable=False)
     price_purchased_at = db.Column(db.Numeric, nullable=False)
@@ -27,7 +27,7 @@ class Transaction(db.Model):
 
     __tablename__ = 'transactions'
     id = db.Column(db.String(40), primary_key=True, default=lambda: str(uuid.uuid4()))
-    user_id = db.Column(db.String, db.ForeignKey('users.id'))
+    user_id = db.Column(db.String, db.ForeignKey('users.id'))  # Foreign key referencing User model
     coin_name = db.Column(db.String(30), nullable=False)
     symbol =  db.Column(db.String(30), nullable=False)
     price_purchased_at = db.Column(db.Numeric, nullable=False)
@@ -52,13 +52,14 @@ class User(db.Model, UserMixin):
     portfolio_worth_list = db.Column(JSONB, default=[])
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
 
-    # Generate a password reset token
     def generate_reset_token(self, expires=1800):
+        """Generate a password reset token for the user"""
         s = Serializer(os.environ['SECRET_KEY'])
         return s.dumps({'user_id': self.id})
      
   
     def verify_reset_token(token):
+        """Verify the password reset token and return the corresponding user"""
         s = Serializer(os.environ['SECRET_KEY'])
         try:
             user_id = s.loads(token)['user_id']

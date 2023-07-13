@@ -35,7 +35,8 @@ The app has been deployed on **[Render]** and can be accessed at [app URL](https
 - Flask (web framework)
 - SQLAlchemy (database toolkit)
 - CoinGecko API (for live cryptocurrency prices and news)
-- HTML/CSS
+- HTML
+- Tailwind CSS Elements
 - JavaScript
 
 ## Setup and Installation

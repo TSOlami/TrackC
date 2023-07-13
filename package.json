@@ -1,0 +1,15 @@
+{
+  "name": "trackc",
+  "scripts": {
+    "tw-build": "npx tailwindcss -i ./webapp/static/css/src/input.css -o ./webapp/static/css/dist/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.3.2"
+  },
+  "dependencies": {
+    "tw-elements": "^1.0.0-beta2"
+  }
+}

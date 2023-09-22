@@ -43,7 +43,7 @@
         }
     </style>
     <!-- Navbar -->
-    <nav class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start" data-te-navbar-ref>
+    <nav class="relative flex flex-col w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start" data-te-navbar-ref>
         <!-- Container wrapper -->
         <div class="flex w-full flex-wrap items-center justify-between px-6">
             <div class="flex items-center">
@@ -80,7 +80,7 @@
             <!-- Right elements -->
             <div class="my-1 flex items-center lg:my-0 lg:ml-auto">
                 <a href="/login">
-                    <button type="button" class="mr-2 inline-block rounded px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 dark:text-primary-400 dark:hover:bg-neutral-700 dark:hover:bg-opacity-60 dark:hover:text-primary-500 dark:focus:text-primary-500 dark
+                    <button type="button" class="mr-2 inline-block rounded px-4 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 dark:text-primary-400 dark:hover:bg-neutral-700 dark:hover:bg-opacity-60 dark:hover:text-primary-500 dark:focus:text-primary-500 dark
 
 :active:text-primary-600" data-te-ripple-init data-te-ripple-color="light">
                         Login
@@ -89,8 +89,8 @@
                 <a href="/sign-up">
                     <button
                         type="button"
-                        class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200">
-                        Sign up for free
+                        class="inline-block rounded bg-primary-100 px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200">
+                        Sign up
                     </button>
                 </a>
                 <a href="https://github.com/TSOlami/TrackC">
@@ -306,16 +306,16 @@
       data-te-carousel-item
       style="backface-visibility: hidden">
       <div
-        class="relative overflow-hidden bg-cover bg-no-repeat"
+        class="relative min-h-[300px] overflow-hidden bg-cover bg-no-repeat"
         style="background-position: 50%">
         <img
           src="../static/images/deposit.jpg"
-          class="block w-full" />
+          class="block w-full h-full" />
         <div
           class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-50"></div>
       </div>
       <div
-        class="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-white md:block">
+        class="absolute inset-x-[15%] hidden bottom-5 py-5 text-center text-white md:block">
         <h5 class="text-xl">Invest</h5>
         <p>
           Invest and buy a coin on any platform of your choice.
@@ -327,11 +327,11 @@
       data-te-carousel-item
       style="backface-visibility: hidden">
       <div
-        class="relative overflow-hidden bg-cover bg-no-repeat"
+        class="relative overflow-hidden min-h-[300px] bg-cover bg-no-repeat"
         style="background-position: 50%">
         <img
           src="../static/images/bitty.jpg"
-          class="block w-full" />
+          class="block w-full h-full" />
         <div
           class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-50"></div>
       </div>
@@ -348,11 +348,11 @@
       data-te-carousel-item
       style="backface-visibility: hidden">
       <div
-        class="relative overflow-hidden bg-cover bg-no-repeat"
+        class="relative overflow-hidden min-h-[300px] bg-cover bg-no-repeat"
         style="background-position: 50%">
         <img
           src="../static/images/user.jpg"
-          class="block w-full" />
+          class="block w-full h-full" />
         <div
           class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-50"></div>
       </div>

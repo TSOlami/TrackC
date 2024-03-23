@@ -3,179 +3,180 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Google Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@1,800;1,900&display=swap" rel="stylesheet">
-	<link
-	rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<!-- Font styles -->
+	<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@1,800;1,900&display=swap" rel="stylesheet">
+	<!-- TW-Elements CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
+	<!-- Custom CSS -->
 	<link rel="stylesheet" href="../static/css/dist/output.css">
+	<!-- Tailwind CSS -->
 	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+	<!-- jQuery -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- CanvasJS -->
 	<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 	<script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
 	<title>{% block title %}Home{% endblock %}</title>
 	<link rel="icon" type="image/x-icon" href="../static/images/icon.png">
 	<style>
+		/* Styles for #coin_name_list_child when active */
 		#coin_name_list_child:active {
 			font-size: 1.1em;
 		}
-		
+		/* Styles for #coin_name_list_child when hovered */
 		#coin_name_list_child:hover {
 			font-size: 1.1em;
 		}
 	</style>
+</head>
 <body>
 	<style>
+		/* Styles for the back-to-top button */
 		#btn-back-to-top {
-		  position: fixed;
-		  display: none;
-		  }
-	  </style>
-<!-- Section: Design Block -->
-<section>
-	<!-- Navbar -->
-	<nav class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start font-lato" data-te-navbar-ref>
-	  <!-- Container wrapper -->
-	  <div class="flex w-full flex-wrap items-center justify-between px-6">
-		<div class="flex items-center">
-		  <!-- Toggle button -->
-		  <button class="block border-0 bg-transparent py-2 pr-2.5 text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden" type="button" data-te-collapse-init data-te-target="#navbarSupportedContentY" aria-controls="navbarSupportedContentY" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="[&>svg]:w-7">
-			  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
-				<path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
-			  </svg>
-			</span>
-		  </button>
-  
-		  <!-- Navbar Brand -->
-		  <a class="text-primary dark:text-primary-400" href="/">
-			<span class="[&>svg]:ml-2 [&>svg]:mr-3 [&>svg]:h-6 [&>svg]:w-6 [&>svg]:lg:ml-0">
-				<img src="../static/images/icon.png"/>
-				<path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-			  </svg>
-			</span>
-		  </a>
-		</div>
-  
-		<!-- Collapsible wrapper -->
-		<div class="!visible hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto" id="navbarSupportedContentY" data-te-collapse-item>
-		  <!-- Left links -->
-		  <ul class="mr-auto lg:flex lg:flex-row flex flex-col justify-center items-center" data-te-navbar-nav-ref>
-			<li data-te-nav-item-ref>
-			  <a class="block py-2 pr-2 text-3xl text-primary-600 mb-4 font-bold transition duration-150 ease-in-out hover:text-primary-700 focus:text-primary-600 disabled:text-black/30 dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-black/80 dark:[&.active]:text-white/80" href="/" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light" disabled>TrackC</a>
-			</li>
-			<li>
-				<a
-				class="py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400"
-				href="{{ url_for('views.home', user_id=user_id) }}"
-				data-te-nav-link-ref
-				>Home/Dashboard</a
-         	  >
-			</li>
-			<li>
-				<a
-				class="py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400"
-				href="{{ url_for('views.transactions', user_id=user_id) }}"
-				data-te-nav-link-ref
-				>My Wallet</a
-         	  >
-			</li>
-			<li>
-				<a
-				class="py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400"
-				href="{{ url_for('views.transaction_history', user_id=user_id) }}"
-				data-te-nav-link-ref
-				>Transaction History</a
-         	  >
-			</li>
-			<li>
-				<a
-			    class=" py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400"
-			    href="{{ url_for('views.news', user_id=user_id) }}"
-			    data-te-nav-link-ref
-			    >News</a
-			  >
-			</li>
-		  </ul>
-		  <!-- Left links -->
-		</div>
-		<!-- Collapsible wrapper -->
-  
-		<!-- Right elements -->
-		<div class="my-1 flex items-center lg:my-0 lg:ml-auto font-lato">
-			<a href="/about">
-				<button type="button" class="mr-2 inline-block rounded px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 dark:text-primary-400 dark:hover:bg-neutral-700 dark:hover:bg-opacity-60 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600" data-te-ripple-init data-te-ripple-color="light">
-					About us
-				</button>
-			  </a>
-			<a href="/logout">
-				<button type="button" class="mr-2 inline-block rounded px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 dark:text-primary-400 dark:hover:bg-neutral-700 dark:hover:bg-opacity-60 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600" data-te-ripple-init data-te-ripple-color="light">
-					Logout
-				</button>
-			</a>
-		</div>
-		<!-- Right elements -->
-	  </div>
-	  <!-- Container wrapper -->
-	</nav>
-	<!-- Navbar -->
+			position: fixed;
+			display: none;
+		}
+	</style>
 
-	{% with messages = get_flashed_messages(with_categories=true) %}
-	{% if messages %}
-		{% for category, message in messages %}
-		{% if category == 'error' %}
-			<div class="mb-3 hidden w-full items-center rounded-lg bg-warning-100 px-6 py-5 text-base text-warning-800 data-[te-alert-show]:inline-flex" role="alert" data-te-alert-init data-te-alert-show>
-			<strong class="mr-1">ERROR! </strong> {{ message }}
-			<button type="button" class="ml-auto box-content rounded-none border-none p-1 text-warning-900 opacity-50 hover:text-warning-900 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none" data-te-alert-dismiss aria-label="Close">
-				<span class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
-					<path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
-				</svg>
-				</span>
-			</button>
+	<!-- Section: Design Block -->
+	<section>
+		<!-- Navbar -->
+		<nav class="relative flex w-full items-center justify-between bg-white py-2 shadow-sm shadow-neutral-700/10 dark:bg-neutral-800 dark:shadow-black/30 lg:flex-wrap lg:justify-start font-lato" data-te-navbar-ref>
+			<!-- Container wrapper -->
+			<div class="flex w-full flex-wrap items-center justify-between px-6">
+				<div class="flex items-center">
+					<!-- Toggle button -->
+					<button class="block border-0 bg-transparent py-2 pr-2.5 text-neutral-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden" type="button" data-te-collapse-init data-te-target="#navbarSupportedContentY" aria-controls="navbarSupportedContentY" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="[&>svg]:w-7">
+							<!-- SVG icon for the toggle button -->
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
+								<path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+							</svg>
+						</span>
+					</button>
+					
+					<!-- Navbar Brand -->
+					<a class="text-primary dark:text-primary-400" href="/">
+						<span class="[&>svg]:ml-2 [&>svg]:mr-3 [&>svg]:h-6 [&>svg]:w-6 [&>svg]:lg:ml-0">
+							<img src="../static/images/icon.png"/>
+							<!-- SVG path for the Navbar Brand -->
+							<path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+						</span>
+					</a>
+				</div>
+				
+				<!-- Collapsible wrapper -->
+				<div class="!visible hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto" id="navbarSupportedContentY" data-te-collapse-item>
+					<!-- Left links -->
+					<ul class="mr-auto lg:flex lg:flex-row flex flex-col justify-center items-center" data-te-navbar-nav-ref>
+						<li data-te-nav-item-ref>
+							<a class="block py-2 pr-2 text-3xl text-primary-600 mb-4 font-bold transition duration-150 ease-in-out hover:text-primary-700 focus:text-primary-600 disabled:text-black/30 dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 dark:disabled:text-white/30 lg:px-2 [&.active]:text-black/80 dark:[&.active]:text-white/80" href="/" data-te-nav-link-ref data-te-ripple-init data-te-ripple-color="light" disabled>TrackC</a>
+						</li>
+						<li>
+							<a class="py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400" href="{{ url_for('views.home', user_id=user_id) }}" data-te-nav-link-ref>Home/Dashboard</a>
+						</li>
+						<li>
+							<a class="py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400" href="{{ url_for('views.transactions', user_id=user_id) }}" data-te-nav-link-ref>My Wallet</a>
+						</li>
+						<li>
+							<a class="py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400" href="{{ url_for('views.transaction_history', user_id=user_id) }}" data-te-nav-link-ref>Transaction History</a>
+						</li>
+						<li>
+							<a class="py-4 text-primary-500 transition duration-200 hover:text-primary-700 hover:ease-in-out focus:text-primary-700 disabled:text-black/30 motion-reduce:transition-none dark:text-primary-200 dark:hover:text-primary-300 dark:focus:text-primary-300 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-primary-400" href="{{ url_for('views.news', user_id=user_id) }}" data-te-nav-link-ref>News</a>
+						</li>
+					</ul>
+					<!-- Left links -->
+				</div>
+				<!-- Collapsible wrapper -->
+				
+				<!-- Right elements -->
+				<div class="my-1 flex items-center lg:my-0 lg:ml-auto font-lato">
+					<a href="/about">
+						<button type="button" class="mr-2 inline-block rounded px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 dark:text-primary-400 dark:hover:bg-neutral-700 dark:hover:bg-opacity-60 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600" data-te-ripple-init data-te-ripple-color="light">
+							About us
+						</button>
+					</a>
+					<a href="/logout">
+						<button type="button" class="mr-2 inline-block rounded px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 dark:text-primary-400 dark:hover:bg-neutral-700 dark:hover:bg-opacity-60 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600" data-te-ripple-init data-te-ripple-color="light">
+							Logout
+						</button>
+					</a>
+				</div>
+				<!-- Right elements -->
 			</div>
-		{% else %}
-			<div class="mb-3 hidden w-full items-center rounded-lg bg-success-100 px-6 py-5 text-base text-success-800 data-[te-alert-show]:inline-flex" role="alert" data-te-alert-init data-te-alert-show>
-			<strong class="mr-1">SUCCESS! </strong> {{ message }}
-			<button type="button" class="ml-auto box-content rounded-none border-none p-1 text-success-900 opacity-50 hover:text-success-900 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none" data-te-alert-dismiss aria-label="Close">
-				<span class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
-					<path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
-				</svg>
-				</span>
-			</button>
-			</div>
+			<!-- Container wrapper -->
+		</nav>
+		<!-- Navbar -->
+
+		<!-- Flash Messages -->
+		{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			{% for category, message in messages %}
+				{% if category == 'error' %}
+					<!-- Error message container -->
+					<div class="mb-3 hidden w-full items-center rounded-lg bg-warning-100 px-6 py-5 text-base text-warning-800 data-[te-alert-show]:inline-flex" role="alert" data-te-alert-init data-te-alert-show>
+						<strong class="mr-1">ERROR! </strong> {{ message }}
+						<!-- Close button -->
+						<button type="button" class="ml-auto box-content rounded-none border-none p-1 text-warning-900 opacity-50 hover:text-warning-900 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none" data-te-alert-dismiss aria-label="Close">
+							<span class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+								<!-- SVG icon for the close button -->
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+									<path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L9 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+								</svg>
+							</span>
+						</button>
+					</div>
+				{% else %}
+					<!-- Success message container -->
+					<div class="mb-3 hidden w-full items-center rounded-lg bg-success-100 px-6 py-5 text-base text-success-800 data-[te-alert-show]:inline-flex" role="alert" data-te-alert-init data-te-alert-show>
+						<strong class="mr-1">SUCCESS! </strong> {{ message }}
+						<!-- Close button -->
+						<button type="button" class="ml-auto box-content rounded-none border-none p-1 text-success-900 opacity-50 hover:text-success-900 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none" data-te-alert-dismiss aria-label="Close">
+							<span class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+								<!-- SVG icon for the close button -->
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+									<path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L9 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+								</svg>
+							</span>
+						</button>
+					</div>
+				{% endif %}
+			{% endfor %}
 		{% endif %}
-		{% endfor %}
-	{% endif %}
-	{% endwith %}
-<div class="">
-  {% block content %}
-  {% endblock %}
-</div>
-<!-- Jumbotron -->
-</section>
-<!-- Section: Design Block -->
-<!-- Back to top button -->
-<button type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="inline-block p-3 bg-primary-600 text-primary font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg transition duration-150 ease-in-out bottom-5 right-5" id="btn-back-to-top">
-	<svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-4 h-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>
-</button>
-<!--Footer container-->
-<footer
-class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutral-200">
-<!--Copyright section-->
-	<div
-	class="bg-neutral-300 p-4 text-center text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
-	© 2023 Copyright:
-		<a class="dark:text-neutral-400" href="/">
-			TrackC	</a>
-	</div>
-</footer>
-<script src="https://cdn.jsdelivr.net/npm/tw-elements"></script>
-<script type="module" src="../static/scripts/alert-dismiss.js"></script>
-<script type="module" src="../static/scripts/back-to-top.js"></script>
-<script type="module" src="../static/scripts/index.js"></script>
+		{% endwith %}
+
+		<!-- Content section -->
+		<div class="">
+			{% block content %}
+			{% endblock %}
+		</div>
+		<!-- Jumbotron -->
+	</section>
+	<!-- Section: Design Block -->
+
+	<!-- Back to top button -->
+	<button type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="inline-block p-3 bg-primary-600 text-primary font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg transition duration-150 ease-in-out bottom-5 right-5" id="btn-back-to-top">
+		<svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-4 h-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+			<path fill="currentColor" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3 .4z"></path>
+		</svg>
+	</button>
+
+	<!--Footer container-->
+	<footer class="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutral-200">
+		<!--Copyright section-->
+		<div class="bg-neutral-300 p-4 text-center text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
+			© 2024 TrackC
+		</div>
+	</footer>
+
+	<!-- TW-Elements JS -->
+	<script src="https://cdn.jsdelivr.net/npm/tw-elements"></script>
+	<!-- Custom Scripts -->
+	<script type="module" src="../static/scripts/alert-dismiss.js"></script>
+	<script type="module" src="../static/scripts/back-to-top.js"></script>
+	<script type="module" src="../static/scripts/index.js"></script>
 </body>
 </html>
-		

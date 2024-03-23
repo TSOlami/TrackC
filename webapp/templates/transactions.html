@@ -3,8 +3,9 @@
 {% block title %}Transactions{% endblock %}
 
 {% block content %}
+<!-- Add Transaction Form -->
 <div id="portfolio_worth"></div>
-<div id="chartContainer" style="height: 300px; width: 100%;"></div>      
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
 <div class="container mx-auto">
   <div class="flex justify-between">
     <form id="form" action="/{{ user_id }}/transactions/add_transaction" method="POST"
@@ -14,15 +15,16 @@
         <label for="coin_name" class="block text-primary-700 text-sm font-bold mb-2">Name of Coin</label>
         <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
           id="coin_bought" name="coin_name" placeholder="Enter name of coin">
-          <div id="coin_name_list_div1" style="background-color: #285192; display: none; width: 30%; box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline" >
-            <ul id="coin_name_list1">
-              {% for i in crypto_name_list %}
-                <li class="text-1xl text-primary-700 font-medium text-center mb-6">
-                 
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
+        <div id="coin_name_list_div1" style="background-color: #285192; display: none; width: 30%; box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline">
+          <ul id="coin_name_list">
+            {% for i in crypto_name_list %}
+            <li class="text-1xl text-primary-700 font-medium text-center mb-6">
+              <!-- Comment: Display list of coin names -->
+              <!-- <h6> {{ i }} </h6> -->
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
       <div class="mb-6">
         <label for="no_of_coins" class="block text-primary-700 text-sm font-bold mb-2">Number of coins bought</label>
@@ -42,6 +44,7 @@
       </div>
     </form>
 
+    <!-- Remove Transaction Form -->
     <form id="form2" action="/{{ user_id }}/transactions/remove_transaction" method="POST"
       class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full md:w-1/2">
       <h3 class="text-2xl text-primary-700 font-bold text-center mb-6">Remove Transaction</h3>
@@ -49,15 +52,16 @@
         <label for="coin_name" class="block text-primary-700 text-sm font-bold mb-2">Name of Coin</label>
         <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline"
           id="coin_name_sold" name="coin_name" placeholder="Enter name of coin">
-          <div id="coin_name_list_div"  style="background-color: #285192; display: none; width: 30%; box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline" >
-            <ul id="coin_name_list">
-              {% for i in crypto_name_list %}
-                <li class="text-1xl text-primary-700 font-medium text-center mb-6" id="coin_name_list_child">
-                  <!-- <h6> {{ i }} </h6> -->
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
+        <div id="coin_name_list_div" style="background-color: #285192; display: none; width: 30%; box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);" class="shadow appearance-none border rounded w-full py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline">
+          <ul id="coin_name_list">
+            {% for i in crypto_name_list %}
+            <li class="text-1xl text-primary-700 font-medium text-center mb-6" id="coin_name_list_child">
+              <!-- Comment: Display list of coin names -->
+              <!-- <h6> {{ i }} </h6> -->
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
       <div class="mb-6">
         <label for="no_of_coins" class="block text-primary-700 text-sm font-bold mb-2">Number of coins sold</label>
@@ -80,56 +84,52 @@
 </div>
 <br/>
 <br/>
+
 {% if trans_list %}
-  <h1 class="text-2xl font-bold text-center text-blue-900 mb-4">HOLDINGS</h1>
-  <table class="table-auto w-full bg-white">
-    <thead>
-      <tr class="bg-primary-800 font-medium text-white">
-        <th class="py-2 px-4">Name</th>
-        <th class="py-2 px-4">Symbol</th>
-        <th class="py-2 px-4">Cost Basis</th>
-        <th class="py-2 px-4">Number of Coins</th>
-        <th class="py-2 px-4">Time Transacted</th>
-        <th class="py-2 px-4">Time Updated</th>
-        <th class="py-2 px-4">Current value</th>
-        <th class="py-2 px-4">Equity</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for trans in trans_list %}
-      <tr class="trans_table" data-coins="{{ trans.no_of_coins }}" data-current_value="{{ trans.current_value }}" data-price_purchased_at="{{ trans.price_purchased_at }}">
-        <td class = "py-2 px-4 border-b text-center" style="display: flex; align-items: center;"><img src="{{trans.image_link}}" alt="" style="width: 25px; height: 25px; object-fit: cover; margin-right: 10px;"><span>{{ trans.coin_name }}</span></td>
-        <td class = "py-2 px-4 border-b text-center">{{ trans.symbol }}</td>
-        <!-- <td class = "py-2 px-4 border-b text-center">
-          {% if trans.price_purchased_at is string %}
-            ${{ trans.price_purchased_at }} (average)
-          {% else %}
-            ${{ trans.price_purchased_at }}
-          {% endif %}
-        </td> -->
-        <td {% if trans.amount_spent >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}> ${{ "{:,.2f}".format(trans.amount_spent|abs) }}</td>
-        <td class = "py-2 px-4 border-b text-center">{{ "{:,.2f}".format(trans.no_of_coins) }}</td>
-        <td class = "py-2 px-4 border-b text-center">{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
-        <td class = "py-2 px-4 border-b text-center">{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
-        <td class="current_value py-2 px-4 border-b text-center">${{ "{:,.2f}".format(trans.current_value) }}</td>
-        <td id="equity" {% if trans.equity >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}>
+<!-- Holdings Table -->
+<h1 class="text-2xl font-bold text-center text-blue-900 mb-4">HOLDINGS</h1>
+<table class="table-auto w-full bg-white">
+  <thead>
+    <tr class="bg-primary-800 font-medium text-white">
+      <th class="py-2 px-4">Name</th>
+      <th class="py-2 px-4">Symbol</th>
+      <th class="py-2 px-4">Cost Basis</th>
+      <th class="py-2 px-4">Number of Coins</th>
+      <th class="py-2 px-4">Time Transacted</th>
+      <th class="py-2 px-4">Time Updated</th>
+      <th class="py-2 px-4">Current value</th>
+      <th class="py-2 px-4">Equity</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for trans in trans_list %}
+    <tr class="trans_table" data-coins="{{ trans.no_of_coins }}" data-current_value="{{ trans.current_value }}" data-price_purchased_at="{{ trans.price_purchased_at }}">
+      <td class="py-2 px-4 border-b text-center" style="display: flex; align-items: center;"><img src="{{trans.image_link}}" alt="" style="width: 25px; height: 25px; object-fit: cover; margin-right: 10px;"><span>{{ trans.coin_name }}</span></td>
+      <td class="py-2 px-4 border-b text-center">{{ trans.symbol }}</td>
+      <td class="py-2 px-4 border-b text-center">{{ "{:,.2f}".format(trans.amount_spent|abs) }}</td>
+      <td class="py-2 px-4 border-b text-center">{{ "{:,.2f}".format(trans.no_of_coins) }}</td>
+      <td class="py-2 px-4 border-b text-center">{{ trans.time_transacted.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+      <td class="py-2 px-4 border-b text-center">{{ trans.time_updated.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+      <td class="current_value py-2 px-4 border-b text-center">${{ "{:,.2f}".format(trans.current_value) }}</td>
+      <td id="equity" {% if trans.equity >= 0 %}class="text-green-500 py-2 px-4 border-b text-center"{% else %}class="text-red-500 py-2 px-4 border-b text-center"{% endif %}>
         {% if trans.equity >= 0 %}+{% else %}-{% endif %}
         {{ "{:,.2f}".format(trans.equity|abs) }}%
-        </td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-  {% else %}
-  <h1 class="text-2xl font-bold text-center text-blue-900 mb-4">Add a transaction to start tracking...</h1>
-  {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<!-- No transactions message -->
+<h1 class="text-2xl font-bold text-center text-blue-900 mb-4">Add a transaction to start tracking...</h1>
+{% endif %}
 </div>
 <br/>
 <br/>
 
-
 <script>
-  var portfolio_worth = {{portfolio_worth}};
+// JavaScript code goes here
+var portfolio_worth = {{portfolio_worth}};
   var total_amount_spent = {{total_amount_spent}};
   var lineColor = "blue";
   if (portfolio_worth < total_amount_spent) {
@@ -307,6 +307,7 @@
     });
     }
     setInterval(fetchCryptoPrices, 100000);
+
 </script>
 <br/>
 <br/>

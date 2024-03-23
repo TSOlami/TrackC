@@ -35,7 +35,8 @@ The app has been deployed on **[Render]** and can be accessed at [app URL](https
 - Flask (web framework)
 - SQLAlchemy (database toolkit)
 - CoinGecko API (for live cryptocurrency prices and news)
-- HTML/CSS
+- HTML
+- Tailwind CSS Elements
 - JavaScript
 
 ## Setup and Installation
@@ -104,6 +105,9 @@ The app has been deployed on **[Render]** and can be accessed at [app URL](https
 *    [/templates/news.html](/webapp/templates/news.html) - News page template.
 *    [/templates/sign_up.html](/webapp/templates/sign_up.html) - Sign up page template.
 *    [/templates/transactions.html](/webapp/templates/transactions.html) - Transactions page template.
+*    [/templates/reset_password.html](/webapp/templates/reset_password.html) - Reset password page template.
+*    [/templates/reset_password_request.html](/webapp/templates/reset_password_request.html) - New password request page template.
+*    [/templates/error.html](/webapp/templates/error.html) - Error page template.
 
 ## Bugs
 No known bugs at this time. 

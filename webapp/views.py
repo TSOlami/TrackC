@@ -14,10 +14,9 @@ views = Blueprint('views', __name__)
 
 LIVE_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price"
 
-
 # Send the password reset email
-
 def send_reset_email(user):
+    """Send a password reset email to the user"""
     token = user.generate_reset_token()
     reset_url = url_for('views.reset_password', token=token, _external=True)
     message = f"Click the following link to reset your password: {reset_url}"
@@ -29,6 +28,7 @@ def send_reset_email(user):
 
 @views.route('/', methods=['GET', 'POST'])
 def landing():
+    """The landing page endpoint"""
     if request.method == 'POST':
         # Collect the form data
         name = request.form['name']
@@ -60,7 +60,6 @@ def landing():
 def about():
     """The about page endpoint"""
     return render_template("about.html")
-
 
 
 @views.route('/home/<user_id>')
@@ -179,7 +178,7 @@ def home(user_id):
 @views.route('/<user_id>/news', methods=['GET'])
 @login_required
 def news(user_id):
-    # Endpoint to make NewsApi calls
+    """The news page endpoint"""
     news_url = "https://api.coingecko.com/api/v3/news"
     formatted_data = get_formatted_news_data(news_url)
     return render_template('news.html', news=formatted_data, user_id=user_id)
@@ -197,6 +196,7 @@ def get_formatted_news_data(news_url):
 
 
 def format_data(data):
+    """Format the news data"""
     formatted_data = []
     for item in data['data']:
         formatted_item = {
@@ -213,6 +213,7 @@ def format_data(data):
 @views.route('/<user_id>/transactions', methods=['GET', 'POST'])
 @login_required
 def transactions(user_id):
+    """The transactions page endpoint"""
     if request.method == 'POST':
         portfolio_worth = request.form.get("portfolio_worth")
         user = User.query.get(user_id)
@@ -220,8 +221,8 @@ def transactions(user_id):
         user.portfolio_worth_list = user.portfolio_worth_list + [{'x': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'y':float(portfolio_worth)}]
         db.session.commit()
         portfolio_worth_list = user.portfolio_worth_list
-    """Endpoint to fetch data from the database"""
-
+        
+    # Fetch data from the database
     coin_name_list = []
     amount_spent_list = []
     symbol_list = []
@@ -231,7 +232,6 @@ def transactions(user_id):
     time_updated_list = []
     image_link_list = []
 
-    # Fetch data from the database
     user = User.query.get(user_id)
     transactions = Transaction.query.filter_by(user_id=user_id).all()
 
@@ -251,27 +251,30 @@ def transactions(user_id):
     try: 
         for trans in transactions:
             coin_name = trans.coin_name.lower()
-            coin_name_list.append(trans.coin_name)
-            amount_spent_list.append(trans.amount_spent * -1)
-            symbol_list.append(trans.symbol)
-            price_purchased_at_list.append(trans.price_purchased_at)
-            no_of_coins = trans.no_of_coins 
+            coin_name_list.append(trans.coin_name)  # Store the coin name in a list
+            amount_spent_list.append(trans.amount_spent * -1)  # Store the negative amount spent (indicating a purchase)
+            symbol_list.append(trans.symbol)   # Store the symbol of the coin
+            price_purchased_at_list.append(trans.price_purchased_at)  # Store the price at which the coin was purchased
+            no_of_coins = trans.no_of_coins  # Get the number of coins
+
+            # Find the matching coin data in the API response
             for i in range(len(data)):
                 if data[i]['id'] == coin_name:
-                    current_price = data[i]['current_price']
-                    current_value = current_price * float(trans.no_of_coins)
-                    image_link_list.append(data[i]['image'])
+                    current_price = data[i]['current_price']  # Get the current price of the coin
+                    current_value = current_price * float(trans.no_of_coins)  # Calculate the current value of the coins
+                    image_link_list.append(data[i]['image'])  # Store the image link for the coin
                     break
                 elif data[i]['id'] != coin_name and i+1 == len(data):
+                    # Handle the case when the coin data is not found in the API response
                     error_message = "An error occurred"
                     flash(error_message, category='error')
                     return redirect(url_for('views.home', user_id=user_id))
-            equity = ((float(current_price) - float(trans.price_purchased_at)) / float(trans.price_purchased_at)) * 100
-            current_values[coin_name] = current_value
-            equities[coin_name] = equity
-            no_of_coins_list.append(no_of_coins)
-            time_transacted_list.append(trans.time_transacted)
-            time_updated_list.append(trans.time_updated)
+            equity = ((float(current_price) - float(trans.price_purchased_at)) / float(trans.price_purchased_at)) * 100  # Calculate the equity percentage
+            current_values[coin_name] = current_value  # Store the current value for the coin
+            equities[coin_name] = equity  # Store the equity percentage for the coin
+            no_of_coins_list.append(no_of_coins)  # Store the number of coins
+            time_transacted_list.append(trans.time_transacted)  # Store the time of transaction
+            time_updated_list.append(trans.time_updated)  # Store the time of last update
 
         # Calculate portfolio worth
         portfolio_worth = sum(current_values.values())
@@ -511,16 +514,15 @@ def transaction_history(user_id):
 
     try: 
         for trans in transaction_history:
-            coin_name = trans.coin_name.capitalize()
-            coin_name_list.append(trans.coin_name)
-            amount_spent_list.append(trans.amount_spent * -1)
-            symbol_list.append(trans.symbol)
-            price_purchased_at_list.append(trans.price_purchased_at)
-            no_of_coins = trans.no_of_coins 
-            no_of_coins_list.append(no_of_coins)
-            time_transacted_list.append(trans.time_transacted)
-            #image_link_list.append(trans.image_link)
-            transaction_type_list.append(trans.transaction_type)
+            coin_name = trans.coin_name.capitalize()  # Capitalize the coin name
+            coin_name_list.append(trans.coin_name)  # Store the coin name in a list
+            amount_spent_list.append(trans.amount_spent * -1)  # Store the negative amount spent (indicating a purchase)
+            symbol_list.append(trans.symbol)  # Store the symbol of the coin
+            price_purchased_at_list.append(trans.price_purchased_at)  # Store the price at which the coin was purchased
+            no_of_coins = trans.no_of_coins  # Get the number of coins
+            no_of_coins_list.append(no_of_coins)  # Store the number of coins
+            time_transacted_list.append(trans.time_transacted)  # Store the time of transaction
+            transaction_type_list.append(trans.transaction_type)  # Store the transaction type
 
         # Sort transactions by time_updated in descending order (most recent on top)
         sorted_transactions = sorted(
@@ -560,10 +562,11 @@ def transaction_history(user_id):
         return redirect(url_for('views.transactions', user_id=user_id))
 
 
-# route for password reset request
 @views.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
+    """Route for password reset request"""
     if request.method == 'POST':
+        # Collect the data from the form
         email = request.form['email']
         # Check if the user exists and retrieve their details
         user = User.query.filter_by(email=email).first()
@@ -582,12 +585,13 @@ def reset_password_request():
 def reset_password(token):
     """Endpoint for resetting a user password"""
 
-    # Check if the token is valid
+    # Check if the token is valid and flash a message
     if User.verify_reset_token(token) is None:
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('auth.reset_password_request'))
     else:
         if request.method == 'POST':
+            # Collect the data from the form
             password = request.form.get('password')
             verify_password = request.form.get('verify_password')
 
@@ -597,7 +601,7 @@ def reset_password(token):
             elif len(password) < 7:
                 flash('Password must be at least 7 characters.', category='error')
 
-            # Update the user's password
+            # Update the user's password and save it 
             user = User.verify_reset_token(token)
             hashed_new_password = generate_password_hash(
                 password, method='sha256')
@@ -610,13 +614,13 @@ def reset_password(token):
         return render_template('reset_password.html', token=token)
 
 
-# Define the 404 route
 @views.route('/404/<user_id>')
 def error_404(user_id):
+    # Define the 404 route
     return render_template("error.html", user_id=user_id)
 
 
-# Define the global 404 error handler
 @views.errorhandler(404)
 def not_found_error(error):
+    # Define the global 404 error handler
     return render_template('error.html'), 404

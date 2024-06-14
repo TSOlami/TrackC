@@ -26,7 +26,7 @@ TrackC is a web application that allows users to track their cryptocurrency tran
 
 ## Deployment
 
-The app has been deployed on **[Render]** and can be accessed at [app URL](https://trackc-flask-app-wg3p.onrender.com/).
+The app has been deployed on **Render** and can be accessed at [app URL](https://trackc-flask-app-wg3p.onrender.com/).
 
 
 ## Technologies Used
